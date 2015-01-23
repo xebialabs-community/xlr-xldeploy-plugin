@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+
+    THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS
+    FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
+
+-->
+<synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <type type="xldeploy.ControlTask" extends="xlrelease.PythonScript" description="Execute a control task on XLD">
+        <property name="scriptLocation" default="xldeploy/ControlTask.py" hidden="true" />
+        <property name="iconLocation" default="xldeploy/xldeploy-icon-white.png" hidden="true" />
+        <property name="taskColor" hidden="true" default="#68B749" />
+
+        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
+        <property name="username" category="input" label="username" required="true" />
+        <property name="password" password="true" category="input" required="true" />
+
+        <property name="ciId" category="input" label="Configuration Item Id" required="true" />
+        <property name="controlTaskName" category="input" label="Control Task Name" default="" required="false" />
+        <property name="parameters" category="input" default="" required="false" />
+
+    </type>
+
+
+	<type type="xldeploy.Server" extends="configuration.HttpConnection"/>
+</synthetic>
