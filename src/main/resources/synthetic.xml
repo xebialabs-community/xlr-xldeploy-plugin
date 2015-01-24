@@ -19,7 +19,9 @@
 
         <property name="ciId" category="input" label="Configuration Item Id" required="true" />
         <property name="controlTaskName" category="input" label="Control Task Name" default="" required="false" />
-        <property name="parameters" category="input" default="" required="false" />
+        <property name="parameters" category="input" default="" required="false" description="A dictionary with key value pairs" />
+        <property name="pollingInterval" category="input" label="Polling Interval" required="true" kind="integer" description="Polling interval in seconds to check control task status."/>
+        <property name="numberOfTrials" category="input" label="Retry Count" required="true" kind="integer" description="Number of times to retry check for control task status."/>
 
     </type>
 
