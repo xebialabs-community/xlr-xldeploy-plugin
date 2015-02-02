@@ -48,13 +48,13 @@ def prepare_control_task(xld_call_factory, control_task_name, target_ci_id):
     root = ET.fromstring(control_obj)
     # print 'DEBUG: Control obj from /prepare', control_obj, '\n'
     parameterTypeId = getParameterTypeName(root)
-    print 'DEBUG: got parameterTypeId: %s' % parameterTypeId
+    # print 'DEBUG: got parameterTypeId: %s' % parameterTypeId
     if parameterTypeId:
         parameterNames = getParameterNames(xld_call_factory, parameterTypeId)
         print 'Found parameter names: %s' % parameterNames
         for parameterName in parameterNames:
             addParameter(root,parameterTypeId,parameterName)
-    print 'DEBUG: Control obj after udating parameters ', ET.tostring(root), '\n'
+    # print 'DEBUG: Control obj after udating parameters ', ET.tostring(root), '\n'
     invoke_response = xld_call_factory.post('/control', ET.tostring(root), contentType = 'application/xml')
     task_id = invoke_response.getResponse()
     print 'DEBUG: Control task ID', task_id, '\n'
@@ -83,5 +83,9 @@ xld_call_factory = HttpRequest({'url': xldeployServer['url']}, xldeployServer['u
 task_id = prepare_control_task(xld_call_factory, controlTaskName, ciId)
 # print 'DEBUG: About to invoke task and wait for response', task_id, '\n'
 task_state = invoke_task_and_wait_for_result(xld_call_factory, task_id)
-# print 'DEBUG: Task state for', task_id, ':', task_state, '\n'
+print 'DEBUG: Task state for', task_id, ':', task_state, '\n'
+if task_state in ('DONE','EXECUTED'):
+    sys.exit(0)
+sys.exit(1)
+
 
