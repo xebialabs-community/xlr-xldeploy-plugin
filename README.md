@@ -12,8 +12,10 @@ The xlr-xldeploy-plugin is a XL Release plugin that allows to start a control ta
 
 Place the latest released version under the `plugins` dir. If needed append the following to the `script.policy` under `conf`:
 
-`permission java.io.FilePermission "conf/logback.xml", "read";
- permission java.lang.RuntimePermission "accessDeclaredMembers";`
+```
+permission java.io.FilePermission "conf/logback.xml", "read";
+permission java.lang.RuntimePermission "accessDeclaredMembers";
+```
 
 ## Types ##
 
