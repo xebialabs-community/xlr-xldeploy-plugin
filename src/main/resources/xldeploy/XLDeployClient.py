@@ -77,7 +77,7 @@ class XLDeployClient(object):
 
     def invokeTaskAndWaitForResult(self, task_id, pollingInterval, numberOfTrials, continueIfStepFails = False, numberOfContinueRetrials = 0):
         start_task_url = "/deployit/task/%s/start" % (task_id)
-        # print 'DEBUG: About to invoke task by post', task_id, '\n'
+        print 'DEBUG: About to invoke task by post %s - continue enabled: %s - trial: %s \n' % (task_id, continueIfStepFails, numberOfContinueRetrials)
         self.httpRequest.post(start_task_url, '', contentType='application/xml')
         trial = 0
         while trial < numberOfTrials:
@@ -87,7 +87,9 @@ class XLDeployClient(object):
             task_state_response = self.httpRequest.get(get_task_status_url, contentType='application/xml')
             task_state_xml = task_state_response.getResponse()
             status = self.extract_state(task_state_xml)
-            # print 'DEBUG: Task', task_id, 'now in state', status, '\n'
+            print 'DEBUG: Task', task_id, 'now in state', status, '\n'
+            if status in ('FAILED', 'STOPPED') and continueIfStepFails and numberOfContinueRetrials > 0:
+                status = self.invokeTaskAndWaitForResult(task_id,pollingInterval,numberOfTrials, continueIfStepFails, numberOfContinueRetrials-1)
             if status in ('FAILED', 'STOPPED', 'CANCELLED', 'DONE', 'EXECUTED'):
                 break
             time.sleep(pollingInterval)
@@ -95,7 +97,7 @@ class XLDeployClient(object):
     
     def deploymentExists(self, deploymentPackage, environment):
         deploymentExistsUrl = "/deployit/deployment/exists?application=%s&environment=%s" % (deploymentPackage.rsplit('/',1)[0],environment)
-        print 'DEBUG: checking deployment exists with url %s \n' % deploymentExistsUrl
+        # print 'DEBUG: checking deployment exists with url %s \n' % deploymentExistsUrl
         deploymentExists_response = self.httpRequest.get(deploymentExistsUrl, contentType='application/xml')
         response = deploymentExists_response.getResponse()
         return 'true' in response
@@ -112,16 +114,16 @@ class XLDeployClient(object):
     
     def deploymentPrepareDeployeds(self, deployment):
         deploymentPrepareDeployeds = "/deployit/deployment/prepare/deployeds"
-        print 'DEBUG: Prepare deployeds for deployment object %s \n' % deployment
+        # print 'DEBUG: Prepare deployeds for deployment object %s \n' % deployment
         deploymentPrepareDeployeds_response = self.httpRequest.post(deploymentPrepareDeployeds, deployment, contentType='application/xml')
-        print 'DEBUG: Deployment object including mapping is now %s \n' % deployment
+        # print 'DEBUG: Deployment object including mapping is now %s \n' % deployment
         return deploymentPrepareDeployeds_response.getResponse()
     
     def getDeploymentTaskId(self, deployment):
         getDeploymentTaskId = "/deployit/deployment"
-        print 'DEBUG: creating task id for deployment object %s \n' % deployment
+        # print 'DEBUG: creating task id for deployment object %s \n' % deployment
         deploymentTaskId_response = self.httpRequest.post(getDeploymentTaskId, deployment, contentType='application/xml')
-        print 'DEBUG: getDeploymentTaskId response is %s \n' % (deploymentTaskId_response.getResponse())
+        # print 'DEBUG: getDeploymentTaskId response is %s \n' % (deploymentTaskId_response.getResponse())
         return deploymentTaskId_response.getResponse()
     
     def deploymentRollback(self, taskId):
