@@ -38,6 +38,7 @@ if taskState in ('DONE','EXECUTED'):
 # rollbackOnError
 if rollbackOnError and taskState in ('FAILED', 'STOPPED'):
     print "Going to rollback \n"
+    xldClient.stopTask(taskId)
     rollBackTaskId = xldClient.deploymentRollback(taskId)
     taskState = xldClient.invokeTaskAndWaitForResult(rollBackTaskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials)
     xldClient.archiveTask(rollBackTaskId)

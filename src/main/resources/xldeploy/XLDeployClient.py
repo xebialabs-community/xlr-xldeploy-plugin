@@ -125,8 +125,10 @@ class XLDeployClient(object):
         return deploymentTaskId_response.getResponse()
     
     def deploymentRollback(self, taskId):
-        deploymentRollback = "/deployment/rollback/%s" % taskId
+        deploymentRollback = "/deployit/deployment/rollback/%s" % taskId
+        print 'DEBUG: calling rollback for taskId %s \n' % taskId
         deploymentRollback_response = self.httpRequest.post(deploymentRollback,'',contentType='application/xml')
+        print 'DEBUG: received rollback taskId %s \n' % deploymentRollback_response.getResponse()
         return deploymentRollback_response.getResponse()
     
     def archiveTask(self, taskId):
@@ -136,3 +138,7 @@ class XLDeployClient(object):
     def cancelTask(self, taskId):
         cancelTask = "/deployit/task/%s" % taskId
         self.httpRequest.delete(cancelTask, contentType='application/xml')
+
+    def stopTask(self, taskId):
+        stopTask = "/deployit/task/%s/stop" % taskId
+        self.httpRequest.post(stopTask,'',contentType='application/xml')
