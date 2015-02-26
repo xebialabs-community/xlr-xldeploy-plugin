@@ -19,7 +19,7 @@ else:
 
 # Mapping deployables to the target environment
 print "Mapping all deployables \n"
-deployment = xldClient.deploymentPrepareDeployeds(deployment)
+deployment = xldClient.deploymentPrepareDeployeds(deployment, orchestrators, deployedProperties)
 
 # deploymentProperties + configure orchestrators
 # print "DEBUG: Deployment description is now: %s" % deployment

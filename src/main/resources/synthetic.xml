@@ -20,7 +20,7 @@
         <property name="deploymentPackage" category="input" label="Deployment Package" required="true" />
         <property name="environment" category="input" label="Environment" default="" required="true" />
         <property name="orchestrators" category="input" label="Orchestrators" default="" required="false" />
-        <property name="deploymentProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
+        <property name="deployedProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
         <property name="continueIfStepFails" category="input" kind="boolean" />
         <property name="numberOfContinueRetrials" category="input" kind="integer" />
         <property name="rollbackOnError" category="input" kind="boolean" />

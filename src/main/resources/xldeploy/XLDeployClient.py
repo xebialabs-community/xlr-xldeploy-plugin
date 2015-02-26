@@ -111,13 +111,38 @@ class XLDeployClient(object):
         deploymentPrepareInitialUrl = "/deployit/deployment/prepare/initial?version=%s&environment=%s" % (deploymentPackage, environment)
         deploymentPrepareInitial_response = self.httpRequest.get(deploymentPrepareInitialUrl, contentType='application/xml')
         return deploymentPrepareInitial_response.getResponse()
+
+    def addOrchestrators(self, root, orchestrators):
+        if orchestrators:
+            params = root.find(".//orchestrator")
+            params.clear()
+            orchs = orchestrators.split(",")
+            for orch in orchs:
+                orchestrator = ET.SubElement(params, 'value')
+                orchestrator.text = orch
     
-    def deploymentPrepareDeployeds(self, deployment):
+    def set_deployed_properties(self, root, deployed_properties):
+        if deployed_properties:
+            deployeds_properties_dict = dict(ast.literal_eval(deployed_properties))
+            for key,value in deployeds_properties_dict:
+                deployed = root.findall(".//xlrTag[@text='%s']/.." % key)
+                deployed_properties_dict = dict(ast.literal_eval(value))
+                for pkey, pvalue in deployed_properties_dict:
+                    pkeyXml = deployed.find(pkey)
+                    pkeyXml.text = pvalue
+                    
+    
+    def deploymentPrepareDeployeds(self, deployment, orchestrators = None, deployedProperties = None):
         deploymentPrepareDeployeds = "/deployit/deployment/prepare/deployeds"
-        # print 'DEBUG: Prepare deployeds for deployment object %s \n' % deployment
+        print 'DEBUG: Prepare deployeds for deployment object %s \n' % deployment
         deploymentPrepareDeployeds_response = self.httpRequest.post(deploymentPrepareDeployeds, deployment, contentType='application/xml')
-        # print 'DEBUG: Deployment object including mapping is now %s \n' % deployment
-        return deploymentPrepareDeployeds_response.getResponse()
+        print 'DEBUG: Deployment object including mapping is now %s \n' % deployment
+        deployment_xml = deploymentPrepareDeployeds_response.getResponse()
+        root = ET.fromstring(deployment_xml)
+        self.addOrchestrators(root, orchestrators)
+        print 'DEBUG: Deployment object after updating orchestrators: %s \n' % ET.tostring(root)
+        #self.set_deployed_properties(root, deployedProperties)
+        return ET.tostring(root)
     
     def getDeploymentTaskId(self, deployment):
         getDeploymentTaskId = "/deployit/deployment"
@@ -128,9 +153,9 @@ class XLDeployClient(object):
     
     def deploymentRollback(self, taskId):
         deploymentRollback = "/deployit/deployment/rollback/%s" % taskId
-        print 'DEBUG: calling rollback for taskId %s \n' % taskId
+        # print 'DEBUG: calling rollback for taskId %s \n' % taskId
         deploymentRollback_response = self.httpRequest.post(deploymentRollback,'',contentType='application/xml')
-        print 'DEBUG: received rollback taskId %s \n' % deploymentRollback_response.getResponse()
+        # print 'DEBUG: received rollback taskId %s \n' % deploymentRollback_response.getResponse()
         return deploymentRollback_response.getResponse()
     
     def archiveTask(self, taskId):
