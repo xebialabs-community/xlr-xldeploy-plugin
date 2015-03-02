@@ -14,6 +14,7 @@ Place the latest released version under the `plugins` dir. If needed append the 
 
 ```
 permission java.io.FilePermission "plugins/*", "read";
+permission java.io.FilePermission "conf/logback.xml", "read";
 ```
 
 ## Types ##

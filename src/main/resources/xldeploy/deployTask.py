@@ -19,13 +19,13 @@ else:
 
 # Mapping deployables to the target environment
 print "Mapping all deployables \n"
-deployment = xldClient.deploymentPrepareDeployeds(deployment, orchestrators, deployedProperties)
+deployment = xldClient.deployment_prepare_deployeds(deployment, orchestrators, deployedProperties)
 
 # deploymentProperties + configure orchestrators
 # print "DEBUG: Deployment description is now: %s" % deployment
 # Validating the deployment
 print "Creating a deployment task \n"
-taskId = xldClient.getDeploymentTaskId(deployment)
+taskId = xldClient.get_deployment_task_id(deployment)
 
 print "Execute task with id: %s" % taskId
 taskState = xldClient.invokeTaskAndWaitForResult(taskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials)

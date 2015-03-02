@@ -112,39 +112,46 @@ class XLDeployClient(object):
         deploymentPrepareInitial_response = self.httpRequest.get(deploymentPrepareInitialUrl, contentType='application/xml')
         return deploymentPrepareInitial_response.getResponse()
 
-    def addOrchestrators(self, root, orchestrators):
+    def add_orchestrators(self, root, orchestrators):
         if orchestrators:
             params = root.find(".//orchestrator")
             params.clear()
             orchs = orchestrators.split(",")
             for orch in orchs:
                 orchestrator = ET.SubElement(params, 'value')
-                orchestrator.text = orch
+                orchestrator.text = orch.strip()
     
     def set_deployed_properties(self, root, deployed_properties):
         if deployed_properties:
             deployeds_properties_dict = dict(ast.literal_eval(deployed_properties))
-            for key,value in deployeds_properties_dict:
-                deployed = root.findall(".//xlrTag[@text='%s']/.." % key)
-                deployed_properties_dict = dict(ast.literal_eval(value))
-                for pkey, pvalue in deployed_properties_dict:
-                    pkeyXml = deployed.find(pkey)
-                    pkeyXml.text = pvalue
+            for key in deployeds_properties_dict:
+                for xlr_tag_deployed in root.findall(".//deployeds/*"):
+                    print 'DEBUG: deployed is %s \n' % ET.tostring(xlr_tag_deployed)
+                    print 'DEBUG: xlrTag exists? %s' % xlr_tag_deployed.findtext('xlrTag')
+                    print 'DEBUG: xlrTag key? %s' % key
+                    if key == xlr_tag_deployed.findtext('xlrTag'):
+                        deployed_properties_dict = dict(ast.literal_eval(deployeds_properties_dict[key]))
+                        print 'DEBUG: deployed properties dict is %s \n' % deployed_properties_dict
+                        for pkey in deployed_properties_dict:
+                            pkey_xml = xlr_tag_deployed.find(pkey)
+                            if not pkey_xml:
+                                pkey_xml = ET.SubElement(xlr_tag_deployed, pkey)
+                            pkey_xml.text = deployed_properties_dict[pkey]
                     
     
-    def deploymentPrepareDeployeds(self, deployment, orchestrators = None, deployedProperties = None):
-        deploymentPrepareDeployeds = "/deployit/deployment/prepare/deployeds"
-        print 'DEBUG: Prepare deployeds for deployment object %s \n' % deployment
-        deploymentPrepareDeployeds_response = self.httpRequest.post(deploymentPrepareDeployeds, deployment, contentType='application/xml')
-        print 'DEBUG: Deployment object including mapping is now %s \n' % deployment
-        deployment_xml = deploymentPrepareDeployeds_response.getResponse()
+    def deployment_prepare_deployeds(self, deployment, orchestrators = None, deployed_properties = None):
+        deployment_prepare_deployeds = "/deployit/deployment/prepare/deployeds"
+        # print 'DEBUG: Prepare deployeds for deployment object %s \n' % deployment
+        deployment_prepare_deployeds_response = self.httpRequest.post(deployment_prepare_deployeds, deployment, contentType='application/xml')
+        # print 'DEBUG: Deployment object including mapping is now %s \n' % deployment
+        deployment_xml = deployment_prepare_deployeds_response.getResponse()
         root = ET.fromstring(deployment_xml)
-        self.addOrchestrators(root, orchestrators)
+        self.add_orchestrators(root, orchestrators)
         print 'DEBUG: Deployment object after updating orchestrators: %s \n' % ET.tostring(root)
-        #self.set_deployed_properties(root, deployedProperties)
+        self.set_deployed_properties(root, deployed_properties)
         return ET.tostring(root)
     
-    def getDeploymentTaskId(self, deployment):
+    def get_deployment_task_id(self, deployment):
         getDeploymentTaskId = "/deployit/deployment"
         # print 'DEBUG: creating task id for deployment object %s \n' % deployment
         deploymentTaskId_response = self.httpRequest.post(getDeploymentTaskId, deployment, contentType='application/xml')
