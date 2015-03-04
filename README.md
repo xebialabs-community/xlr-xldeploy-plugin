@@ -23,15 +23,18 @@ permission java.io.FilePermission "conf/logback.xml", "read";
   * `ciId`
   * `controlTaskName`
   * `parameters`
+  * `continueIfStepFails` (Will try to continue if a step in a control task fails)
+  * `numberOfContinueRetrials` (Number of times to retry a step)
   * `pollingInterval`
-  * `numberOfTrials`
+  * `numberOfPollingTrials`
   
 + DeployTask (compatible with XL Deploy 4.5.1 and up)
   * `deploymentPackage` (ID of the deployment package to deploy e.g.: `Applications/XL Release/XLR/1.0`)
   * `environment` (ID of the environment to deploy to e.g.: `Environments/Xl Release/XL Release`)
   * `orchestrators` (Comma separated list of orchestrators to be used: `parallel-by-deployment-group, parallel-by-container`)
+  * `deployedApplicationProperties` (Dictionary containing all the deployed application properties to be set (except orchestrators). e.g.: `{"maxContainersInParallel": "2"}`)
   * `deployedProperties` (Dictionary containing all the properties to be set. Remark: Each key is an xlrTag in the deployeds - See also [https://github.com/xebialabs-community/xld-xlrelease-plugin](https://github.com/xebialabs-community/xld-xlrelease-plugin), e.g.: `{"Gate1": "{'taskId':'1234567890'}"}`)
-  * `continueIfStepFails` (Will try to continue if a step in de deployment task fails)
+  * `continueIfStepFails` (Will try to continue if a step in the deployment task fails)
   * `numberOfContinueRetrials` (Number of times to retry a step)
   * `rollbackOnError` (Whether rollback should be done if the deployment fails)
   * `pollingInterval` (Number of seconds to wait before polling the task status)

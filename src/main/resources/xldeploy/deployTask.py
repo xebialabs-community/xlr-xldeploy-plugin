@@ -19,7 +19,7 @@ else:
 
 # Mapping deployables to the target environment
 print "Mapping all deployables \n"
-deployment = xldClient.deployment_prepare_deployeds(deployment, orchestrators, deployedProperties)
+deployment = xldClient.deployment_prepare_deployeds(deployment, orchestrators, deployedApplicationProperties, deployedProperties)
 
 # deploymentProperties + configure orchestrators
 # print "DEBUG: Deployment description is now: %s" % deployment
@@ -28,7 +28,7 @@ print "Creating a deployment task \n"
 taskId = xldClient.get_deployment_task_id(deployment)
 
 print "Execute task with id: %s" % taskId
-taskState = xldClient.invokeTaskAndWaitForResult(taskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials)
+taskState = xldClient.invoke_task_and_wait_for_result(taskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials)
 
 if taskState in ('DONE','EXECUTED'):
     print "Deployment ended in %s \n" % taskState
@@ -40,7 +40,7 @@ if rollbackOnError and taskState in ('FAILED', 'STOPPED'):
     print "Going to rollback \n"
     xldClient.stopTask(taskId)
     rollBackTaskId = xldClient.deploymentRollback(taskId)
-    taskState = xldClient.invokeTaskAndWaitForResult(rollBackTaskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials)
+    taskState = xldClient.invoke_task_and_wait_for_result(rollBackTaskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials)
     xldClient.archiveTask(rollBackTaskId)
     sys.exit(1)
 elif taskState in ('FAILED', 'STOPPED'):

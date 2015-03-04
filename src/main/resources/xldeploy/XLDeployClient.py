@@ -75,12 +75,12 @@ class XLDeployClient(object):
         return task_id
 
 
-    def invokeTaskAndWaitForResult(self, task_id, pollingInterval, numberOfTrials, continueIfStepFails = False, numberOfContinueRetrials = 0):
+    def invoke_task_and_wait_for_result(self, task_id, polling_interval = 10, number_of_trials = None, continue_if_step_fails = False, number_of_continue_retrials = 0):
         start_task_url = "/deployit/task/%s/start" % (task_id)
-        print 'DEBUG: About to invoke task by post %s - continue enabled: %s - trial: %s \n' % (task_id, continueIfStepFails, numberOfContinueRetrials)
+        print 'DEBUG: About to invoke task by post %s - continue enabled: %s - trial: %s \n' % (task_id, continue_if_step_fails, number_of_continue_retrials)
         self.httpRequest.post(start_task_url, '', contentType='application/xml')
         trial = 0
-        while trial < numberOfTrials:
+        while not number_of_trials or trial < number_of_trials:
             # print 'DEBUG: About to get task status', task_id, '\n'
             trial += 1
             get_task_status_url = "/deployit/task/%s" % (task_id)
@@ -88,11 +88,11 @@ class XLDeployClient(object):
             task_state_xml = task_state_response.getResponse()
             status = self.extract_state(task_state_xml)
             print 'DEBUG: Task', task_id, 'now in state', status, '\n'
-            if status in ('FAILED', 'STOPPED') and continueIfStepFails and numberOfContinueRetrials > 0:
-                status = self.invokeTaskAndWaitForResult(task_id,pollingInterval,numberOfTrials, continueIfStepFails, numberOfContinueRetrials-1)
+            if status in ('FAILED', 'STOPPED') and continue_if_step_fails and number_of_continue_retrials > 0:
+                status = self.invoke_task_and_wait_for_result(task_id,polling_interval,number_of_trials, continue_if_step_fails, number_of_continue_retrials-1)
             if status in ('FAILED', 'STOPPED', 'CANCELLED', 'DONE', 'EXECUTED'):
                 break
-            time.sleep(pollingInterval)
+            time.sleep(polling_interval)
         return status
     
     def deploymentExists(self, deploymentPackage, environment):
@@ -121,6 +121,16 @@ class XLDeployClient(object):
                 orchestrator = ET.SubElement(params, 'value')
                 orchestrator.text = orch.strip()
     
+    def set_deployed_application_properties(self, root, deployed_application_properties):
+        if deployed_application_properties:
+            deployeds_application_properties_dict = dict(ast.literal_eval(deployed_application_properties))
+            for key in deployeds_application_properties_dict:
+                pkey_xml = root.find(key)
+                if not pkey_xml:
+                    pkey_xml = ET.SubElement(root.find("udm.DeployedApplication"), key)
+                pkey_xml.text = deployeds_application_properties_dict[key]
+                
+    
     def set_deployed_properties(self, root, deployed_properties):
         if deployed_properties:
             deployeds_properties_dict = dict(ast.literal_eval(deployed_properties))
@@ -139,7 +149,7 @@ class XLDeployClient(object):
                             pkey_xml.text = deployed_properties_dict[pkey]
                     
     
-    def deployment_prepare_deployeds(self, deployment, orchestrators = None, deployed_properties = None):
+    def deployment_prepare_deployeds(self, deployment, orchestrators = None, deployed_application_properties = None, deployed_properties = None):
         deployment_prepare_deployeds = "/deployit/deployment/prepare/deployeds"
         # print 'DEBUG: Prepare deployeds for deployment object %s \n' % deployment
         deployment_prepare_deployeds_response = self.httpRequest.post(deployment_prepare_deployeds, deployment, contentType='application/xml')
@@ -147,6 +157,7 @@ class XLDeployClient(object):
         deployment_xml = deployment_prepare_deployeds_response.getResponse()
         root = ET.fromstring(deployment_xml)
         self.add_orchestrators(root, orchestrators)
+        self.set_deployed_application_properties(root, deployed_application_properties)
         print 'DEBUG: Deployment object after updating orchestrators: %s \n' % ET.tostring(root)
         self.set_deployed_properties(root, deployed_properties)
         return ET.tostring(root)

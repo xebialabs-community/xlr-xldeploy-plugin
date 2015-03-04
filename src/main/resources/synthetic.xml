@@ -7,9 +7,9 @@
 
 -->
 <synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-
-    <type type="xldeploy.DeployTask" extends="xlrelease.PythonScript" description="Execute a deploy task on XLD">
-        <property name="scriptLocation" default="xldeploy/deployTask.py" hidden="true" />
+    
+    
+    <type type="xldeploy.Task" extends="xlrelease.PythonScript" virtual="true">
         <property name="iconLocation" default="xldeploy/xldeploy-icon-black-small.png" hidden="true" />
         <property name="taskColor" hidden="true" default="#68B749" />
 
@@ -17,33 +17,30 @@
         <property name="username" category="input" label="username" required="true" />
         <property name="password" password="true" category="input" required="true" />
 
+        <property name="continueIfStepFails" category="input" kind="boolean" />
+        <property name="numberOfContinueRetrials" category="input" kind="integer" />
+        <property name="pollingInterval" category="input" label="Polling Interval" default="10" required="true" kind="integer" description="Polling interval in seconds to check task status."/>
+        <property name="numberOfPollingTrials" category="input" label="Polling Retry Count" required="true" kind="integer" description="Number of times to retry check for task status."/>
+    </type>
+
+    <type type="xldeploy.DeployTask" extends="xldeploy.Task" description="Execute a deploy task on XLD">
+        <property name="scriptLocation" default="xldeploy/deployTask.py" hidden="true" />
+        
         <property name="deploymentPackage" category="input" label="Deployment Package" required="true" />
         <property name="environment" category="input" label="Environment" default="" required="true" />
         <property name="orchestrators" category="input" label="Orchestrators" default="" required="false" />
+        <property name="deployedApplicationProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
         <property name="deployedProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
-        <property name="continueIfStepFails" category="input" kind="boolean" />
-        <property name="numberOfContinueRetrials" category="input" kind="integer" />
         <property name="rollbackOnError" category="input" kind="boolean" />
-        <property name="pollingInterval" category="input" label="Polling Interval" required="true" kind="integer" description="Polling interval in seconds to check deploy task status."/>
-        <property name="numberOfPollingTrials" category="input" label="Polling Retry Count" required="true" kind="integer" description="Number of times to retry check for deploy task status."/>
 
     </type>
     
-    <type type="xldeploy.ControlTask" extends="xlrelease.PythonScript" description="Execute a control task on XLD">
+    <type type="xldeploy.ControlTask" extends="xldeploy.Task" description="Execute a control task on XLD">
         <property name="scriptLocation" default="xldeploy/controlTask.py" hidden="true" />
-        <property name="iconLocation" default="xldeploy/xldeploy-icon-black-small.png" hidden="true" />
-        <property name="taskColor" hidden="true" default="#68B749" />
-
-        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
-        <property name="username" category="input" label="username" required="true" />
-        <property name="password" password="true" category="input" required="true" />
 
         <property name="ciId" category="input" label="Configuration Item Id" required="true" />
         <property name="controlTaskName" category="input" label="Control Task Name" default="" required="false" />
         <property name="parameters" category="input" default="" required="false" description="A dictionary with key value pairs" />
-        <property name="pollingInterval" category="input" label="Polling Interval" required="true" kind="integer" description="Polling interval in seconds to check control task status."/>
-        <property name="numberOfTrials" category="input" label="Retry Count" required="true" kind="integer" description="Number of times to retry check for control task status."/>
-
     </type>
 
 
