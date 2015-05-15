@@ -187,3 +187,19 @@ class XLDeployClient(object):
     def stopTask(self, taskId):
         stopTask = "/deployit/task/%s/stop" % taskId
         self.httpRequest.post(stopTask,'',contentType='application/xml')
+
+    def get_download_uuid(self, deploymentPackage):
+        exportTask = "/deployit/export/deploymentpackage/%s" % deploymentPackage
+        exportTask_response = self.httpRequest.get(exportTask, contentType='application/xml')
+        return exportTask_response.getResponse()
+
+    def fetch_package(self, fetchURL):
+        fetchTask = "/deployit/package/fetch"
+        self.httpRequest.post(fetchTask, fetchURL, contentType='application/xml')
+
+    def get_latest_package_version(self, applicationId):
+        queryTask = "/deployit/repository/query?parent=%s" % applicationId
+        queryTask_response = self.httpRequest.get(queryTask, contentType='application/xml')
+        root = ET.fromstring(queryTask_response.getResponse())
+        items = root.findall('ci')
+        return items[len(items)-1].attrib['ref']

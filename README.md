@@ -39,3 +39,20 @@ permission java.io.FilePermission "conf/logback.xml", "read";
   * `rollbackOnError` (Whether rollback should be done if the deployment fails)
   * `pollingInterval` (Number of seconds to wait before polling the task status)
   * `numberOfPollingTrials` (Number of times to poll for task status)
+
++ Migrate Package
+  * `server` - Server to pull a package from
+  * `username` - Override source username
+  * `password` - Override source password
+  * `destinationServer` - Server to pull package to
+  * 'destinationUsername` - Override destination username
+  * `destinationPassword` - Override destination password
+  * `deploymentPackage` - ID of the package to migrate
+
++ Get Latest Version
+  * `server` - Server to query
+  * `username` - Override username
+  * `password` - Override password
+  * `applicationId` - ID of the application to query for latest package version
+  * `stripApplications` - Whether to strip "Applications/" from the beginning of the returned package ID
+  * `packageId` - Return value with the latest package ID
