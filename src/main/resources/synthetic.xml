@@ -43,6 +43,26 @@
         <property name="parameters" category="input" default="" required="false" description="A dictionary with key value pairs" />
     </type>
 
+    <type type="xldeploy.MigrateTask" extends="xlrelease.PythonScript" description="Migrate a package from one XLD to another XLD">
+        <property name="scriptLocation" default="xldeploy/migrateTask.py" hidden="true" />
+        <property name="xldeployServer" category="input" label="Source server" referenced-type="xldeploy.Server" kind="ci"/>
+        <property name="username" category="input" label="Source username" required="true" />
+        <property name="password" password="true" label="Source password" category="input" required="true" />
+        <property name="destinationXLDeployServer" category="input" label="Destination server" referenced-type="xldeploy.Server" kind="ci"/>
+        <property name="destinationUsername" category="input" label="Destination username" required="true" />
+        <property name="destinationPassword" password="true" category="input" label="Destination password" required="true" />
+        <property name="deploymentPackage" category="input" label="Deployment Package" required="true" />
+    </type>
+
+    <type type="xldeploy.GetLatestVersionTask" extends="xlrelease.PythonScript" description="Finds the latet version of a package for a application">
+        <property name="scriptLocation" default="xldeploy/getLatestVersionTask.py" hidden="true" />
+        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
+        <property name="username" category="input" label="username" required="true" />
+        <property name="password" password="true" category="input" required="true" />
+        <property name="applicationId" category="input" label="Application ID" required="true" />
+        <property name="stripApplications" category="input" kind="boolean" />
+        <property name="packageId" category="output" label="Package ID" />
+    </type>
 
 	<type type="xldeploy.Server" extends="configuration.HttpConnection"/>
 </synthetic>
