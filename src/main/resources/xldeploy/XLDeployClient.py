@@ -4,7 +4,7 @@
 # FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 #
 
-import sys, time, ast
+import sys, time, ast, re
 from xml.etree import ElementTree as ET
 from httputil.HttpRequest import HttpRequest
 
@@ -198,8 +198,17 @@ class XLDeployClient(object):
         self.httpRequest.post(fetchTask, fetchURL, contentType='application/xml')
 
     def get_latest_package_version(self, applicationId):
-        queryTask = "/deployit/repository/query?parent=%s" % applicationId
+        queryTask = "/deployit/repository/query?parent=%s&resultsPerPage=-1" % applicationId
         queryTask_response = self.httpRequest.get(queryTask, contentType='application/xml')
         root = ET.fromstring(queryTask_response.getResponse())
         items = root.findall('ci')
-        return items[len(items)-1].attrib['ref']
+        latestPackage = ''
+        latestVersion = 0
+        for item in items:
+            currNos = re.findall(r'\d+',item.attrib['ref'])
+            if len(currNos) > 0:
+                if int(currNos[0]) > latestVersion:
+                    latestVersion = int(currNos[0])
+                    latestPackage = item.attrib['ref']
+
+        return latestPackage
