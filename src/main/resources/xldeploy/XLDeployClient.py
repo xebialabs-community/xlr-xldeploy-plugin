@@ -212,3 +212,18 @@ class XLDeployClient(object):
                     latestPackage = item.attrib['ref']
 
         return latestPackage
+
+    def createRTDInstance(self, id, home, modelName, plName, confDir):
+        xml = '<rtd.Instance id="' + id + '"><home>' + home + '</home><modelName>' + modelName + '</modelName>'
+        xml = xml + '<plName>' + plName + '</plName><confDir>' + confDir + '</confDir></rtd.Instance>'
+        createTask = '/deployit/repository/ci/' + id
+        self.httpRequest.post(createTask, xml, contentType='application/xml')
+
+    def addRTDToEnvironment(self, envID, rtdID):
+        getEnv = '/deployit/repository/ci/' + envID
+        getEnv_response = self.httpRequest.get(getEnv, contentType='application/xml')
+        env = getEnv_response.getResponse()
+        items = env.partition('</members>')
+        xml = items[0] + '<ci ref="' + rtdID + '"/>' + items[1] + items[2]
+        print(xml)
+        self.httpRequest.put(getEnv, xml, contentType='application/xml')

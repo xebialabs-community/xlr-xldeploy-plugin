@@ -64,5 +64,18 @@
         <property name="packageId" category="output" label="Package ID" />
     </type>
 
+    <type type="xldeploy.CreateRTD" extends="xlrelease.PythonScript" label="Create RTD" description="Creates and RTD and adds it to the environment">
+        <property name="scriptLocation" default="xldeploy/createRTDTask.py" hidden="true" />
+        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
+        <property name="username" category="input" label="username" required="true" />
+        <property name="password" password="true" category="input" required="true" />
+        <property name="rtdID" category="input" label="RTD ID" required="true" />
+        <property name="home" category="input" required="true" />
+        <property name="modelName" category="input" required="true" />
+        <property name="plantName" category="input" required="true" />
+        <property name="confDir" category="input" required="true" />
+        <property name="envID" category="input" label="Env ID" required="true" />
+    </type>
+
 	<type type="xldeploy.Server" extends="configuration.HttpConnection"/>
 </synthetic>
