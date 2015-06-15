@@ -227,3 +227,19 @@ class XLDeployClient(object):
         xml = items[0] + '<ci ref="' + rtdID + '"/>' + items[1] + items[2]
         print(xml)
         self.httpRequest.put(getEnv, xml, contentType='application/xml')
+
+    def check_CI_exist(self, ciId):
+        queryTask = "/deployit/repository/exists/%s" % ciId
+        queryTask_response = self.httpRequest.get(queryTask, contentType='application/xml')
+        return queryTask_response.getResponse().find('true') > 0
+
+    def create_directory(self, ciId):
+        createTask = "/deployit/repository/ci/%s" % ciId
+        xml = '<core.Directory id="' + ciId + '" />'
+        self.httpRequest.post(createTask, xml, contentType='application/xml')
+
+    def create_application(self, appId):
+        createTask = "/deployit/repository/ci/%s" % appId
+        xml = '<udm.Application id="' + appId + '" />'
+        self.httpRequest.post(createTask, xml, contentType='application/xml')
+
