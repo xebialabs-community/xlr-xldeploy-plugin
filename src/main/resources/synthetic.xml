@@ -52,6 +52,7 @@
         <property name="destinationUsername" category="input" label="Destination username" required="true" />
         <property name="destinationPassword" password="true" category="input" label="Destination password" required="true" />
         <property name="deploymentPackage" category="input" label="Deployment Package" required="true" />
+        <property name="autoCreatePath" category="input" kind="boolean" />
     </type>
 
     <type type="xldeploy.GetLatestVersionTask" extends="xlrelease.PythonScript" description="Finds the latet version of a package for a application">

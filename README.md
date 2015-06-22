@@ -45,9 +45,10 @@ permission java.io.FilePermission "conf/logback.xml", "read";
   * `username` - Override source username
   * `password` - Override source password
   * `destinationServer` - Server to pull package to
-  * 'destinationUsername` - Override destination username
+  * `destinationUsername` - Override destination username
   * `destinationPassword` - Override destination password
   * `deploymentPackage` - ID of the package to migrate
+  * `autoCreatePath` - If set the task will automatically create the path and application if it doesn't exist in the destination
 
 + Get Latest Version
   * `server` - Server to query

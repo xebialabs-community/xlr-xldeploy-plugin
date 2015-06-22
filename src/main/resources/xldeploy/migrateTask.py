@@ -6,9 +6,22 @@
 
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
+def createPath(path):
+    parent = path.rpartition('/')[0]
+    if not xldDestinationClient.check_CI_exist(parent):
+        createPath(parent)
+    xldDestinationClient.create_directory(path)
 
 xldSourceClient = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
 xldDestinationClient = XLDeployClientUtil.createXLDeployClient(destinationXLDeployServer, destinationUsername, destinationPassword)
+
+if autoCreatePath:
+    appPath = deploymentPackage.rpartition('/')[0]
+    if not xldDestinationClient.check_CI_exist(appPath):
+        parent = appPath.rpartition('/')[0]
+        if not xldDestinationClient.check_CI_exist(parent):
+            createPath(parent)
+        xldDestinationClient.create_application(appPath)
 
 packageUUID = xldSourceClient.get_download_uuid(deploymentPackage)
 fetchURL = xldeployServer['url'] + '/deployit/internal/download/' + packageUUID
