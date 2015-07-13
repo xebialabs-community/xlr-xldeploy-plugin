@@ -6,6 +6,8 @@
 
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
+deploymentPackage = 'Applications/' + deploymentPackage
+environment = 'Environments/' + environment
 
 xldClient = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
 

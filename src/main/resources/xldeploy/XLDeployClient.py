@@ -88,9 +88,9 @@ class XLDeployClient(object):
             task_state_xml = task_state_response.getResponse()
             status = self.extract_state(task_state_xml)
             print 'DEBUG: Task', task_id, 'now in state', status, '\n'
-            if status in ('FAILED', 'STOPPED') and continue_if_step_fails and number_of_continue_retrials > 0:
+            if status in ('FAILED') and continue_if_step_fails and number_of_continue_retrials > 0:
                 status = self.invoke_task_and_wait_for_result(task_id,polling_interval,number_of_trials, continue_if_step_fails, number_of_continue_retrials-1)
-            if status in ('FAILED', 'STOPPED', 'CANCELLED', 'DONE', 'EXECUTED'):
+            if status in ('FAILED', 'CANCELLED', 'DONE', 'EXECUTED'):
                 break
             time.sleep(polling_interval)
         return status
@@ -227,3 +227,8 @@ class XLDeployClient(object):
         createTask = "/deployit/repository/ci/%s" % appId
         xml = '<udm.Application id="' + appId + '" />'
         self.httpRequest.post(createTask, xml, contentType='application/xml')
+
+    def update_dictionary_value(self, dictionaryId, key, value):
+        getDictionary = "/deployit/repository/ci/%s" % dictionaryId
+        getDictionaryResponse = self.httpRequest.get(getDictionary, contentType = 'application/xml')
+        
