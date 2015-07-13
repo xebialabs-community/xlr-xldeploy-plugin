@@ -8,7 +8,6 @@
 -->
 <synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     
-    
     <type type="xldeploy.Task" extends="xlrelease.PythonScript" virtual="true">
         <property name="iconLocation" default="xldeploy/xldeploy-icon-black-small.png" hidden="true" />
         <property name="taskColor" hidden="true" default="#68B749" />
@@ -16,14 +15,16 @@
         <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
         <property name="username" category="input" label="username" required="true" />
         <property name="password" password="true" category="input" required="true" />
+    </type>
 
+    <type type="xldeploy.TaskRunningTask" extends="xldeploy.Task" virtual="true">
         <property name="continueIfStepFails" category="input" kind="boolean" />
         <property name="numberOfContinueRetrials" category="input" kind="integer" />
         <property name="pollingInterval" category="input" label="Polling Interval" default="10" required="true" kind="integer" description="Polling interval in seconds to check task status."/>
         <property name="numberOfPollingTrials" category="input" label="Polling Retry Count" required="true" kind="integer" description="Number of times to retry check for task status."/>
     </type>
 
-    <type type="xldeploy.DeployTask" extends="xldeploy.Task" description="Execute a deploy task on XLD">
+    <type type="xldeploy.DeployTask" extends="xldeploy.TaskRunningTask" description="Executes a deployment in XL Deploy">
         <property name="scriptLocation" default="xldeploy/deployTask.py" hidden="true" />
         
         <property name="deploymentPackage" category="input" label="Deployment Package" required="true" />
@@ -35,7 +36,7 @@
 
     </type>
     
-    <type type="xldeploy.ControlTask" extends="xldeploy.Task" description="Execute a control task on XLD">
+    <type type="xldeploy.ControlTask" extends="xldeploy.TaskRunningTask" description="Invokes a control task on an XL Deploy Configuration Item">
         <property name="scriptLocation" default="xldeploy/controlTask.py" hidden="true" />
 
         <property name="ciId" category="input" label="Configuration Item Id" required="true" />
@@ -43,11 +44,8 @@
         <property name="parameters" category="input" default="" required="false" description="A dictionary with key value pairs" />
     </type>
 
-    <type type="xldeploy.MigrateTask" extends="xlrelease.PythonScript" description="Migrate a package from one XLD to another XLD">
+    <type type="xldeploy.MigrateTask" extends="xldeploy.Task" description="Migrates a package from one XL Deploy server to another XL Deploy server">
         <property name="scriptLocation" default="xldeploy/migrateTask.py" hidden="true" />
-        <property name="xldeployServer" category="input" label="Source server" referenced-type="xldeploy.Server" kind="ci"/>
-        <property name="username" category="input" label="Source username" required="true" />
-        <property name="password" password="true" label="Source password" category="input" required="true" />
         <property name="destinationXLDeployServer" category="input" label="Destination server" referenced-type="xldeploy.Server" kind="ci"/>
         <property name="destinationUsername" category="input" label="Destination username" required="true" />
         <property name="destinationPassword" password="true" category="input" label="Destination password" required="true" />
@@ -55,11 +53,8 @@
         <property name="autoCreatePath" category="input" kind="boolean" />
     </type>
 
-    <type type="xldeploy.GetLatestVersionTask" extends="xlrelease.PythonScript" description="Finds the latet version of a package for a application">
+    <type type="xldeploy.GetLatestVersionTask" extends="xldeploy.Task" description="Finds the latest Deployment Package version for an Application in XL Deploy">
         <property name="scriptLocation" default="xldeploy/getLatestVersionTask.py" hidden="true" />
-        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
-        <property name="username" category="input" label="username" required="true" />
-        <property name="password" password="true" category="input" required="true" />
         <property name="applicationId" category="input" label="Application ID" required="true" />
         <property name="stripApplications" category="input" kind="boolean" />
         <property name="packageId" category="output" label="Package ID" />
