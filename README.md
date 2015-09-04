@@ -57,3 +57,33 @@ permission java.io.FilePermission "conf/logback.xml", "read";
   * `applicationId` - ID of the application to query for latest package version
   * `stripApplications` - Whether to strip "Applications/" from the beginning of the returned package ID
   * `packageId` - Return value with the latest package ID
++ CLI
+  * `CLI Home` - Home directory where XL Deploy CLI is installed
+  * `XLD Host` - Host the CLI should connect to DEFAULT will work if on the same server as XL Deploy
+  * `XLD Port` - Port for XL Deploy server.  DEFAULT will work if using the default XL Deploy port
+  * `XLD Context` - XLD CLI context.  If no context is needed then DEFAULT will be fine
+  * `XLD Proxy Host` - Proxy host if needed.
+  * `XLD Proxy Port` - Proxy Port if needed.
+  * `XLD Socket timeout` - Connection timeout to XL Deploy
+  * `XLD User Name` - User name to connect to XL Deploy
+  * `XLD Password` - Password to connect to XL Deploy
+  * `script` - CLI Script to execute
+  
+  
+  ![image](images/Task_Config.png)
+  
++ CLI URL
+  * `CLI Home` - Home directory where XL Deploy CLI is installed
+  * `XLD Host` - Host the CLI should connect to DEFAULT will work if on the same server as XL Deploy
+  * `XLD Port` - Port for XL Deploy server.  DEFAULT will work if using the default XL Deploy port
+  * `XLD Context` - XLD CLI context.  If no context is needed then DEFAULT will be fine
+  * `XLD Proxy Host` - Proxy host if needed.
+  * `XLD Proxy Port` - Proxy Port if needed.
+  * `XLD Socket timeout` - Connection timeout to XL Deploy
+  * `XLD User Name` - User name to connect to XL Deploy
+  * `XLD Password` - Password to connect to XL Deploy
+  * `scriptURL` - URL to CLI Script to execute
+  
+  
+  ![image](images/Task_Config2.png)
+  
