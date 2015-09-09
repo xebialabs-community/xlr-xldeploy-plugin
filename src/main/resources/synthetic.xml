@@ -62,20 +62,5 @@
         <property name="taskColor" hidden="true" default="#68B749" />
     </type>
 
-    <type type="xld.UpdateGenericDictionary"  extends="xlrelease.PythonScript">
-        <property name="scriptLocation" default="xldeploy/updateDictionary.py" hidden="true" />
-        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
-        <property name="username" category="input" label="username" required="true" />
-        <property name="password" password="true" category="input" required="true" />
-        <property name="dictionaryId" category="input"  />
-        <property name="key1" category="input" label="Key 1" />
-        <property name="key2" category="input" label="Key 2" />
-        <property name="key3" category="input" label="Key 3" />
-        <property name="value1" category="input" label="Value 1" />
-        <property name="value2" category="input" label="Value 2" />
-        <property name="value3" category="input" label="Value 3" />
-        <property name="taskColor" hidden="true" default="#68B749" />
-    </type>  
-
 	<type type="xldeploy.Server" extends="configuration.HttpConnection"/>
 </synthetic>

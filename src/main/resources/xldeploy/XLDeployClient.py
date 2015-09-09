@@ -228,7 +228,3 @@ class XLDeployClient(object):
         xml = '<udm.Application id="' + appId + '" />'
         self.httpRequest.post(createTask, xml, contentType='application/xml')
 
-    def update_dictionary_value(self, dictionaryId, key, value):
-        getDictionary = "/deployit/repository/ci/%s" % dictionaryId
-        getDictionaryResponse = self.httpRequest.get(getDictionary, contentType = 'application/xml')
-        
