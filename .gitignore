@@ -1,2 +1,6 @@
 .gradle
 build
+.idea
+xlr-xldeploy-plugin.iml
+*.ipr
+*.iws

@@ -6,7 +6,7 @@ See the **XL Release Reference Manual** for background information on XL Release
 
 # Overview #
 
-The xlr-xldeploy-plugin is a XL Release plugin that allows to start a control task on XL Deploy.
+The xlr-xldeploy-plugin is a XL Release plugin that allows to start a control task, start a deployment, migrate a deployment package to another server or get the latest version of an application on XL Deploy.
 
 ## Installation ##
 
