@@ -97,7 +97,7 @@ class localCliScript():
 
 # End Class
 
-cliScript = localCliScript(cliHome, xldHost, xldPort, xldContext, xldProxyHost, xldProxyPort, xldSocketTimeout, xldUserName, xldPassword, script, cliExecutable)
+cliScript = localCliScript(globalVars['cliHome'], globalVars['xldHost'], globalVars['xldPort'], globalVars['xldContext'], globalVars['xldProxyHost'], globalVars['xldProxyPort'], globalVars['xldSocketTimeout'], globalVars['xldUserName'], globalVars['xldPassword'], script, globalVars['cliExecutable'])
 exitCode = cliScript.execute()
 
 output = cliScript.getStdout()
