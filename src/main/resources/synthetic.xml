@@ -33,6 +33,7 @@
         <property name="deployedApplicationProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
         <property name="deployedProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
         <property name="rollbackOnError" category="input" kind="boolean" />
+        <property name="failOnPause" category="input" kind="boolean" default="true" />
 
     </type>
     

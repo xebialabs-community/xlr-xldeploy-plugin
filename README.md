@@ -39,6 +39,7 @@ permission java.io.FilePermission "conf/logback.xml", "read";
   * `rollbackOnError` (Whether rollback should be done if the deployment fails)
   * `pollingInterval` (Number of seconds to wait before polling the task status)
   * `numberOfPollingTrials` (Number of times to poll for task status)
+  * `failOnPause` (If checked task will fail if the deployment enters a STOPPED state, for example if the xld-pause-plugin is in use. Set to True by default for backwards compatibility)
 
 + Migrate Package
   * `server` - Server to pull a package from

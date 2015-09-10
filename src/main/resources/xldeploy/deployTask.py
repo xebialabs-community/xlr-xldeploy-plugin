@@ -6,9 +6,6 @@
 
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
-deploymentPackage = 'Applications/' + deploymentPackage
-environment = 'Environments/' + environment
-
 xldClient = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
 
 deployment = None
@@ -30,7 +27,7 @@ print "Creating a deployment task \n"
 taskId = xldClient.get_deployment_task_id(deployment)
 
 print "Execute task with id: %s" % taskId
-taskState = xldClient.invoke_task_and_wait_for_result(taskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials)
+taskState = xldClient.invoke_task_and_wait_for_result(taskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials, failOnPause)
 
 if taskState in ('DONE','EXECUTED'):
     print "Deployment ended in %s \n" % taskState
