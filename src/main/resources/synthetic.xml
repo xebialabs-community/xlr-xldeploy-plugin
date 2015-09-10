@@ -65,7 +65,7 @@
         <property name="packageId" category="output" label="Package ID" />
     </type>
 
-    <type type="xldeploy.cliTask" extends="xlrelease.PythonScript">
+    <type type="xldeploy.cliTask" extends="xlrelease.PythonScript" virtual="true" >
         <property name="iconLocation" default="xldeploy/xldeploy-icon-black-small.png" hidden="true" />
         <property name="taskColor" hidden="true" default="#68B749" />
         <property name="cliHome"          category="input"/>
