@@ -33,6 +33,7 @@
         <property name="deployedApplicationProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
         <property name="deployedProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
         <property name="rollbackOnError" category="input" kind="boolean" />
+        <property name="failOnPause" category="input" kind="boolean" default="true" />
 
     </type>
     
@@ -51,6 +52,7 @@
         <property name="destinationPassword" password="true" category="input" label="Destination password" required="true" />
         <property name="deploymentPackage" category="input" label="Deployment Package" required="true" />
         <property name="autoCreatePath" category="input" kind="boolean" />
+        <property name="taskColor" hidden="true" default="#68B749" />
     </type>
 
     <type type="xldeploy.GetLatestVersionTask" extends="xldeploy.Task" description="Finds the latest Deployment Package version for an Application in XL Deploy">
@@ -58,6 +60,7 @@
         <property name="applicationId" category="input" label="Application ID" required="true" />
         <property name="stripApplications" category="input" kind="boolean" />
         <property name="packageId" category="output" label="Package ID" />
+        <property name="taskColor" hidden="true" default="#68B749" />
     </type>
 
 	<type type="xldeploy.Server" extends="configuration.HttpConnection"/>
