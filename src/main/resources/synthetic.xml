@@ -63,7 +63,7 @@
         <property name="taskColor" hidden="true" default="#68B749" />
     </type>
 
-    <type type="cliTaskGlobals.GlobalConfig" extends="xlrelease.Configuration">
+    <type type="xldeploy.CliConfig" extends="xlrelease.Configuration">
         <property name="cliHome"          category="input"/>
         <property name="cliExecutable"    category="input" default="cli" hidden="true" />
         <property name="xldHost"          category="input" default="DEFAULT"/>
@@ -79,7 +79,7 @@
     <type type="xldeploy.cliTask" extends="xlrelease.PythonScript" virtual="true" >
         <property name="iconLocation" default="xldeploy/xldeploy-icon-black-small.png" hidden="true" />
         <property name="taskColor" hidden="true" default="#68B749" />
-        <property name="globalVars" kind="ci" referenced-type="cliTaskGlobals.GlobalConfig" required="true" category="input" />
+        <property name="cli" kind="ci" referenced-type="xldeploy.CliConfig" required="true" category="input" />
 
         <property name="output" required="false" category="output" description="Console output of the process."/>
         <property name="err"    required="false" category="output" description="Error stream of the process."/>

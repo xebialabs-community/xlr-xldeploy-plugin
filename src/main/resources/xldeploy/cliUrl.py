@@ -118,7 +118,7 @@ try:
    print response.status, response.reason
    script = response.read()
 
-   cliScript = localCliScript(globalVars['cliHome'], globalVars['xldHost'], globalVars['xldPort'], globalVars['xldContext'], globalVars['xldProxyHost'], globalVars['xldProxyPort'], globalVars['xldSocketTimeout'], globalVars['xldUserName'], globalVars['xldPassword'], script, globalVars['cliExecutable'])
+   cliScript = localCliScript(cli['cliHome'], cli['xldHost'], cli['xldPort'], cli['xldContext'], cli['xldProxyHost'], cli['xldProxyPort'], cli['xldSocketTimeout'], cli['xldUserName'], cli['xldPassword'], script, cli['cliExecutable'])
    exitCode = cliScript.execute()
 
    output = cliScript.getStdout()
