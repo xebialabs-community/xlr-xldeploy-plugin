@@ -63,5 +63,37 @@
         <property name="taskColor" hidden="true" default="#68B749" />
     </type>
 
-	<type type="xldeploy.Server" extends="configuration.HttpConnection"/>
+    <type type="xldeploy.CliConfig" extends="xlrelease.Configuration">
+        <property name="cliHome"          category="input"/>
+        <property name="cliExecutable"    category="input" default="cli" hidden="true" />
+        <property name="xldHost"          category="input" default="DEFAULT"/>
+        <property name="xldPort"          category="input" default="DEFAULT"/>
+        <property name="xldContext"       category="input" default="DEFAULT"/>
+        <property name="xldProxyHost"     category="input" default="DEFAULT"/>
+        <property name="xldProxyPort"     category="input" default="DEFAULT"/>
+        <property name="xldSocketTimeout" category="input" default="DEFAULT"/>
+        <property name="xldUserName"      category="input" default="admin"/>
+        <property name="xldPassword"      category="input" default="admin" password="true" />
+    </type>
+
+    <type type="xldeploy.cliTask" extends="xlrelease.PythonScript" virtual="true" >
+        <property name="iconLocation" default="xldeploy/xldeploy-icon-black-small.png" hidden="true" />
+        <property name="taskColor" hidden="true" default="#68B749" />
+        <property name="cli" kind="ci" referenced-type="xldeploy.CliConfig" required="true" category="input" />
+
+        <property name="output" required="false" category="output" description="Console output of the process."/>
+        <property name="err"    required="false" category="output" description="Error stream of the process."/>
+    </type>
+  
+    <type type="xldeploy.cli" extends="xldeploy.cliTask">
+        <property name="script"           category="input" size="large" />
+    </type>
+    <type type="xldeploy.cliUrl" extends="xldeploy.cliTask">
+        <property name="scriptUrl"        category="input" />
+        <property name="urlUserName"      category="input" />
+        <property name="urlPassword"      category="input" password="true" />
+    </type>
+
+
+    <type type="xldeploy.Server" extends="configuration.HttpConnection"/>
 </synthetic>
