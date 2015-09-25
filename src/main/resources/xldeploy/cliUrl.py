@@ -15,89 +15,7 @@ from java.io import StringWriter
 from com.xebialabs.overthere import CmdLine, ConnectionOptions, OperatingSystemFamily, Overthere
 from com.xebialabs.overthere.util import CapturingOverthereExecutionOutputHandler, OverthereUtils
 from com.xebialabs.overthere.local import LocalConnection, LocalFile, LocalProcess
-
-class localCliScript():
-
-   def __init__(self, cliHome, xldHost, xldPort, xldContext, xldProxyHost, xldProxyPort, xldSocketTimeout, xldUserName, xldPassword, script, cliExecutable):
-      self.cmdLine = CmdLine()
-      self.osname = System.getProperty('os.name').lower()
-      if ( self.osname.startswith('win') ):
-         cliExecutable = "%s\\bin\\%s.cmd" % ( cliHome, cliExecutable )
-      else:
-         cliExecutable = "%s/bin/%s.sh" % ( cliHome, cliExecutable )
-      # End if
-      self.cmdLine.addArgument( cliExecutable )
-      self.cmdLine.addArgument( '-quiet' )
-      if ( xldHost != "DEFAULT" ): 
-         self.cmdLine.addArgument( '-Host' )
-         self.cmdLine.addArgument( xldHost )
-      if ( xldPort != "DEFAULT" ):
-         self.cmdLine.addArgument( '-Port' )
-         self.cmdLine.addArgument( xldPort )
-      if ( xldContext != "DEFAULT" ):
-         self.cmdLine.addArgument( '-Context' )
-         self.cmdLine.addArgument( xldContext )
-      if ( xldProxyHost != "DEFAULT" ):
-         self.cmdLine.addArgument( '-ProxyHost' )
-         self.cmdLine.addArgument( xldProxyHost )
-      if ( xldProxyPort != "DEFAULT" ):
-         self.cmdLine.addArgument( '-ProxyPort' )
-         self.cmdLine.addArgument( xldProxyPort )
-      if ( xldSocketTimeout != "DEFAULT" ):
-         self.cmdLine.addArgument( '-SocketTimeout' )
-         self.cmdLine.addArgument( xldSocketTimeout )
-      if ( xldUserName != "DEFAULT" ):
-         self.cmdLine.addArgument( '-username' )
-         self.cmdLine.addArgument( xldUserName )
-      if ( xldPassword != "DEFAULT" ):
-         self.cmdLine.addArgument( '-password' )
-         self.cmdLine.addPassword( xldPassword )
-      #
-      self.script = script
-      self.stdout = CapturingOverthereExecutionOutputHandler.capturingHandler()
-      self.stderr = CapturingOverthereExecutionOutputHandler.capturingHandler()
-
-   # End __init__
-
-   def execute( self ):
-      connection = None
-      try:
-         connection = LocalConnection.getLocalConnection()
-         scriptFile = connection.getTempFile('xlrScript', '.py')
-         OverthereUtils.write( String( self.script ).getBytes(), scriptFile )
-         scriptFile.setExecutable(True)
-         self.cmdLine.addArgument( '-source' )
-         self.cmdLine.addArgument( scriptFile.getPath() )
-         exitCode = connection.execute( self.stdout, self.stderr, self.cmdLine )
-      except Exception, e:
-            stacktrace = StringWriter()
-            writer = PrintWriter(stacktrace, True)
-            e.printStackTrace(writer)
-            self.stderr.handleLine(stacktrace.toString())
-            return 1
-      finally:
-            if connection is not None:
-                connection.close()
-      return exitCode
-   # End execute
-
-   def getStdout(self):
-        return self.stdout.getOutput()
-   # End getStdout
-
-   def getStdoutLines(self):
-        return self.stdout.getOutputLines()
-   # End getStdoutLines
-
-   def getStderr(self):
-        return self.stderr.getOutput()
-   # End getStderr
-
-   def getStderrLines(self):
-        return self.stderr.getOutputLines()
-   # End getStderrLines
-
-# End Class
+from xldeploy.LocalCLI import localCliScript
 
 print "Script URL = %s" % ( scriptUrl )
 host=scriptUrl.split('//')[1].split('/')[0]
@@ -118,7 +36,7 @@ try:
    print response.status, response.reason
    script = response.read()
 
-   cliScript = localCliScript(cli['cliHome'], cli['xldHost'], cli['xldPort'], cli['xldContext'], cli['xldProxyHost'], cli['xldProxyPort'], cli['xldSocketTimeout'], cli['xldUserName'], cli['xldPassword'], script, cli['cliExecutable'])
+   cliScript = localCliScript(cli['cliHome'], cli['xldHost'], cli['xldPort'], cli['xldContext'], cli['xldProxyHost'], cli['xldProxyPort'], cli['xldSocketTimeout'], cli['xldUserName'], cli['xldPassword'], script, cli['cliExecutable'], options)
    exitCode = cliScript.execute()
 
    output = cliScript.getStdout()

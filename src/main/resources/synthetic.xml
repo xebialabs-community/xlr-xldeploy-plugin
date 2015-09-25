@@ -87,11 +87,19 @@
   
     <type type="xldeploy.cli" extends="xldeploy.cliTask">
         <property name="script"           category="input" size="large" />
+        <property name="options"          category="input" default="" />
     </type>
+ 
+    <type type="xldeploy.cliFile" extends="xldeploy.cliTask">
+        <property name="script"           category="input" />
+        <property name="options"          category="input" default="" />
+    </type>
+ 
     <type type="xldeploy.cliUrl" extends="xldeploy.cliTask">
         <property name="scriptUrl"        category="input" />
         <property name="urlUserName"      category="input" />
         <property name="urlPassword"      category="input" password="true" />
+        <property name="options"          category="input" default="" />
     </type>
 
 
