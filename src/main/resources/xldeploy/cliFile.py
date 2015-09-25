@@ -15,8 +15,9 @@ from com.xebialabs.overthere.util import CapturingOverthereExecutionOutputHandle
 from com.xebialabs.overthere.local import LocalConnection, LocalFile, LocalProcess
 from xldeploy.LocalCLI import localCliScript
 
+script = "%s" % ( str(script) )
 cliScript = localCliScript(cli['cliHome'], cli['xldHost'], cli['xldPort'], cli['xldContext'], cli['xldProxyHost'], cli['xldProxyPort'], cli['xldSocketTimeout'], cli['xldUserName'], cli['xldPassword'], script, cli['cliExecutable'], options)
-exitCode = cliScript.execute()
+exitCode = cliScript.executeFile()
 
 output = cliScript.getStdout()
 err = cliScript.getStderr()
