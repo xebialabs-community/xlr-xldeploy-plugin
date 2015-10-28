@@ -6,7 +6,7 @@ See the **XL Release Reference Manual** for background information on XL Release
 
 # Overview #
 
-The xlr-xldeploy-plugin is a XL Release plugin that allows to start a control task on XL Deploy.
+The xlr-xldeploy-plugin is a XL Release plugin that allows to start a control task, start a deployment, migrate a deployment package to another server or get the latest version of an application on XL Deploy.
 
 ## Installation ##
 
@@ -39,6 +39,7 @@ permission java.io.FilePermission "conf/logback.xml", "read";
   * `rollbackOnError` (Whether rollback should be done if the deployment fails)
   * `pollingInterval` (Number of seconds to wait before polling the task status)
   * `numberOfPollingTrials` (Number of times to poll for task status)
+  * `failOnPause` (If checked task will fail if the deployment enters a STOPPED state, for example if the xld-pause-plugin is in use. Set to True by default for backwards compatibility)
 
 + Migrate Package
   * `server` - Server to pull a package from
@@ -57,3 +58,29 @@ permission java.io.FilePermission "conf/logback.xml", "read";
   * `applicationId` - ID of the application to query for latest package version
   * `stripApplications` - Whether to strip "Applications/" from the beginning of the returned package ID
   * `packageId` - Return value with the latest package ID
++ CLI Config (Global Configuration)
+  * `CLI Home` - Home directory where XL Deploy CLI is installed
+  * `XLD Host` - Host the CLI should connect to DEFAULT will work if on the same server as XL Deploy
+  * `XLD Port` - Port for XL Deploy server.  DEFAULT will work if using the default XL Deploy port
+  * `XLD Context` - XLD CLI context.  If no context is needed then DEFAULT will be fine
+  * `XLD Proxy Host` - Proxy host if needed.
+  * `XLD Proxy Port` - Proxy Port if needed.
+  * `XLD Socket timeout` - Connection timeout to XL Deploy
+  * `XLD User Name` - User name to connect to XL Deploy
+  * `XLD Password` - Password to connect to XL Deploy
+  
+  
+  ![image](images/XLD_CLI_Config.png)
+  
++ CLI
+  * `script` - CLI Script to execute
+  
+  
+  ![image](images/Task_Config.png)
+  
++ CLI URL
+  * `scriptURL` - URL to CLI Script to execute
+  
+  
+  ![image](images/Task_Config2.png)
+  

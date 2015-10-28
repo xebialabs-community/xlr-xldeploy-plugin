@@ -18,8 +18,8 @@ class XLDeployClient(object):
 
 
     def extract_state(self, task_state_xml):
-        state_pos = task_state_xml.find('state="')
-        state_offset = len('state="')
+        state_pos = task_state_xml.find('state2="')
+        state_offset = len('state2="')
         state_end_pos = task_state_xml.find('"', state_pos + state_offset + 1)
         state = task_state_xml[state_pos + state_offset:state_end_pos]
         return state
@@ -75,9 +75,9 @@ class XLDeployClient(object):
         return task_id
 
 
-    def invoke_task_and_wait_for_result(self, task_id, polling_interval = 10, number_of_trials = None, continue_if_step_fails = False, number_of_continue_retrials = 0):
+    def invoke_task_and_wait_for_result(self, task_id, polling_interval = 10, number_of_trials = None, continue_if_step_fails = False, number_of_continue_retrials = 0, fail_on_pause = True):
         start_task_url = "/deployit/task/%s/start" % (task_id)
-        print 'DEBUG: About to invoke task by post %s - continue enabled: %s - trial: %s \n' % (task_id, continue_if_step_fails, number_of_continue_retrials)
+        # print 'DEBUG: About to invoke task by post %s - continue enabled: %s - trial: %s \n' % (task_id, continue_if_step_fails, number_of_continue_retrials)
         self.httpRequest.post(start_task_url, '', contentType='application/xml')
         trial = 0
         while not number_of_trials or trial < number_of_trials:
@@ -86,12 +86,19 @@ class XLDeployClient(object):
             get_task_status_url = "/deployit/task/%s" % (task_id)
             task_state_response = self.httpRequest.get(get_task_status_url, contentType='application/xml')
             task_state_xml = task_state_response.getResponse()
+            # print 'DEBUG task_state_xml is ' + task_state_xml
             status = self.extract_state(task_state_xml)
-            print 'DEBUG: Task', task_id, 'now in state', status, '\n'
-            if status in ('FAILED', 'STOPPED') and continue_if_step_fails and number_of_continue_retrials > 0:
-                status = self.invoke_task_and_wait_for_result(task_id,polling_interval,number_of_trials, continue_if_step_fails, number_of_continue_retrials-1)
-            if status in ('FAILED', 'STOPPED', 'CANCELLED', 'DONE', 'EXECUTED'):
-                break
+            print 'Task', task_id, 'now in state', status, '\n'
+            if fail_on_pause:
+                if status in ('FAILED', 'ABORTED', 'STOPPED') and continue_if_step_fails and number_of_continue_retrials > 0:
+                    status = self.invoke_task_and_wait_for_result(task_id,polling_interval,number_of_trials, continue_if_step_fails, number_of_continue_retrials-1)
+                if status in ('FAILED', 'ABORTED', 'STOPPED', 'CANCELLED', 'DONE', 'EXECUTED'):
+                    break
+            else:
+                if status in ('FAILED', 'ABORTED') and continue_if_step_fails and number_of_continue_retrials > 0:
+                    status = self.invoke_task_and_wait_for_result(task_id,polling_interval,number_of_trials, continue_if_step_fails, number_of_continue_retrials-1)
+                if status in ('FAILED', 'ABORTED', 'CANCELLED', 'DONE', 'EXECUTED'):
+                    break
             time.sleep(polling_interval)
         return status
     
@@ -136,12 +143,12 @@ class XLDeployClient(object):
             deployeds_properties_dict = dict(ast.literal_eval(deployed_properties))
             for key in deployeds_properties_dict:
                 for xlr_tag_deployed in root.findall(".//deployeds/*"):
-                    print 'DEBUG: deployed is %s \n' % ET.tostring(xlr_tag_deployed)
-                    print 'DEBUG: xlrTag exists? %s' % xlr_tag_deployed.findtext('xlrTag')
-                    print 'DEBUG: xlrTag key? %s' % key
+                    # print 'DEBUG: deployed is %s \n' % ET.tostring(xlr_tag_deployed)
+                    # print 'DEBUG: xlrTag exists? %s' % xlr_tag_deployed.findtext('xlrTag')
+                    # print 'DEBUG: xlrTag key? %s' % key
                     if key == xlr_tag_deployed.findtext('xlrTag'):
                         deployed_properties_dict = dict(ast.literal_eval(deployeds_properties_dict[key]))
-                        print 'DEBUG: deployed properties dict is %s \n' % deployed_properties_dict
+                        # print 'DEBUG: deployed properties dict is %s \n' % deployed_properties_dict
                         for pkey in deployed_properties_dict:
                             pkey_xml = xlr_tag_deployed.find(pkey)
                             if not pkey_xml:
@@ -155,10 +162,11 @@ class XLDeployClient(object):
         deployment_prepare_deployeds_response = self.httpRequest.post(deployment_prepare_deployeds, deployment, contentType='application/xml')
         # print 'DEBUG: Deployment object including mapping is now %s \n' % deployment
         deployment_xml = deployment_prepare_deployeds_response.getResponse()
+        # print 'DEBUG: deployment_xml is ' + deployment_xml
         root = ET.fromstring(deployment_xml)
         self.add_orchestrators(root, orchestrators)
         self.set_deployed_application_properties(root, deployed_application_properties)
-        print 'DEBUG: Deployment object after updating orchestrators: %s \n' % ET.tostring(root)
+        # print 'DEBUG: Deployment object after updating orchestrators: %s \n' % ET.tostring(root)
         self.set_deployed_properties(root, deployed_properties)
         return ET.tostring(root)
     
@@ -227,3 +235,4 @@ class XLDeployClient(object):
         createTask = "/deployit/repository/ci/%s" % appId
         xml = '<udm.Application id="' + appId + '" />'
         self.httpRequest.post(createTask, xml, contentType='application/xml')
+
