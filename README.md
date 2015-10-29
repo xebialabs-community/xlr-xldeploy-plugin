@@ -68,7 +68,16 @@ permission java.io.FilePermission "conf/logback.xml", "read";
   * `XLD Socket timeout` - Connection timeout to XL Deploy
   * `XLD User Name` - User name to connect to XL Deploy
   * `XLD Password` - Password to connect to XL Deploy
-  
+
++ Create CI
+  * `server` - Server to query
+  * `username` - Override username
+  * `password` - Override password
+  * `ciID` - Repo path to CI to create, e.g. `Infrastructure/myHost`
+  * `ciType` - Type of CI to create, e.g. `overthere.CifsHost`
+  * `xmlDescriptor` - XML with the fields to set on the CI, e.g. `<os>WINDOWS</os><connectionType>WINRM_NATIVE</connectionType><address>${address}</address><username>${username}</username><password>${password}</password>`
+  * `addToEnvironment` - Switch to decide if to add the CI to an environment
+  * `envID` - Environment to add the CI to.
   
   ![image](images/XLD_CLI_Config.png)
   

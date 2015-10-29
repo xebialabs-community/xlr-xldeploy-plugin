@@ -63,6 +63,18 @@
         <property name="taskColor" hidden="true" default="#68B749" />
     </type>
 
+    <type type="xldeploy.CreateCI" extends="xlrelease.PythonScript" label="Create CI" description="Creates a CI and optionally addes it to an environment">
+        <property name="scriptLocation" default="xldeploy/createCITask.py" hidden="true" />
+        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
+        <property name="username" category="input" label="username" required="true" />
+        <property name="password" password="true" category="input" required="true" />
+        <property name="ciID" category="input" label="CI ID" required="true" />
+        <property name="ciType" category="input" required="true" />
+        <property name="xmlDescriptor" category="input" required="true" size="large"/>
+        <property name="addToEnvironment" category="input" kind="boolean" />
+        <property name="envID" category="input" label="Env ID" />
+    </type>
+
     <type type="xldeploy.CliConfig" extends="xlrelease.Configuration">
         <property name="cliHome"          category="input"/>
         <property name="cliExecutable"    category="input" default="cli" hidden="true" />
