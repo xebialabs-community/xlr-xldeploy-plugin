@@ -58,16 +58,6 @@ permission java.io.FilePermission "conf/logback.xml", "read";
   * `applicationId` - ID of the application to query for latest package version
   * `stripApplications` - Whether to strip "Applications/" from the beginning of the returned package ID
   * `packageId` - Return value with the latest package ID
-+ CLI Config (Global Configuration)
-  * `CLI Home` - Home directory where XL Deploy CLI is installed
-  * `XLD Host` - Host the CLI should connect to DEFAULT will work if on the same server as XL Deploy
-  * `XLD Port` - Port for XL Deploy server.  DEFAULT will work if using the default XL Deploy port
-  * `XLD Context` - XLD CLI context.  If no context is needed then DEFAULT will be fine
-  * `XLD Proxy Host` - Proxy host if needed.
-  * `XLD Proxy Port` - Proxy Port if needed.
-  * `XLD Socket timeout` - Connection timeout to XL Deploy
-  * `XLD User Name` - User name to connect to XL Deploy
-  * `XLD Password` - Password to connect to XL Deploy
 
 + Create CI
   * `server` - Server to query
@@ -78,6 +68,17 @@ permission java.io.FilePermission "conf/logback.xml", "read";
   * `xmlDescriptor` - XML with the fields to set on the CI, e.g. `<os>WINDOWS</os><connectionType>WINRM_NATIVE</connectionType><address>${address}</address><username>${username}</username><password>${password}</password>`
   * `addToEnvironment` - Switch to decide if to add the CI to an environment
   * `envID` - Environment to add the CI to.
+
++ CLI Config (Global Configuration)
+  * `CLI Home` - Home directory where XL Deploy CLI is installed
+  * `XLD Host` - Host the CLI should connect to DEFAULT will work if on the same server as XL Deploy
+  * `XLD Port` - Port for XL Deploy server.  DEFAULT will work if using the default XL Deploy port
+  * `XLD Context` - XLD CLI context.  If no context is needed then DEFAULT will be fine
+  * `XLD Proxy Host` - Proxy host if needed.
+  * `XLD Proxy Port` - Proxy Port if needed.
+  * `XLD Socket timeout` - Connection timeout to XL Deploy
+  * `XLD User Name` - User name to connect to XL Deploy
+  * `XLD Password` - Password to connect to XL Deploy
   
   ![image](images/XLD_CLI_Config.png)
   
