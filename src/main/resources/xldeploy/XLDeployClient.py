@@ -236,3 +236,16 @@ class XLDeployClient(object):
         xml = '<udm.Application id="' + appId + '" />'
         self.httpRequest.post(createTask, xml, contentType='application/xml')
 
+    def createCI(self, id, ciType, xmlDescriptor):
+        xml = '<' + ciType + ' id="' + id + '">' + xmlDescriptor + '</' + ciType + '>'
+        createTask = '/deployit/repository/ci/' + id
+        self.httpRequest.post(createTask, xml, contentType='application/xml')
+    
+    def addCIToEnvironment(self, envID, ciID):
+        getEnv = '/deployit/repository/ci/' + envID
+        getEnv_response = self.httpRequest.get(getEnv, contentType='application/xml')
+        env = getEnv_response.getResponse()
+        items = env.partition('</members>')
+        xml = items[0] + '<ci ref="' + ciID + '"/>' + items[1] + items[2]
+        print(xml)
+        self.httpRequest.put(getEnv, xml, contentType='application/xml')
