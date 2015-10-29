@@ -241,6 +241,10 @@ class XLDeployClient(object):
         createTask = '/deployit/repository/ci/' + id
         self.httpRequest.post(createTask, xml, contentType='application/xml')
     
+    def deleteCI(self, id):
+        deleteTask = '/deployit/repository/ci/' + id
+        self.httpRequest.delete(deleteTask)
+    
     def addCIToEnvironment(self, envID, ciID):
         getEnv = '/deployit/repository/ci/' + envID
         getEnv_response = self.httpRequest.get(getEnv, contentType='application/xml')
@@ -249,3 +253,16 @@ class XLDeployClient(object):
         xml = items[0] + '<ci ref="' + ciID + '"/>' + items[1] + items[2]
         print(xml)
         self.httpRequest.put(getEnv, xml, contentType='application/xml')
+
+    def removeCIFromEnvironment(self, envID, ciID):
+        getEnv = '/deployit/repository/ci/' + envID
+        getEnv_response = self.httpRequest.get(getEnv, contentType='application/xml')
+        envTree = ET.fromstring(getEnv_response.getResponse())
+        for child in envTree:
+          if child.tag == 'members':
+            for member in child:
+              if member.attrib['ref'] == ciID:
+                print '*TODO* Removing ' + ciID + ' from ' + 'envID'
+                print '*TODO* Rewriting ' + envID + ' back to repository'
+
+        
