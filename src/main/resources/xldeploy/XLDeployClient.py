@@ -257,12 +257,18 @@ class XLDeployClient(object):
     def removeCIFromEnvironment(self, envID, ciID):
         getEnv = '/deployit/repository/ci/' + envID
         getEnv_response = self.httpRequest.get(getEnv, contentType='application/xml')
-        envTree = ET.fromstring(getEnv_response.getResponse())
-        for child in envTree:
+        print getEnv_response.getResponse()
+        envRoot = ET.fromstring(getEnv_response.getResponse())
+        memberToRemove = None
+        for child in envRoot:
           if child.tag == 'members':
             for member in child:
               if member.attrib['ref'] == ciID:
-                print '*TODO* Removing ' + ciID + ' from ' + 'envID'
-                print '*TODO* Rewriting ' + envID + ' back to repository'
-
+                print 'Found ' + ciID + ' in ' + envID
+                envMembers = child
+                memberToRemove = member
+        if memberToRemove is not None:
+          print 'Removing ' + ciID + ' from ' + envID
+          envMembers.remove(memberToRemove)
+          self.httpRequest.put(getEnv, ET.tostring(envRoot), contentType='application/xml')
         
