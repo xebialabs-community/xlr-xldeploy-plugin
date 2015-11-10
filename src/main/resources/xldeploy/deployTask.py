@@ -29,6 +29,8 @@ taskId = xldClient.get_deployment_task_id(deployment)
 print "Execute task with id: %s" % taskId
 taskState = xldClient.invoke_task_and_wait_for_result(taskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials, failOnPause)
 
+xldClient.displayStepLogs(taskId)
+
 if taskState in ('DONE','EXECUTED'):
     print "Deployment ended in %s \n" % taskState
     xldClient.archiveTask(taskId)

@@ -271,4 +271,21 @@ class XLDeployClient(object):
           print 'Removing ' + ciID + ' from ' + envID
           envMembers.remove(memberToRemove)
           self.httpRequest.put(getEnv, ET.tostring(envRoot), contentType='application/xml')
-        
+
+    def displayStepLogs(self, taskId):
+        getTaskSteps = '/deployit/task/' + taskId + '/step'
+        getTaskSteps_response = self.httpRequest.get(getTaskSteps, contentType='application/xml')
+        taskStepsRoot = ET.fromstring(getTaskSteps_response.getResponse())
+        for child in taskStepsRoot:
+            if child.tag == 'steps':
+                stepCounter = 0
+                for grandchild in child:
+                    if grandchild.tag == 'step':
+                        stepCounter = stepCounter + 1
+                        print 'DEPLOYMENT STEP %d:  Failures=%s  State=%s\n' % (stepCounter, str(grandchild.attrib['failures']), str(grandchild.attrib['state']))
+                        for item in grandchild:
+                            if item.tag in ('description', 'startDate', 'completionDate'):
+                                print '%s %s\n' % (str(item.tag), str(item.text))
+                            else:
+                                print str(item.tag) + '\n' 
+                                print str(item.text) + '\n' 
