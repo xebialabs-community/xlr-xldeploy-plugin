@@ -1,3 +1,5 @@
 .gradle
+.idea
 build
 *swp
+xlr-xldeploy-plugin.iml
