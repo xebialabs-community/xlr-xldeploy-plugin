@@ -34,9 +34,24 @@
         <property name="deployedProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
         <property name="rollbackOnError" category="input" kind="boolean" />
         <property name="failOnPause" category="input" kind="boolean" default="true" />
-
     </type>
     
+    <type type="xldeploy.DeployTaskKickoff" extends="xldeploy.TaskRunningTask" description="Initiates a deployment in XL Deploy and returns the task id">
+        <property name="scriptLocation" default="xldeploy/deployTaskKickoff.py" hidden="true" />
+        <property name="deploymentPackage" category="input" label="Deployment Package" required="true" />
+        <property name="environment" category="input" label="Environment" default="" required="true" />
+        <property name="orchestrators" category="input" label="Orchestrators" default="" required="false" />
+        <property name="deployedApplicationProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
+        <property name="deployedProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
+        <property name="taskId" category="output" label="XL Deploy task id" />
+    </type>
+
+    <type type="xldeploy.DeployTaskPolling" extends="xldeploy.TaskRunningTask" description="Polls a deployment in XL Deploy until complete">
+        <property name="taskId" category="input" label="XL Deploy task id" />
+        <property name="rollbackOnError" category="input" kind="boolean" />
+        <property name="failOnPause" category="input" kind="boolean" default="true" />
+    </type>
+
     <type type="xldeploy.ControlTask" extends="xldeploy.TaskRunningTask" description="Invokes a control task on an XL Deploy Configuration Item">
         <property name="scriptLocation" default="xldeploy/controlTask.py" hidden="true" />
 
