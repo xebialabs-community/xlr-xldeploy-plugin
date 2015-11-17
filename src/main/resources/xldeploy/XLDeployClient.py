@@ -127,14 +127,21 @@ class XLDeployClient(object):
             for orch in orchs:
                 orchestrator = ET.SubElement(params, 'value')
                 orchestrator.text = orch.strip()
-    
+
     def set_deployed_application_properties(self, root, deployed_application_properties):
         if deployed_application_properties:
             deployeds_application_properties_dict = dict(ast.literal_eval(deployed_application_properties))
+            # print 'DEBUG: deployed application properties dict is %s \n' % deployeds_application_properties_dict
+            # print 'DEBUG: Deployment object is now: %s \n' % ET.tostring(root)
             for key in deployeds_application_properties_dict:
+                # print "DEBUG: Key is %s" % key
                 pkey_xml = root.find(key)
                 if not pkey_xml:
-                    pkey_xml = ET.SubElement(root.find("udm.DeployedApplication"), key)
+                    application = root.find("application")
+                    for child in application:
+                        # print "DEBUG: Going to add key: %s" % key
+                        # print "DEBUG: Searching for deployed application: %s" % child
+                        pkey_xml = ET.SubElement(child, key)
                 pkey_xml.text = deployeds_application_properties_dict[key]
                 
     
