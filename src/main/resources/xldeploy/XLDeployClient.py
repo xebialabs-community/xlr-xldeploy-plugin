@@ -76,8 +76,8 @@ class XLDeployClient(object):
 
 
     def invoke_task_and_wait_for_result(self, task_id, polling_interval = 10, number_of_trials = None, continue_if_step_fails = False, number_of_continue_retrials = 0, fail_on_pause = True):
-        invoke_task(task_id)
-        wait_for_result(task_id, polling_interval = 10, number_of_trials = None, continue_if_step_fails = False, number_of_continue_retrials = 0, fail_on_pause = True)
+        self.invoke_task(task_id)
+        return self.wait_for_result(task_id, polling_interval = 10, number_of_trials = None, continue_if_step_fails = False, number_of_continue_retrials = 0, fail_on_pause = True)
 
     def invoke_task(self, task_id):
         start_task_url = "/deployit/task/%s/start" % (task_id)

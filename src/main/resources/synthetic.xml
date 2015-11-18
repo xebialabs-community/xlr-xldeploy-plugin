@@ -47,6 +47,7 @@
     </type>
 
     <type type="xldeploy.DeployTaskPolling" extends="xldeploy.TaskRunningTask" description="Polls a deployment in XL Deploy until complete">
+        <property name="scriptLocation" default="xldeploy/deployTaskPolling.py" hidden="true" />
         <property name="taskId" category="input" label="XL Deploy task id" />
         <property name="rollbackOnError" category="input" kind="boolean" />
         <property name="failOnPause" category="input" kind="boolean" default="true" />

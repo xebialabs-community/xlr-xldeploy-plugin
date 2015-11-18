@@ -26,10 +26,6 @@ deployment = xldClient.deployment_prepare_deployeds(deployment, orchestrators, d
 print "Creating a deployment task \n"
 taskId = xldClient.get_deployment_task_id(deployment)
 
-print "Execute task with id: %s" % taskId
-task_state = xldClient.invoke_task(taskId)
-
-if task_state in ('DONE', 'EXECUTED', 'EXECUTING', 'FAILED', 'FAILING', 'PENDING', 'STOPPED'):
-    sys.exit(0)
-else:
-    sys.exit(1)
+print "Executing task with id: %s" % taskId
+xldClient.invoke_task(taskId)
+sys.exit(0)
