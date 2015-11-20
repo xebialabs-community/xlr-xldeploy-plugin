@@ -12,7 +12,7 @@
         <property name="iconLocation" default="xldeploy/xldeploy-icon-black-small.png" hidden="true" />
         <property name="taskColor" hidden="true" default="#68B749" />
 
-        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
+        <property name="xldeployServer" category="input" label="XL Deploy Server" referenced-type="xldeploy.Server" kind="ci"/>
         <property name="username" category="input" label="username" required="true" />
         <property name="password" password="true" category="input" required="true" />
     </type>
@@ -34,21 +34,19 @@
         <property name="deployedProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
         <property name="rollbackOnError" category="input" kind="boolean" />
         <property name="failOnPause" category="input" kind="boolean" default="true" />
+        <property name="xldTaskId" category="output" label="XL Deploy Task Id" />
     </type>
     
-    <type type="xldeploy.DeployTaskKickoff" extends="xldeploy.TaskRunningTask" description="Initiates a deployment in XL Deploy and returns the task id">
-        <property name="scriptLocation" default="xldeploy/deployTaskKickoff.py" hidden="true" />
-        <property name="deploymentPackage" category="input" label="Deployment Package" required="true" />
-        <property name="environment" category="input" label="Environment" default="" required="true" />
-        <property name="orchestrators" category="input" label="Orchestrators" default="" required="false" />
-        <property name="deployedApplicationProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
-        <property name="deployedProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
-        <property name="taskId" category="output" label="XL Deploy task id" />
+    <type type="xldeploy.DeployKickoffTask" extends="xldeploy.DeployTask" description="Initiates a deployment in XL Deploy and returns the task id">
+        <property name="scriptLocation" default="xldeploy/deployKickoffTask.py" hidden="true" />
+        <property name="xlrServer" category="input" label="XL Release Server" referenced-type="xlr.Server" kind="ci" />
+        <property name="xlrUsername" category="input" />
+        <property name="xlrPassword" password="true" category="input" />
     </type>
 
-    <type type="xldeploy.DeployTaskPolling" extends="xldeploy.TaskRunningTask" description="Polls a deployment in XL Deploy until complete">
-        <property name="scriptLocation" default="xldeploy/deployTaskPolling.py" hidden="true" />
-        <property name="taskId" category="input" label="XL Deploy task id" />
+    <type type="xldeploy.DeployPollingTask" extends="xldeploy.TaskRunningTask" description="Polls a deployment in XL Deploy until complete">
+        <property name="scriptLocation" default="xldeploy/deployPollingTask.py" hidden="true" />
+        <property name="xldTaskId" category="input" label="XL Deploy Task Id" />
         <property name="rollbackOnError" category="input" kind="boolean" />
         <property name="failOnPause" category="input" kind="boolean" default="true" />
     </type>
