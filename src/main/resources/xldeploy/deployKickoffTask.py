@@ -8,6 +8,27 @@ import sys
 import com.xhaus.jyson.JysonCodec as json
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
+def addNewTask(newTaskTitle, newTaskType, containerId, credentials):
+  newTask={"title":newTaskTitle,"taskType":newTaskType}
+  xlrResponse = XLRequest(xlrPostTasksUrl + containerId, 'POST', json.dumps(newTask), credentials['username'], credentials['password'], 'application/json').send()
+  if xlrResponse.status == HTTP_SUCCESS_STATUS:
+    newTask = json.loads(xlrResponse.read())
+    print "New method addNewTask:  Created %s\n" % newTaskTitle
+  else:
+    print "New method addNewTask:  Failed to create %s\n" % newTaskTitle
+    print xlrResponse.errorDump()
+    sys.exit(1)  
+  return newTask
+
+def updateTask(updatedTask, credentials):
+  xlrResponse = XLRequest(xlrPutTasksUrl + updatedTask['id'], 'PUT', json.dumps(updatedTask), credentials['username'], credentials['password'], 'application/json').send()
+  if xlrResponse.status == HTTP_SUCCESS_STATUS:
+    print "Updated Deploy polling task\n"
+  else:
+    print "Failed to update Deploy polling task\n"
+    print xlrResponse.errorDump()
+    sys.exit(1)
+
 HTTP_SUCCESS_STATUS = 200
 
 if xlrServer is None:
@@ -54,26 +75,8 @@ else:
   print xlrResponse.errorDump()
   sys.exit(1)
 
-newParallelGroup = {"title":"Deploy polling group","taskType":"xlrelease.ParallelGroup"}
-xlrResponse = XLRequest(xlrPostTasksUrl + container, 'POST', json.dumps(newParallelGroup), credentials['username'], credentials['password'], 'application/json').send()
-if xlrResponse.status == HTTP_SUCCESS_STATUS:
-  newParallelGroup = json.loads(xlrResponse.read())
-  print "Created Deploy polling group\n"
-else:
-  print "Failed to create Deploy polling group\n"
-  print xlrResponse.errorDump()
-  sys.exit(1)
-
-newDeployPollingTask = {"title":"Deploy polling task","taskType":"xldeploy.DeployPollingTask"}
-xlrResponse = XLRequest(xlrPostTasksUrl + newParallelGroup['id'], 'POST', json.dumps(newDeployPollingTask), credentials['username'], credentials['password'], 'application/json').send()
-if xlrResponse.status == HTTP_SUCCESS_STATUS:
-  newDeployPollingTask = json.loads(xlrResponse.read())
-  print "Created Deploy polling task\n"
-  print "DEBUG:  " + newDeployPollingTask['id'] + '\n'
-else:
-  print "Failed to create Deploy polling task\n"
-  print xlrResponse.errorDump()
-  sys.exit(1)
+newParallelGroup = addNewTask("Deploy polling group", "xlrelease.ParallelGroup", container, credentials)
+newDeployPollingTask = addNewTask("Deploy polling task", "xldeploy.DeployPollingTask", newParallelGroup['id'], credentials)
 
 updatedDeployPollingTask = {"inputProperties":{}}
 for key in newDeployPollingTask.keys():
@@ -85,12 +88,6 @@ for key in currentTask['pythonScript'].keys():
 updatedDeployPollingTask['inputProperties']['xldeployServer'] = currentTask['pythonScript']['xldeployServer'].split('/')[-1]
 updatedDeployPollingTask['inputProperties']['xldTaskId'] = xldTaskId
 
-xlrResponse = XLRequest(xlrPutTasksUrl + updatedDeployPollingTask['id'], 'PUT', json.dumps(updatedDeployPollingTask), credentials['username'], credentials['password'], 'application/json').send()
-if xlrResponse.status == HTTP_SUCCESS_STATUS:
-  print "Updated Deploy polling task\n"
-else:
-  print "Failed to update Deploy polling task\n"
-  print xlrResponse.errorDump()
-  sys.exit(1)
+updateTask(updatedDeployPollingTask, credentials)
 
 sys.exit(0)
