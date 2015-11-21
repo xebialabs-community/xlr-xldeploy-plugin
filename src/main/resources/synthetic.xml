@@ -42,6 +42,7 @@
         <property name="xlrServer" category="input" label="XL Release Server" referenced-type="xlr.Server" kind="ci" />
         <property name="xlrUsername" category="input" />
         <property name="xlrPassword" password="true" category="input" />
+        <property name="pauseRule" category="input" />
     </type>
 
     <type type="xldeploy.DeployPollingTask" extends="xldeploy.TaskRunningTask" description="Polls a deployment in XL Deploy until complete">

@@ -6,6 +6,7 @@
 
 import sys
 import com.xhaus.jyson.JysonCodec as json
+from xml.etree import ElementTree as ET
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
 def addNewTask(newTaskTitle, newTaskType, containerId, credentials):
@@ -49,6 +50,18 @@ else:
 print "Mapping all deployables \n"
 deployment = xldClient.deployment_prepare_deployeds(deployment, orchestrators, deployedApplicationProperties, deployedProperties)
 
+preview = xldClient.deployment_preview(deployment)
+
+# list_of_string not working on the xlrelease.deployKickoffTask.  use single rule for now; check with dev.
+pauseRuleList = [pauseRule]
+
+pauseCount = 0
+previewRoot = ET.fromstring(preview) 
+for metadata in previewRoot.iter('metadata'):
+  for item in metadata:
+    if item.tag == 'rule' and item.text in pauseRuleList:
+      pauseCount = pauseCount + 1
+
 # deploymentProperties + configure orchestrators
 # print "DEBUG: Deployment description is now: %s" % deployment
 # Validating the deployment
@@ -89,5 +102,10 @@ updatedDeployPollingTask['inputProperties']['xldeployServer'] = currentTask['pyt
 updatedDeployPollingTask['inputProperties']['xldTaskId'] = xldTaskId
 
 updateTask(updatedDeployPollingTask, credentials)
+
+print "Adding %d Pause/Continue step pairs\n" % pauseCount
+for p in range(1, pauseCount + 1):
+  newPauseTask = addNewTask("Pause %d" %p, "xlrelease.Task", newParallelGroup['id'], credentials)
+  newScriptTask = addNewTask("Continue %d" %p, "xlrelease.ScriptTask", newParallelGroup['id'], credentials)
 
 sys.exit(0)

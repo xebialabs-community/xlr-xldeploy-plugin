@@ -183,6 +183,12 @@ class XLDeployClient(object):
         self.set_deployed_properties(root, deployed_properties)
         return ET.tostring(root)
     
+    def deployment_preview(self, deployment):
+      deployment_preview = "/deployit/deployment/previewblock"
+      deployment_preview_response = self.httpRequest.post(deployment_preview, deployment, contentType='application/xml')
+      preview_xml = deployment_preview_response.getResponse()
+      return preview_xml
+
     def get_deployment_task_id(self, deployment):
         getDeploymentTaskId = "/deployit/deployment"
         # print 'DEBUG: creating task id for deployment object %s \n' % deployment
