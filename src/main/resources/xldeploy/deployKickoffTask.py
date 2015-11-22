@@ -30,6 +30,16 @@ def updateTask(updatedTask, credentials):
     print xlrResponse.errorDump()
     sys.exit(1)
 
+def addLink(containerId, sourceTaskId, targetTaskId, credentials):
+  link = {"sourceId":sourceTaskId,"targetId":targetTaskId}
+  xlrResponse = XLRequest(xlrLinkTasksUrl + containerId, 'POST', json.dumps(link), credentials['username'], credentials['password'], 'application/json').send()
+  if xlrResponse.status == HTTP_SUCCESS_STATUS:
+    print "Added task link\n"
+  else:
+    print "Failed to task link\n"
+    print xlrResponse.errorDump()
+    sys.exit(1)
+
 HTTP_SUCCESS_STATUS = 200
 
 if xlrServer is None:
@@ -75,6 +85,7 @@ xlrUrl = xlrServer['url']
 xlrGetTasksUrl = xlrUrl.rstrip('/') + '/api/v1/tasks/'
 xlrPostTasksUrl = xlrUrl.rstrip('/') + '/tasks/'
 xlrPutTasksUrl = xlrUrl.rstrip('/') + '/tasks/'
+xlrLinkTasksUrl = xlrUrl.rstrip('/') + '/planning/links/'
 credentials = CredentialsFallback(xlrServer, xlrUsername, xlrPassword).getCredentials()
 
 currentTaskInstance = getCurrentTask()
@@ -105,7 +116,19 @@ updateTask(updatedDeployPollingTask, credentials)
 
 print "Adding %d Pause/Continue step pairs\n" % pauseCount
 for p in range(1, pauseCount + 1):
-  newPauseTask = addNewTask("Pause %d" %p, "xlrelease.Task", newParallelGroup['id'], credentials)
-  newScriptTask = addNewTask("Continue %d" %p, "xlrelease.ScriptTask", newParallelGroup['id'], credentials)
+  newPauseTask = addNewTask("Pause %d" % p, "xlrelease.Task", newParallelGroup['id'], credentials)
+  newWebhookTask = addNewTask("Continue %d" % p, "webhook.XmlWebhook", newParallelGroup['id'], credentials)
+  newWebhookTask['inputProperties']['URL'] = xldeployServer['url'] + '/deployit/task/' + xldTaskId + '/start'
+  newWebhookTask['inputProperties']['method'] = 'POST'
+  newWebhookTask['inputProperties']['username'] = xldeployServer['username']
+  newWebhookTask['passwordProperties']['password']['password'] = xldeployServer['password']
+  updateTask(newWebhookTask, credentials)
+
+  if p > 1:
+    print "Link previous Continue Task %d to Pause Task %d\n" % (p-1, p)
+    addLink(newParallelGroup['id'], previousWebhookTaskId, newPauseTask['id'], credentials)
+  print "Link Pause Task %d to Continue Task %d" % (p, p)
+  addLink(newParallelGroup['id'], newPauseTask['id'], newWebhookTask['id'], credentials)
+  previousWebhookTaskId = newWebhookTask['id']
 
 sys.exit(0)
