@@ -8,37 +8,9 @@ import sys
 import com.xhaus.jyson.JysonCodec as json
 from xml.etree import ElementTree as ET
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
-
-def addNewTask(newTaskTitle, newTaskType, containerId, credentials):
-  newTask={"title":newTaskTitle,"taskType":newTaskType}
-  xlrResponse = XLRequest(xlrPostTasksUrl + containerId, 'POST', json.dumps(newTask), credentials['username'], credentials['password'], 'application/json').send()
-  if xlrResponse.status == HTTP_SUCCESS_STATUS:
-    newTask = json.loads(xlrResponse.read())
-    print "New method addNewTask:  Created %s\n" % newTaskTitle
-  else:
-    print "New method addNewTask:  Failed to create %s\n" % newTaskTitle
-    print xlrResponse.errorDump()
-    sys.exit(1)  
-  return newTask
-
-def updateTask(updatedTask, credentials):
-  xlrResponse = XLRequest(xlrPutTasksUrl + updatedTask['id'], 'PUT', json.dumps(updatedTask), credentials['username'], credentials['password'], 'application/json').send()
-  if xlrResponse.status == HTTP_SUCCESS_STATUS:
-    print "Updated Deploy polling task\n"
-  else:
-    print "Failed to update Deploy polling task\n"
-    print xlrResponse.errorDump()
-    sys.exit(1)
-
-def addLink(containerId, sourceTaskId, targetTaskId, credentials):
-  link = {"sourceId":sourceTaskId,"targetId":targetTaskId}
-  xlrResponse = XLRequest(xlrLinkTasksUrl + containerId, 'POST', json.dumps(link), credentials['username'], credentials['password'], 'application/json').send()
-  if xlrResponse.status == HTTP_SUCCESS_STATUS:
-    print "Added task link\n"
-  else:
-    print "Failed to task link\n"
-    print xlrResponse.errorDump()
-    sys.exit(1)
+# New
+from xlr.XLReleaseClientUtil import XLReleaseClientUtil
+#
 
 HTTP_SUCCESS_STATUS = 200
 
@@ -64,17 +36,21 @@ preview = xldClient.deployment_preview(deployment)
 
 # list_of_string not working on the xlrelease.deployKickoffTask.  use single rule for now; check with dev.
 pauseRuleList = [pauseRule]
-
-pauseCount = 0
+pauseDescriptions = []
 previewRoot = ET.fromstring(preview) 
-for metadata in previewRoot.iter('metadata'):
-  for item in metadata:
-    if item.tag == 'rule' and item.text in pauseRuleList:
-      pauseCount = pauseCount + 1
 
-# deploymentProperties + configure orchestrators
-# print "DEBUG: Deployment description is now: %s" % deployment
-# Validating the deployment
+for step in previewRoot.iter('step'):
+  pauseStep = 'false'
+  for child in step:
+    if child.tag == 'metadata':
+      for item in child:
+        if item.tag == 'rule' and item.text in pauseRuleList:
+          pauseStep = 'true'
+  if pauseStep == 'true':
+    for child in step:
+      if child.tag == 'description':
+        pauseDescriptions.append(child.text)
+
 print "Creating a deployment task \n"
 xldTaskId = xldClient.get_deployment_task_id(deployment)
 
@@ -86,6 +62,9 @@ xlrGetTasksUrl = xlrUrl.rstrip('/') + '/api/v1/tasks/'
 xlrPostTasksUrl = xlrUrl.rstrip('/') + '/tasks/'
 xlrPutTasksUrl = xlrUrl.rstrip('/') + '/tasks/'
 xlrLinkTasksUrl = xlrUrl.rstrip('/') + '/planning/links/'
+
+xlrClient = XLReleaseClientUtil.createXLReleaseClient(xlrServer, xlrUsername, xlrPassword)
+
 credentials = CredentialsFallback(xlrServer, xlrUsername, xlrPassword).getCredentials()
 
 currentTaskInstance = getCurrentTask()
@@ -99,8 +78,8 @@ else:
   print xlrResponse.errorDump()
   sys.exit(1)
 
-newParallelGroup = addNewTask("Deploy polling group", "xlrelease.ParallelGroup", container, credentials)
-newDeployPollingTask = addNewTask("Deploy polling task", "xldeploy.DeployPollingTask", newParallelGroup['id'], credentials)
+newParallelGroup = xlrClient.add_new_task("Deploy polling group", "xlrelease.ParallelGroup", container)
+newDeployPollingTask = xlrClient.add_new_task("Deploy polling task", "xldeploy.DeployPollingTask", newParallelGroup['id'])
 
 updatedDeployPollingTask = {"inputProperties":{}}
 for key in newDeployPollingTask.keys():
@@ -112,23 +91,25 @@ for key in currentTask['pythonScript'].keys():
 updatedDeployPollingTask['inputProperties']['xldeployServer'] = currentTask['pythonScript']['xldeployServer'].split('/')[-1]
 updatedDeployPollingTask['inputProperties']['xldTaskId'] = xldTaskId
 
-updateTask(updatedDeployPollingTask, credentials)
+xlrClient.update_task(updatedDeployPollingTask)
 
-print "Adding %d Pause/Continue step pairs\n" % pauseCount
-for p in range(1, pauseCount + 1):
-  newPauseTask = addNewTask("Pause %d" % p, "xlrelease.Task", newParallelGroup['id'], credentials)
-  newWebhookTask = addNewTask("Continue %d" % p, "webhook.XmlWebhook", newParallelGroup['id'], credentials)
+print "Adding Pause/Continue step pairs\n"
+for p in range(len(pauseDescriptions)):
+  newPauseTask = xlrClient.add_new_task("Pause:  %s" % pauseDescriptions[p], "xlrelease.Task", newParallelGroup['id'])
+  newWebhookTask = xlrClient.add_new_task("Continue:  %s" % pauseDescriptions[p], "webhook.XmlWebhook", newParallelGroup['id'])
   newWebhookTask['inputProperties']['URL'] = xldeployServer['url'] + '/deployit/task/' + xldTaskId + '/start'
   newWebhookTask['inputProperties']['method'] = 'POST'
   newWebhookTask['inputProperties']['username'] = xldeployServer['username']
   newWebhookTask['passwordProperties']['password']['password'] = xldeployServer['password']
-  updateTask(newWebhookTask, credentials)
+  xlrClient.update_task(newWebhookTask)
 
-  if p > 1:
-    print "Link previous Continue Task %d to Pause Task %d\n" % (p-1, p)
-    addLink(newParallelGroup['id'], previousWebhookTaskId, newPauseTask['id'], credentials)
-  print "Link Pause Task %d to Continue Task %d" % (p, p)
-  addLink(newParallelGroup['id'], newPauseTask['id'], newWebhookTask['id'], credentials)
+  # To chain Pause/Continue tasks, uncomment:
+  # if p > 1:
+  #   print "Link previous Continue Task %d to Pause Task %d\n" % (p-1, p)
+  #   xlrClient.add_link(newParallelGroup['id'], previousWebhookTaskId, newPauseTask['id'])
+  
+  print "Link Pause Task to Continue Task\n"
+  xlrClient.add_link(newParallelGroup['id'], newPauseTask['id'], newWebhookTask['id'])
   previousWebhookTaskId = newWebhookTask['id']
 
 sys.exit(0)
