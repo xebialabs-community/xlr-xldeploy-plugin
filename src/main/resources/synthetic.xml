@@ -52,15 +52,15 @@
         <property name="destinationPassword" password="true" category="input" label="Destination password" required="true" />
         <property name="deploymentPackage" category="input" label="Deployment Package" required="true" />
         <property name="autoCreatePath" category="input" kind="boolean" />
-        <property name="taskColor" hidden="true" default="#68B749" />
     </type>
 
     <type type="xldeploy.GetLatestVersionTask" extends="xldeploy.Task" description="Finds the latest Deployment Package version for an Application in XL Deploy">
         <property name="scriptLocation" default="xldeploy/getLatestVersionTask.py" hidden="true" />
         <property name="applicationId" category="input" label="Application ID" required="true" />
         <property name="stripApplications" category="input" kind="boolean" />
+        <property name="oldImplementation" category="input" kind="boolean" default="false" description="(DEPRECATED) When enabled the pre 2.0.0 implementation will be used. Will be removed from version 2.1.0+"/>
+
         <property name="packageId" category="output" label="Package ID" />
-        <property name="taskColor" hidden="true" default="#68B749" />
     </type>
 
     <type type="xldeploy.CreateCI" extends="xlrelease.PythonScript" label="Create CI" description="Creates a CI and optionally adds it to an environment">

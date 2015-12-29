@@ -212,21 +212,25 @@ class XLDeployClient(object):
         fetchTask = "/deployit/package/fetch"
         self.http_request.post(fetchTask, fetchURL, contentType='application/xml')
 
-    def get_latest_package_version(self, applicationId):
-        queryTask = "/deployit/repository/query?parent=%s&resultsPerPage=-1" % applicationId
-        queryTask_response = self.httpRequest.get(queryTask, contentType='application/xml')
-        root = ET.fromstring(queryTask_response.getResponse())
+    def get_latest_package_version(self, application_id, old_implementation = False):
+        query_task = "/deployit/repository/query?parent=%s&resultsPerPage=-1" % application_id
+        query_task_response = self.http_request.get(query_task, contentType='application/xml')
+        root = ET.fromstring(query_task_response.getResponse())
         items = root.findall('ci')
-        latestPackage = ''
-        latestVersion = 0
-        for item in items:
-            currNos = re.findall(r'\d+',item.attrib['ref'])
-            if len(currNos) > 0:
-                if int(currNos[0]) > latestVersion:
-                    latestVersion = int(currNos[0])
-                    latestPackage = item.attrib['ref']
+        latest_package = ''
+        if old_implementation:
+            latest_version = 0
+            for item in items:
+                curr_nos = re.findall(r'\d+',item.attrib['ref'])
+                if len(curr_nos) > 0:
+                    if int(curr_nos[0]) > latest_version:
+                        latest_version = int(curr_nos[0])
+                        latest_package = item.attrib['ref']
 
-        return latestPackage
+            return latest_package
+        if len(items) > 0:
+            latest_package = items[-1].attrib['ref']
+        return latest_package
 
     def check_CI_exist(self, ciId):
         queryTask = "/deployit/repository/exists/%s" % ciId

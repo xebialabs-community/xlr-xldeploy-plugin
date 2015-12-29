@@ -4,13 +4,12 @@
 # FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 #
 
-import sys
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
 
-xldClient = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
+xld_client = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
 
-packageId = xldClient.get_latest_package_version(applicationId)
+packageId = xld_client.get_latest_package_version(applicationId, oldImplementation)
 
 if stripApplications:
     packageId = packageId.partition('/')[2]
