@@ -6,11 +6,11 @@
 
 import sys, time, ast, re
 from xml.etree import ElementTree as ET
-from httputil.HttpRequest import HttpRequest
+from xlrelease.HttpRequest import HttpRequest
 
 class XLDeployClient(object):
     def __init__(self, httpConnection, username=None, password=None):
-        self.httpRequest = HttpRequest(httpConnection, username, password)
+        self.http_request = HttpRequest(httpConnection, username, password)
 
     @staticmethod
     def createClient(httpConnection, username=None, password=None):
@@ -34,7 +34,7 @@ class XLDeployClient(object):
 
     def getParameterNames(self, parameterTypeId):
         metadata_url = "/deployit/metadata/type/%s" % (parameterTypeId)
-        metadata_response = self.httpRequest.get(metadata_url, contentType='application/xml')
+        metadata_response = self.http_request.get(metadata_url, contentType='application/xml')
         root = ET.fromstring(metadata_response.getResponse())
         params = root.find("property-descriptors")
         if params:
@@ -57,7 +57,7 @@ class XLDeployClient(object):
     def prepare_control_task(self, control_task_name, target_ci_id, parameters = None):
         # print 'DEBUG: prepare the control task'
         prepare_control_task_url = "/deployit/control/prepare/%s/%s" % (control_task_name, target_ci_id)
-        prepare_response = self.httpRequest.get(prepare_control_task_url, contentType='application/xml')
+        prepare_response = self.http_request.get(prepare_control_task_url, contentType='application/xml')
         control_obj = prepare_response.getResponse()
         root = ET.fromstring(control_obj)
         # print 'DEBUG: Control obj from /prepare', control_obj, '\n'
@@ -69,7 +69,7 @@ class XLDeployClient(object):
             for parameterName in parameterNames:
                 self.addParameter(root, parameterTypeId, parameterName, parameters)
         # print 'DEBUG: Control obj after udating parameters ', ET.tostring(root), '\n'
-        invoke_response = self.httpRequest.post('/deployit/control', ET.tostring(root), contentType='application/xml')
+        invoke_response = self.http_request.post('/deployit/control', ET.tostring(root), contentType='application/xml')
         task_id = invoke_response.getResponse()
         # print 'DEBUG: Control task ID', task_id, '\n'
         return task_id
@@ -78,13 +78,13 @@ class XLDeployClient(object):
     def invoke_task_and_wait_for_result(self, task_id, polling_interval = 10, number_of_trials = None, continue_if_step_fails = False, number_of_continue_retrials = 0, fail_on_pause = True):
         start_task_url = "/deployit/task/%s/start" % (task_id)
         # print 'DEBUG: About to invoke task by post %s - continue enabled: %s - trial: %s \n' % (task_id, continue_if_step_fails, number_of_continue_retrials)
-        self.httpRequest.post(start_task_url, '', contentType='application/xml')
+        self.http_request.post(start_task_url, '', contentType='application/xml')
         trial = 0
         while not number_of_trials or trial < number_of_trials:
             # print 'DEBUG: About to get task status', task_id, '\n'
             trial += 1
             get_task_status_url = "/deployit/task/%s" % (task_id)
-            task_state_response = self.httpRequest.get(get_task_status_url, contentType='application/xml')
+            task_state_response = self.http_request.get(get_task_status_url, contentType='application/xml')
             task_state_xml = task_state_response.getResponse()
             # print 'DEBUG task_state_xml is ' + task_state_xml
             status = self.extract_state(task_state_xml)
@@ -105,18 +105,18 @@ class XLDeployClient(object):
     def deploymentExists(self, deploymentPackage, environment):
         deploymentExistsUrl = "/deployit/deployment/exists?application=%s&environment=%s" % (deploymentPackage.rsplit('/',1)[0],environment)
         # print 'DEBUG: checking deployment exists with url %s \n' % deploymentExistsUrl
-        deploymentExists_response = self.httpRequest.get(deploymentExistsUrl, contentType='application/xml')
+        deploymentExists_response = self.http_request.get(deploymentExistsUrl, contentType='application/xml')
         response = deploymentExists_response.getResponse()
         return 'true' in response
     
     def deploymentPrepareUpdate(self, deploymentPackage, environment):
         deploymentPrepareUpdateUrl = "/deployit/deployment/prepare/update?version=%s&deployedApplication=%s" % (deploymentPackage, "%s/%s" % (environment, deploymentPackage.rsplit('/',2)[1]))
-        deploymentPrepareUpdate_response = self.httpRequest.get(deploymentPrepareUpdateUrl, contentType='application/xml')
+        deploymentPrepareUpdate_response = self.http_request.get(deploymentPrepareUpdateUrl, contentType='application/xml')
         return deploymentPrepareUpdate_response.getResponse()
 
     def deploymentPrepareInitial(self, deploymentPackage, environment):
         deploymentPrepareInitialUrl = "/deployit/deployment/prepare/initial?version=%s&environment=%s" % (deploymentPackage, environment)
-        deploymentPrepareInitial_response = self.httpRequest.get(deploymentPrepareInitialUrl, contentType='application/xml')
+        deploymentPrepareInitial_response = self.http_request.get(deploymentPrepareInitialUrl, contentType='application/xml')
         return deploymentPrepareInitial_response.getResponse()
 
     def add_orchestrators(self, root, orchestrators):
@@ -166,7 +166,7 @@ class XLDeployClient(object):
     def deployment_prepare_deployeds(self, deployment, orchestrators = None, deployed_application_properties = None, deployed_properties = None):
         deployment_prepare_deployeds = "/deployit/deployment/prepare/deployeds"
         # print 'DEBUG: Prepare deployeds for deployment object %s \n' % deployment
-        deployment_prepare_deployeds_response = self.httpRequest.post(deployment_prepare_deployeds, deployment, contentType='application/xml')
+        deployment_prepare_deployeds_response = self.http_request.post(deployment_prepare_deployeds, deployment, contentType='application/xml')
         # print 'DEBUG: Deployment object including mapping is now %s \n' % deployment
         deployment_xml = deployment_prepare_deployeds_response.getResponse()
         # print 'DEBUG: deployment_xml is ' + deployment_xml
@@ -180,37 +180,37 @@ class XLDeployClient(object):
     def get_deployment_task_id(self, deployment):
         getDeploymentTaskId = "/deployit/deployment"
         # print 'DEBUG: creating task id for deployment object %s \n' % deployment
-        deploymentTaskId_response = self.httpRequest.post(getDeploymentTaskId, deployment, contentType='application/xml')
+        deploymentTaskId_response = self.http_request.post(getDeploymentTaskId, deployment, contentType='application/xml')
         # print 'DEBUG: getDeploymentTaskId response is %s \n' % (deploymentTaskId_response.getResponse())
         return deploymentTaskId_response.getResponse()
     
     def deploymentRollback(self, taskId):
         deploymentRollback = "/deployit/deployment/rollback/%s" % taskId
         # print 'DEBUG: calling rollback for taskId %s \n' % taskId
-        deploymentRollback_response = self.httpRequest.post(deploymentRollback,'',contentType='application/xml')
+        deploymentRollback_response = self.http_request.post(deploymentRollback,'',contentType='application/xml')
         # print 'DEBUG: received rollback taskId %s \n' % deploymentRollback_response.getResponse()
         return deploymentRollback_response.getResponse()
     
     def archiveTask(self, taskId):
         archiveTask = "/deployit/task/%s/archive" % taskId
-        self.httpRequest.post(archiveTask,'',contentType='application/xml')
+        self.http_request.post(archiveTask,'',contentType='application/xml')
 
     def cancelTask(self, taskId):
         cancelTask = "/deployit/task/%s" % taskId
-        self.httpRequest.delete(cancelTask, contentType='application/xml')
+        self.http_request.delete(cancelTask, contentType='application/xml')
 
     def stopTask(self, taskId):
         stopTask = "/deployit/task/%s/stop" % taskId
-        self.httpRequest.post(stopTask,'',contentType='application/xml')
+        self.http_request.post(stopTask,'',contentType='application/xml')
 
     def get_download_uuid(self, deploymentPackage):
         exportTask = "/deployit/export/deploymentpackage/%s" % deploymentPackage
-        exportTask_response = self.httpRequest.get(exportTask, contentType='application/xml')
+        exportTask_response = self.http_request.get(exportTask, contentType='application/xml')
         return exportTask_response.getResponse()
 
     def fetch_package(self, fetchURL):
         fetchTask = "/deployit/package/fetch"
-        self.httpRequest.post(fetchTask, fetchURL, contentType='application/xml')
+        self.http_request.post(fetchTask, fetchURL, contentType='application/xml')
 
     def get_latest_package_version(self, applicationId):
         queryTask = "/deployit/repository/query?parent=%s&resultsPerPage=-1" % applicationId
@@ -230,40 +230,40 @@ class XLDeployClient(object):
 
     def check_CI_exist(self, ciId):
         queryTask = "/deployit/repository/exists/%s" % ciId
-        queryTask_response = self.httpRequest.get(queryTask, contentType='application/xml')
+        queryTask_response = self.http_request.get(queryTask, contentType='application/xml')
         return queryTask_response.getResponse().find('true') > 0
 
     def create_directory(self, ciId):
         createTask = "/deployit/repository/ci/%s" % ciId
         xml = '<core.Directory id="' + ciId + '" />'
-        self.httpRequest.post(createTask, xml, contentType='application/xml')
+        self.http_request.post(createTask, xml, contentType='application/xml')
 
     def create_application(self, appId):
         createTask = "/deployit/repository/ci/%s" % appId
         xml = '<udm.Application id="' + appId + '" />'
-        self.httpRequest.post(createTask, xml, contentType='application/xml')
+        self.http_request.post(createTask, xml, contentType='application/xml')
 
     def createCI(self, id, ciType, xmlDescriptor):
         xml = '<' + ciType + ' id="' + id + '">' + xmlDescriptor + '</' + ciType + '>'
         createTask = '/deployit/repository/ci/' + id
-        self.httpRequest.post(createTask, xml, contentType='application/xml')
+        self.http_request.post(createTask, xml, contentType='application/xml')
     
     def deleteCI(self, id):
         deleteTask = '/deployit/repository/ci/' + id
-        self.httpRequest.delete(deleteTask)
+        self.http_request.delete(deleteTask)
     
     def addCIToEnvironment(self, envID, ciID):
         getEnv = '/deployit/repository/ci/' + envID
-        getEnv_response = self.httpRequest.get(getEnv, contentType='application/xml')
+        getEnv_response = self.http_request.get(getEnv, contentType='application/xml')
         env = getEnv_response.getResponse()
         items = env.partition('</members>')
         xml = items[0] + '<ci ref="' + ciID + '"/>' + items[1] + items[2]
         print(xml)
-        self.httpRequest.put(getEnv, xml, contentType='application/xml')
+        self.http_request.put(getEnv, xml, contentType='application/xml')
 
     def removeCIFromEnvironment(self, envID, ciID):
         getEnv = '/deployit/repository/ci/' + envID
-        getEnv_response = self.httpRequest.get(getEnv, contentType='application/xml')
+        getEnv_response = self.http_request.get(getEnv, contentType='application/xml')
         print getEnv_response.getResponse()
         envRoot = ET.fromstring(getEnv_response.getResponse())
         memberToRemove = None
@@ -277,11 +277,11 @@ class XLDeployClient(object):
         if memberToRemove is not None:
           print 'Removing ' + ciID + ' from ' + envID
           envMembers.remove(memberToRemove)
-          self.httpRequest.put(getEnv, ET.tostring(envRoot), contentType='application/xml')
+          self.http_request.put(getEnv, ET.tostring(envRoot), contentType='application/xml')
 
     def displayStepLogs(self, taskId):
         getTaskSteps = '/deployit/task/' + taskId + '/step'
-        getTaskSteps_response = self.httpRequest.get(getTaskSteps, contentType='application/xml')
+        getTaskSteps_response = self.http_request.get(getTaskSteps, contentType='application/xml')
         taskStepsRoot = ET.fromstring(getTaskSteps_response.getResponse())
         for child in taskStepsRoot:
             if child.tag == 'steps':

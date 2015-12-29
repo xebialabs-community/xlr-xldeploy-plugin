@@ -1,3 +1,8 @@
+# Build Status #
+
+[![Build Status](https://travis-ci.org/xebialabs-community/xlr-xldeploy-plugin.svg?branch=master)](https://travis-ci.org/xebialabs-community/xlr-xldeploy-plugin)
+
+
 # Preface #
 
 This document describes the functionality provided by the xlr-xldeploy-plugin.
@@ -16,6 +21,8 @@ Place the latest released version under the `plugins` dir. If needed append the 
 permission java.io.FilePermission "plugins/*", "read";
 permission java.io.FilePermission "conf/logback.xml", "read";
 ```
+
+This plugin (2.x.x+) requires XLR 4.8
 
 ## Types ##
 
