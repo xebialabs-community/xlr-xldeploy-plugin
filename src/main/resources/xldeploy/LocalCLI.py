@@ -28,22 +28,22 @@ class localCliScript():
       self.cmdLine.addArgument( cliExecutable )
       self.cmdLine.addArgument( '-quiet' )
       if ( xldHost != "DEFAULT" ): 
-         self.cmdLine.addArgument( '-Host' )
+         self.cmdLine.addArgument( '-host' )
          self.cmdLine.addArgument( xldHost )
       if ( xldPort != "DEFAULT" ):
-         self.cmdLine.addArgument( '-Port' )
+         self.cmdLine.addArgument( '-port' )
          self.cmdLine.addArgument( xldPort )
       if ( xldContext != "DEFAULT" ):
-         self.cmdLine.addArgument( '-Context' )
+         self.cmdLine.addArgument( '-context' )
          self.cmdLine.addArgument( xldContext )
       if ( xldProxyHost != "DEFAULT" ):
-         self.cmdLine.addArgument( '-ProxyHost' )
+         self.cmdLine.addArgument( '-proxyHost' )
          self.cmdLine.addArgument( xldProxyHost )
       if ( xldProxyPort != "DEFAULT" ):
-         self.cmdLine.addArgument( '-ProxyPort' )
+         self.cmdLine.addArgument( '-proxyPort' )
          self.cmdLine.addArgument( xldProxyPort )
       if ( xldSocketTimeout != "DEFAULT" ):
-         self.cmdLine.addArgument( '-SocketTimeout' )
+         self.cmdLine.addArgument( '-socketTimeout' )
          self.cmdLine.addArgument( xldSocketTimeout )
       if ( xldUserName != "DEFAULT" ):
          self.cmdLine.addArgument( '-username' )
