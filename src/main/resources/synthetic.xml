@@ -63,6 +63,14 @@
         <property name="packageId" category="output" label="Package ID" />
     </type>
 
+    <type type="xldeploy.GetLastVersionDeployedTask" extends="xldeploy.Task" description="Finds the latest version of the Package deployed in XL Deploy">
+        <property name="scriptLocation" default="xldeploy/getLatestDeployedTask.py" hidden="true" />
+        <property name="environmentId" category="input" label="Environment ID" required="true" />
+        <property name="applicationName" category="input" label="Application Name" required="true" />
+
+        <property name="applicationId" category="output" label="Application ID" />
+    </type>
+
     <type type="xldeploy.CreateCI" extends="xlrelease.PythonScript" label="Create CI" description="Creates a CI and optionally adds it to an environment">
         <property name="scriptLocation" default="xldeploy/createCITask.py" hidden="true" />
         <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>

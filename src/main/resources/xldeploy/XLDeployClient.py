@@ -232,6 +232,17 @@ class XLDeployClient(object):
             latest_package = items[-1].attrib['ref']
         return latest_package
 
+    def get_latest_deployed_version(self, environment_id, applicationName):
+        query_task = "/deployit/repository/ci/%s/%s" % (environment_id, applicationName)
+        query_task_response = self.http_request.get(query_task, contentType='application/xml')
+        root = ET.fromstring(query_task_response.getResponse())
+        items = root.findall('version')
+        latest_package = ''
+        for item in items:
+             latest_package = item.attrib['ref']
+        # End for
+        return latest_package
+
     def check_CI_exist(self, ciId):
         queryTask = "/deployit/repository/exists/%s" % ciId
         queryTask_response = self.http_request.get(queryTask, contentType='application/xml')
