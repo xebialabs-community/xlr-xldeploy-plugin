@@ -66,6 +66,16 @@ This plugin (2.x.x+) requires XLR 4.8
   * `stripApplications` - Whether to strip "Applications/" from the beginning of the returned package ID
   * `packageId` - Return value with the latest package ID
 
++ Get Last Version Deployed 
+  * `server` - Server to query
+  * `username` - Override username
+  * `password` - Override password
+  * `environmentId` - ID of the environment to check the application version on
+  * `applicationName` - Name of the applicaiton in the environment to get the current version of
+returned package ID
+  * `applicationId` - Return value with the current application ID
+
+
 + Create CI
   * `server` - Server to query
   * `username` - Override username
