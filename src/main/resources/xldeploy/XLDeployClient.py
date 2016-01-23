@@ -5,6 +5,8 @@
 #
 
 import sys, time, ast, re
+import com.xhaus.jyson.JysonCodec as json
+
 from xml.etree import ElementTree as ET
 from xlrelease.HttpRequest import HttpRequest
 
@@ -218,24 +220,13 @@ class XLDeployClient(object):
         root = ET.fromstring(query_task_response.getResponse())
         items = root.findall('ci')
         latest_package = ''
-        if old_implementation:
-            latest_version = 0
-            for item in items:
-                curr_nos = re.findall(r'\d+',item.attrib['ref'])
-                if len(curr_nos) > 0:
-                    if int(curr_nos[0]) > latest_version:
-                        latest_version = int(curr_nos[0])
-                        latest_package = item.attrib['ref']
-
-            return latest_package
         if len(items) > 0:
             latest_package = items[-1].attrib['ref']
         return latest_package
 
-    def get_latest_deployed_version(self, environment_id, applicationName):
-        query_task = "/deployit/repository/ci/%s/%s" % (environment_id, applicationName)
-        query_task_response = self.http_request.get(query_task, contentType='application/xml')
-        root = ET.fromstring(query_task_response.getResponse())
+    def get_latest_deployed_version(self, environment_id, application_name):
+        query_task_response = self.get_ci(self,"%s/%s" % (environment_id, application_name), 'xml')
+        root = ET.fromstring(query_task_response)
         items = root.findall('version')
         latest_package = ''
         for item in items:
@@ -243,8 +234,8 @@ class XLDeployClient(object):
         # End for
         return latest_package
 
-    def check_CI_exist(self, ciId):
-        queryTask = "/deployit/repository/exists/%s" % ciId
+    def check_CI_exist(self, ci_id):
+        queryTask = "/deployit/repository/exists/%s" % ci_id
         queryTask_response = self.http_request.get(queryTask, contentType='application/xml')
         return queryTask_response.getResponse().find('true') > 0
 
@@ -262,49 +253,63 @@ class XLDeployClient(object):
         xml = '<' + ciType + ' id="' + id + '">' + xmlDescriptor + '</' + ciType + '>'
         createTask = '/deployit/repository/ci/' + id
         self.http_request.post(createTask, xml, contentType='application/xml')
-    
-    def deleteCI(self, id):
-        deleteTask = '/deployit/repository/ci/' + id
-        self.http_request.delete(deleteTask)
-    
-    def addCIToEnvironment(self, envID, ciID):
-        getEnv = '/deployit/repository/ci/' + envID
-        getEnv_response = self.http_request.get(getEnv, contentType='application/xml')
-        env = getEnv_response.getResponse()
-        items = env.partition('</members>')
-        xml = items[0] + '<ci ref="' + ciID + '"/>' + items[1] + items[2]
-        print(xml)
-        self.http_request.put(getEnv, xml, contentType='application/xml')
 
-    def removeCIFromEnvironment(self, envID, ciID):
-        getEnv = '/deployit/repository/ci/' + envID
-        getEnv_response = self.http_request.get(getEnv, contentType='application/xml')
-        print getEnv_response.getResponse()
-        envRoot = ET.fromstring(getEnv_response.getResponse())
-        memberToRemove = None
-        for child in envRoot:
+    def update_ci_property(self, ci_id, ci_property, property_value):
+        if self.check_CI_exist(ci_id):
+            ci = self.get_ci(ci_id, 'json')
+            data = json.loads(ci)
+            data[ci_property] = property_value
+            self.update_ci(ci_id, json.dumps(data), 'json')
+
+    def add_ci_to_environment(self, env_id, ci_id):
+        get_env_response = self.get_ci(self,env_id, 'xml')
+        items = get_env_response.partition('</members>')
+        xml = items[0] + '<ci ref="' + ci_id + '"/>' + items[1] + items[2]
+        print(xml)
+        self.update_ci(env_id, xml, 'xml')
+
+    def remove_ci_from_environment(self, env_id, ci_id):
+        get_env_response = self.get_ci(self,env_id, 'xml')
+        print get_env_response
+        env_root = ET.fromstring(get_env_response)
+        member_to_remove = None
+        for child in env_root:
           if child.tag == 'members':
             for member in child:
-              if member.attrib['ref'] == ciID:
-                print 'Found ' + ciID + ' in ' + envID
-                envMembers = child
-                memberToRemove = member
-        if memberToRemove is not None:
-          print 'Removing ' + ciID + ' from ' + envID
-          envMembers.remove(memberToRemove)
-          self.http_request.put(getEnv, ET.tostring(envRoot), contentType='application/xml')
+              if member.attrib['ref'] == ci_id:
+                print 'Found ' + ci_id + ' in ' + env_id
+                env_members = child
+                member_to_remove = member
+        if member_to_remove is not None:
+          print 'Removing ' + ci_id + ' from ' + env_id
+          env_members.remove(member_to_remove)
+          self.update_ci(env_id, ET.tostring(env_root), 'xml')
 
-    def displayStepLogs(self, taskId):
-        getTaskSteps = '/deployit/task/' + taskId + '/step'
-        getTaskSteps_response = self.http_request.get(getTaskSteps, contentType='application/xml')
-        taskStepsRoot = ET.fromstring(getTaskSteps_response.getResponse())
-        for child in taskStepsRoot:
+    def get_ci(self, ci_id, accept):
+        get_ci = "/deployit/repository/ci/%s" % (ci_id)
+        headers = {'Accept': 'application/%s' % accept}
+        return self.http_request.get(get_ci, headers = headers).getResponse()
+
+    def update_ci(self, ci_id, data, content_type):
+        update_ci = "/deployit/repository/ci/%s" % ci_id
+        content_type_header = "application/%s" % content_type
+        self.http_request.put(update_ci, data, contentType=content_type_header)
+
+    def delete_ci(self, ci_id):
+        delete_task = '/deployit/repository/ci/' + ci_id
+        self.http_request.delete(delete_task)
+
+    def display_step_logs(self, task_id):
+        get_task_steps = '/deployit/task/' + task_id + '/step'
+        get_task_steps_response = self.http_request.get(get_task_steps, contentType='application/xml')
+        task_steps_root = ET.fromstring(get_task_steps_response.getResponse())
+        for child in task_steps_root:
             if child.tag == 'steps':
-                stepCounter = 0
+                step_counter = 0
                 for grandchild in child:
                     if grandchild.tag == 'step':
-                        stepCounter = stepCounter + 1
-                        print 'DEPLOYMENT STEP %d:  Failures=%s  State=%s\n' % (stepCounter, str(grandchild.attrib['failures']), str(grandchild.attrib['state']))
+                        step_counter = step_counter + 1
+                        print 'DEPLOYMENT STEP %d:  Failures=%s  State=%s\n' % (step_counter, str(grandchild.attrib['failures']), str(grandchild.attrib['state']))
                         for item in grandchild:
                             if item.tag in ('description', 'startDate', 'completionDate'):
                                 print '%s %s\n' % (str(item.tag), str(item.text))

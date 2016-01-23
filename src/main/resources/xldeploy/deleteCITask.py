@@ -10,6 +10,6 @@ from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 xldClient = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
 
 if envID:
-	xldClient.removeCIFromEnvironment(envID,ciID)
+	xldClient.remove_ci_from_environment(envID,ciID)
 
-xldClient.deleteCI(ciID)
+xldClient.delete_ci(ciID)

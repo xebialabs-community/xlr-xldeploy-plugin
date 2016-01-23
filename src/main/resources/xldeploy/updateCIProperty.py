@@ -4,12 +4,9 @@
 # FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 #
 
-import sys
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
 
-xldClient = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
+xld_client = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
 
-xldClient.createCI(ciID, ciType, xmlDescriptor)
-if addToEnvironment:
-    xldClient.add_ci_to_environment(envID, ciID)
+xld_client.update_ci_property(ciID, ciProperty, propertyValue)

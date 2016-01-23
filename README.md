@@ -85,6 +85,15 @@ returned package ID
   * `xmlDescriptor` - XML with the fields to set on the CI, e.g. `<os>WINDOWS</os><connectionType>WINRM_NATIVE</connectionType><address>${address}</address><username>${username}</username><password>${password}</password>`
   * `addToEnvironment` - Switch to decide if to add the CI to an environment
   * `envID` - Environment to add the CI to.
+  
++ Update CI property
+  * `server` - Server to query
+  * `username` - Override username
+  * `password` - Override password
+  * `ciID` - Fully qualified id from the CI to update
+  * `ciProperty` - Name of the property to update
+  * `propertyValue` - Value of the property to update
+
 
 + CLI Config (Global Configuration)
   * `CLI Home` - Home directory where XL Deploy CLI is installed
