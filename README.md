@@ -48,6 +48,18 @@ This plugin (2.x.x+) requires XLR 4.8
   * `numberOfPollingTrials` (Number of times to poll for task status)
   * `failOnPause` (If checked task will fail if the deployment enters a STOPPED state, for example if the xld-pause-plugin is in use. Set to True by default for backwards compatibility)
 
++ UndeployTask (compatible with XL Deploy 4.5.1 and up)
+  * `deployedApplication` - Name of the deployed application you want to undeploy (Only the name, without Environments, etc...)
+  * `environment` (ID of the environment to deploy to e.g.: `Environments/Xl Release/XL Release`)
+  * `orchestrators` (Comma separated list of orchestrators to be used: `parallel-by-deployment-group, parallel-by-container`)
+  * `deployedApplicationProperties` (Dictionary containing all the deployed application properties to be set (except orchestrators). e.g.: `{"maxContainersInParallel": "2"}`)
+  * `continueIfStepFails` (Will try to continue if a step in the deployment task fails)
+  * `numberOfContinueRetrials` (Number of times to retry a step)
+  * `rollbackOnError` (Whether rollback should be done if the deployment fails)
+  * `pollingInterval` (Number of seconds to wait before polling the task status)
+  * `numberOfPollingTrials` (Number of times to poll for task status)
+  * `failOnPause` (If checked task will fail if the deployment enters a STOPPED state, for example if the xld-pause-plugin is in use. Set to True by default for backwards compatibility)
+
 + Migrate Package
   * `server` - Server to pull a package from
   * `username` - Override source username
