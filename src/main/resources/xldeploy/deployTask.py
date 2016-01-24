@@ -9,7 +9,7 @@ from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 xldClient = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
 
 deployment = None
-if xldClient.deploymentExists(deploymentPackage, environment):
+if xldClient.deployment_exists(deploymentPackage, environment):
     print "Upgrading deployment \n"
     deployment = xldClient.deploymentPrepareUpdate(deploymentPackage,environment)
 else:
@@ -33,18 +33,18 @@ xldClient.display_step_logs(taskId)
 
 if taskState in ('DONE','EXECUTED'):
     print "Deployment ended in %s \n" % taskState
-    xldClient.archiveTask(taskId)
+    xldClient.archive_task(taskId)
     sys.exit(0)
 
 # rollbackOnError
 if rollbackOnError and taskState in ('FAILED', 'STOPPED'):
     print "Going to rollback \n"
-    xldClient.stopTask(taskId)
-    rollBackTaskId = xldClient.deploymentRollback(taskId)
+    xldClient.stop_task(taskId)
+    rollBackTaskId = xldClient.deployment_rollback(taskId)
     taskState = xldClient.invoke_task_and_wait_for_result(rollBackTaskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials)
-    xldClient.archiveTask(rollBackTaskId)
+    xldClient.archive_task(rollBackTaskId)
     sys.exit(1)
 elif taskState in ('FAILED', 'STOPPED'):
     print "Task failed, rollback not enabled. \n"
-    xldClient.cancelTask(taskId)
+    xldClient.cancel_task(taskId)
     sys.exit(1)

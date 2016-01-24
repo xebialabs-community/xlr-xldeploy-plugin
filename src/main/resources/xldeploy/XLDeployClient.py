@@ -103,14 +103,25 @@ class XLDeployClient(object):
                     break
             time.sleep(polling_interval)
         return status
-    
-    def deploymentExists(self, deploymentPackage, environment):
-        deploymentExistsUrl = "/deployit/deployment/exists?application=%s&environment=%s" % (deploymentPackage.rsplit('/',1)[0],environment)
-        # print 'DEBUG: checking deployment exists with url %s \n' % deploymentExistsUrl
-        deploymentExists_response = self.http_request.get(deploymentExistsUrl, contentType='application/xml')
-        response = deploymentExists_response.getResponse()
+
+    def get_deployment_package(self, deployed_application_id):
+        ci = self.get_ci(deployed_application_id,'json')
+        data = json.loads(ci)
+        return data['version']
+
+
+    def deployment_exists(self, deployment_package, environment):
+        deployment_exists_url = "/deployit/deployment/exists?application=%s&environment=%s" % (deployment_package.rsplit('/',1)[0],environment)
+        # print 'DEBUG: checking deployment exists with url %s \n' % deployment_exists_url
+        deployment_exists_response = self.http_request.get(deployment_exists_url, contentType='application/xml')
+        response = deployment_exists_response.getResponse()
         return 'true' in response
-    
+
+    def deployment_prepare_undeploy(self, deployed_application_id):
+        deployment_prepare_undeploy_url = "/deployit/deployment/prepare/undeploy?deployedApplication=%s" % (deployed_application_id)
+        deployment_prepare_undeploy_url_response = self.http_request.get(deployment_prepare_undeploy_url, contentType='application/xml')
+        return deployment_prepare_undeploy_url_response.getResponse()
+
     def deploymentPrepareUpdate(self, deploymentPackage, environment):
         deploymentPrepareUpdateUrl = "/deployit/deployment/prepare/update?version=%s&deployedApplication=%s" % (deploymentPackage, "%s/%s" % (environment, deploymentPackage.rsplit('/',2)[1]))
         deploymentPrepareUpdate_response = self.http_request.get(deploymentPrepareUpdateUrl, contentType='application/xml')
@@ -121,7 +132,8 @@ class XLDeployClient(object):
         deploymentPrepareInitial_response = self.http_request.get(deploymentPrepareInitialUrl, contentType='application/xml')
         return deploymentPrepareInitial_response.getResponse()
 
-    def add_orchestrators(self, root, orchestrators):
+    def add_orchestrators(self, deployment_xml, orchestrators):
+        root = ET.fromstring(deployment_xml)
         if orchestrators:
             params = root.find(".//orchestrator")
             params.clear()
@@ -129,8 +141,10 @@ class XLDeployClient(object):
             for orch in orchs:
                 orchestrator = ET.SubElement(params, 'value')
                 orchestrator.text = orch.strip()
+        return ET.tostring(root)
 
-    def set_deployed_application_properties(self, root, deployed_application_properties):
+    def set_deployed_application_properties(self, deployment_xml, deployed_application_properties):
+        root = ET.fromstring(deployment_xml)
         if deployed_application_properties:
             deployeds_application_properties_dict = dict(ast.literal_eval(deployed_application_properties))
             # print 'DEBUG: deployed application properties dict is %s \n' % deployeds_application_properties_dict
@@ -145,9 +159,11 @@ class XLDeployClient(object):
                         # print "DEBUG: Searching for deployed application: %s" % child
                         pkey_xml = ET.SubElement(child, key)
                 pkey_xml.text = deployeds_application_properties_dict[key]
+        return ET.tostring(root)
                 
     
-    def set_deployed_properties(self, root, deployed_properties):
+    def set_deployed_properties(self, deployment_xml, deployed_properties):
+        root = ET.fromstring(deployment_xml)
         if deployed_properties:
             deployeds_properties_dict = dict(ast.literal_eval(deployed_properties))
             for key in deployeds_properties_dict:
@@ -163,6 +179,7 @@ class XLDeployClient(object):
                             if not pkey_xml:
                                 pkey_xml = ET.SubElement(xlr_tag_deployed, pkey)
                             pkey_xml.text = deployed_properties_dict[pkey]
+        return ET.tostring(root)
                     
     
     def deployment_prepare_deployeds(self, deployment, orchestrators = None, deployed_application_properties = None, deployed_properties = None):
@@ -172,12 +189,11 @@ class XLDeployClient(object):
         # print 'DEBUG: Deployment object including mapping is now %s \n' % deployment
         deployment_xml = deployment_prepare_deployeds_response.getResponse()
         # print 'DEBUG: deployment_xml is ' + deployment_xml
-        root = ET.fromstring(deployment_xml)
-        self.add_orchestrators(root, orchestrators)
-        self.set_deployed_application_properties(root, deployed_application_properties)
+        deployment_xml = self.add_orchestrators(deployment_xml, orchestrators)
+        deployment_xml = self.set_deployed_application_properties(deployment_xml, deployed_application_properties)
         # print 'DEBUG: Deployment object after updating orchestrators: %s \n' % ET.tostring(root)
-        self.set_deployed_properties(root, deployed_properties)
-        return ET.tostring(root)
+        deployment_xml = self.set_deployed_properties(deployment_xml, deployed_properties)
+        return deployment_xml
     
     def get_deployment_task_id(self, deployment):
         getDeploymentTaskId = "/deployit/deployment"
@@ -186,22 +202,22 @@ class XLDeployClient(object):
         # print 'DEBUG: getDeploymentTaskId response is %s \n' % (deploymentTaskId_response.getResponse())
         return deploymentTaskId_response.getResponse()
     
-    def deploymentRollback(self, taskId):
+    def deployment_rollback(self, taskId):
         deploymentRollback = "/deployit/deployment/rollback/%s" % taskId
         # print 'DEBUG: calling rollback for taskId %s \n' % taskId
         deploymentRollback_response = self.http_request.post(deploymentRollback,'',contentType='application/xml')
         # print 'DEBUG: received rollback taskId %s \n' % deploymentRollback_response.getResponse()
         return deploymentRollback_response.getResponse()
     
-    def archiveTask(self, taskId):
-        archiveTask = "/deployit/task/%s/archive" % taskId
-        self.http_request.post(archiveTask,'',contentType='application/xml')
+    def archive_task(self, task_id):
+        archive_task = "/deployit/task/%s/archive" % task_id
+        self.http_request.post(archive_task,'',contentType='application/xml')
 
-    def cancelTask(self, taskId):
+    def cancel_task(self, taskId):
         cancelTask = "/deployit/task/%s" % taskId
         self.http_request.delete(cancelTask, contentType='application/xml')
 
-    def stopTask(self, taskId):
+    def stop_task(self, taskId):
         stopTask = "/deployit/task/%s/stop" % taskId
         self.http_request.post(stopTask,'',contentType='application/xml')
 
@@ -214,7 +230,7 @@ class XLDeployClient(object):
         fetchTask = "/deployit/package/fetch"
         self.http_request.post(fetchTask, fetchURL, contentType='application/xml')
 
-    def get_latest_package_version(self, application_id, old_implementation = False):
+    def get_latest_package_version(self, application_id):
         query_task = "/deployit/repository/query?parent=%s&resultsPerPage=-1" % application_id
         query_task_response = self.http_request.get(query_task, contentType='application/xml')
         root = ET.fromstring(query_task_response.getResponse())

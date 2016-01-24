@@ -36,7 +36,20 @@
         <property name="failOnPause" category="input" kind="boolean" default="true" />
 
     </type>
-    
+
+    <type type="xldeploy.UndeployTask" extends="xldeploy.TaskRunningTask" description="Executes an undeployment in XL Deploy">
+        <property name="scriptLocation" default="xldeploy/undeployTask.py" hidden="true" />
+
+        <property name="deployedApplication" category="input" label="Deployed Application" required="true" description="Name of the deployed application you want to undeploy (Only the name, without Environments, etc...)" />
+        <property name="environment" category="input" label="Environment" default="" required="true" description="Environment you want to undeploy from (fully qualified starting with Environments/...)" />
+
+        <property name="orchestrators" category="input" label="Orchestrators" default="" required="false" />
+        <property name="deployedApplicationProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
+        <property name="rollbackOnError" category="input" kind="boolean" />
+        <property name="failOnPause" category="input" kind="boolean" default="true" />
+
+    </type>
+
     <type type="xldeploy.ControlTask" extends="xldeploy.TaskRunningTask" description="Invokes a control task on an XL Deploy Configuration Item">
         <property name="scriptLocation" default="xldeploy/controlTask.py" hidden="true" />
 
