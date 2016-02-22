@@ -276,6 +276,8 @@ class XLDeployClient(object):
             data = json.loads(ci)
             data[ci_property] = property_value
             self.update_ci(ci_id, json.dumps(data), 'json')
+        else:
+            raise Exception("Did not find ci with id [%s]" % ci_id)
 
     def add_ci_to_environment(self, env_id, ci_id):
         get_env_response = self.get_ci(self,env_id, 'xml')
@@ -309,7 +311,9 @@ class XLDeployClient(object):
     def update_ci(self, ci_id, data, content_type):
         update_ci = "/deployit/repository/ci/%s" % ci_id
         content_type_header = "application/%s" % content_type
-        self.http_request.put(update_ci, data, contentType=content_type_header)
+        response = self.http_request.put(update_ci, data, contentType=content_type_header)
+        if not response.isSuccessful():
+            raise Exception("Failed to update ci [%s]. Server return [%s], with content [%s]" % (ci_id, response.status, response.response))
 
     def delete_ci(self, ci_id):
         delete_task = '/deployit/repository/ci/' + ci_id
