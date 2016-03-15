@@ -2,7 +2,7 @@ plugins {
     id "com.github.hierynomus.license" version "0.12.1"
 }
 
-version="2.1.1"
+version="2.1.2"
 
 apply plugin: "com.github.hierynomus.license"
 apply plugin: 'java'
@@ -12,3 +12,4 @@ license {
     header rootProject.file('src/main/license/xebialabs_community.license')
     strictCheck false
 }
+1

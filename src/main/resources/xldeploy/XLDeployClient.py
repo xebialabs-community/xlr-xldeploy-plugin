@@ -186,7 +186,8 @@ class XLDeployClient(object):
         deployment_prepare_deployeds = "/deployit/deployment/prepare/deployeds"
         # print 'DEBUG: Prepare deployeds for deployment object %s \n' % deployment
         deployment_prepare_deployeds_response = self.http_request.post(deployment_prepare_deployeds, deployment, contentType='application/xml')
-        # print 'DEBUG: Deployment object including mapping is now %s \n' % deployment
+        if not deployment_prepare_deployeds_response.isSuccessful():
+            raise Exception("Failed to prepare deployeds. Server return [%s], with content [%s]" % (deployment_prepare_deployeds_response.status, deployment_prepare_deployeds_response.response))
         deployment_xml = deployment_prepare_deployeds_response.getResponse()
         # print 'DEBUG: deployment_xml is ' + deployment_xml
         deployment_xml = self.add_orchestrators(deployment_xml, orchestrators)
