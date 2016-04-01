@@ -7,7 +7,7 @@
 import sys
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
-xld_client = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
+xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
 deployment = None
 deployment_package = xld_client.get_deployment_package("%s/%s" % (environment, deployedApplication))

@@ -8,7 +8,7 @@ import sys
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
 
-xldClient = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
+xldClient = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
 print 'DEBUG: About to prepare %s on %s\n' % (controlTaskName, ciId)
 task_id = xldClient.prepare_control_task(controlTaskName, ciId, parameters)

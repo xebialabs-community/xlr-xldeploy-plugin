@@ -12,8 +12,8 @@ def createPath(path):
         createPath(parent)
     xldDestinationClient.create_directory(path)
 
-xldSourceClient = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
-xldDestinationClient = XLDeployClientUtil.createXLDeployClient(destinationXLDeployServer, destinationUsername, destinationPassword)
+xldSourceClient = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
+xldDestinationClient = XLDeployClientUtil.create_xldeploy_client(destinationXLDeployServer, destinationUsername, destinationPassword)
 
 if autoCreatePath:
     appPath = deploymentPackage.rpartition('/')[0]

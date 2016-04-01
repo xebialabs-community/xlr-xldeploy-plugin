@@ -7,6 +7,6 @@
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
 
-xld_client = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
+xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
 xld_client.update_ci_property(ciID, ciProperty, propertyValue)

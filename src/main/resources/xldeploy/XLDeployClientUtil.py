@@ -10,6 +10,5 @@ from xldeploy.XLDeployClient import XLDeployClient
 class XLDeployClientUtil(object):
 
     @staticmethod
-    def createXLDeployClient(container, username, password):
-        client = XLDeployClient.createClient(container, username, password)
-        return client
+    def create_xldeploy_client(container, username, password):
+        return XLDeployClient.create_client(container, username, password)

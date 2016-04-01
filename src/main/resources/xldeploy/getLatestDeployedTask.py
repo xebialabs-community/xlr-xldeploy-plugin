@@ -6,7 +6,7 @@
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
 
-xld_client = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
+xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
 applicationId = xld_client.get_latest_deployed_version(environmentId, applicationName)
 

@@ -10,14 +10,14 @@ import com.xhaus.jyson.JysonCodec as json
 from xml.etree import ElementTree as ET
 from xlrelease.HttpRequest import HttpRequest
 
+
 class XLDeployClient(object):
     def __init__(self, httpConnection, username=None, password=None):
         self.http_request = HttpRequest(httpConnection, username, password)
 
     @staticmethod
-    def createClient(httpConnection, username=None, password=None):
+    def create_client(httpConnection, username=None, password=None):
         return XLDeployClient(httpConnection, username, password)
-
 
     def extract_state(self, task_state_xml):
         state_pos = task_state_xml.find('state2="')
@@ -26,13 +26,11 @@ class XLDeployClient(object):
         state = task_state_xml[state_pos + state_offset:state_end_pos]
         return state
 
-
-    def getParameterTypeName(self,root):
+    def getParameterTypeName(self, root):
         params = root.find("parameters")
         if params:
             for child in params:
                 return child.tag
-
 
     def getParameterNames(self, parameterTypeId):
         metadata_url = "/deployit/metadata/type/%s" % (parameterTypeId)
@@ -45,7 +43,6 @@ class XLDeployClient(object):
                 parameterNames.append(child.get("name"))
         return parameterNames
 
-
     def addParameter(self, root, parameterTypeId, parameterName, parameters):
         params = root.find("parameters")
         propertyDict = dict(ast.literal_eval(parameters))
@@ -55,8 +52,7 @@ class XLDeployClient(object):
                     param = ET.SubElement(child, parameterName)
                     param.text = propertyDict[parameterName]
 
-
-    def prepare_control_task(self, control_task_name, target_ci_id, parameters = None):
+    def prepare_control_task(self, control_task_name, target_ci_id, parameters=None):
         # print 'DEBUG: prepare the control task'
         prepare_control_task_url = "/deployit/control/prepare/%s/%s" % (control_task_name, target_ci_id)
         prepare_response = self.http_request.get(prepare_control_task_url, contentType='application/xml')
@@ -76,8 +72,7 @@ class XLDeployClient(object):
         # print 'DEBUG: Control task ID', task_id, '\n'
         return task_id
 
-
-    def invoke_task_and_wait_for_result(self, task_id, polling_interval = 10, number_of_trials = None, continue_if_step_fails = False, number_of_continue_retrials = 0, fail_on_pause = True):
+    def invoke_task_and_wait_for_result(self, task_id, polling_interval=10, number_of_trials=None, continue_if_step_fails=False, number_of_continue_retrials=0, fail_on_pause=True):
         start_task_url = "/deployit/task/%s/start" % (task_id)
         # print 'DEBUG: About to invoke task by post %s - continue enabled: %s - trial: %s \n' % (task_id, continue_if_step_fails, number_of_continue_retrials)
         self.http_request.post(start_task_url, '', contentType='application/xml')
@@ -93,25 +88,24 @@ class XLDeployClient(object):
             print 'Task', task_id, 'now in state', status, '\n'
             if fail_on_pause:
                 if status in ('FAILED', 'ABORTED', 'STOPPED') and continue_if_step_fails and number_of_continue_retrials > 0:
-                    status = self.invoke_task_and_wait_for_result(task_id,polling_interval,number_of_trials, continue_if_step_fails, number_of_continue_retrials-1)
+                    status = self.invoke_task_and_wait_for_result(task_id, polling_interval, number_of_trials, continue_if_step_fails, number_of_continue_retrials - 1)
                 if status in ('FAILED', 'ABORTED', 'STOPPED', 'CANCELLED', 'DONE', 'EXECUTED'):
                     break
             else:
                 if status in ('FAILED', 'ABORTED') and continue_if_step_fails and number_of_continue_retrials > 0:
-                    status = self.invoke_task_and_wait_for_result(task_id,polling_interval,number_of_trials, continue_if_step_fails, number_of_continue_retrials-1)
+                    status = self.invoke_task_and_wait_for_result(task_id, polling_interval, number_of_trials, continue_if_step_fails, number_of_continue_retrials - 1)
                 if status in ('FAILED', 'ABORTED', 'CANCELLED', 'DONE', 'EXECUTED'):
                     break
             time.sleep(polling_interval)
         return status
 
     def get_deployment_package(self, deployed_application_id):
-        ci = self.get_ci(deployed_application_id,'json')
+        ci = self.get_ci(deployed_application_id, 'json')
         data = json.loads(ci)
         return data['version']
 
-
     def deployment_exists(self, deployment_package, environment):
-        deployment_exists_url = "/deployit/deployment/exists?application=%s&environment=%s" % (deployment_package.rsplit('/',1)[0],environment)
+        deployment_exists_url = "/deployit/deployment/exists?application=%s&environment=%s" % (deployment_package.rsplit('/', 1)[0], environment)
         # print 'DEBUG: checking deployment exists with url %s \n' % deployment_exists_url
         deployment_exists_response = self.http_request.get(deployment_exists_url, contentType='application/xml')
         response = deployment_exists_response.getResponse()
@@ -123,7 +117,7 @@ class XLDeployClient(object):
         return deployment_prepare_undeploy_url_response.getResponse()
 
     def deploymentPrepareUpdate(self, deploymentPackage, environment):
-        deploymentPrepareUpdateUrl = "/deployit/deployment/prepare/update?version=%s&deployedApplication=%s" % (deploymentPackage, "%s/%s" % (environment, deploymentPackage.rsplit('/',2)[1]))
+        deploymentPrepareUpdateUrl = "/deployit/deployment/prepare/update?version=%s&deployedApplication=%s" % (deploymentPackage, "%s/%s" % (environment, deploymentPackage.rsplit('/', 2)[1]))
         deploymentPrepareUpdate_response = self.http_request.get(deploymentPrepareUpdateUrl, contentType='application/xml')
         return deploymentPrepareUpdate_response.getResponse()
 
@@ -160,8 +154,7 @@ class XLDeployClient(object):
                         pkey_xml = ET.SubElement(child, key)
                 pkey_xml.text = deployeds_application_properties_dict[key]
         return ET.tostring(root)
-                
-    
+
     def set_deployed_properties(self, deployment_xml, deployed_properties):
         root = ET.fromstring(deployment_xml)
         if deployed_properties:
@@ -180,9 +173,8 @@ class XLDeployClient(object):
                                 pkey_xml = ET.SubElement(xlr_tag_deployed, pkey)
                             pkey_xml.text = deployed_properties_dict[pkey]
         return ET.tostring(root)
-                    
-    
-    def deployment_prepare_deployeds(self, deployment, orchestrators = None, deployed_application_properties = None, deployed_properties = None):
+
+    def deployment_prepare_deployeds(self, deployment, orchestrators=None, deployed_application_properties=None, deployed_properties=None):
         deployment_prepare_deployeds = "/deployit/deployment/prepare/deployeds"
         # print 'DEBUG: Prepare deployeds for deployment object %s \n' % deployment
         deployment_prepare_deployeds_response = self.http_request.post(deployment_prepare_deployeds, deployment, contentType='application/xml')
@@ -196,15 +188,14 @@ class XLDeployClient(object):
         deployment_xml = self.set_deployed_properties(deployment_xml, deployed_properties)
         return deployment_xml
 
-
     def validate(self, deployment):
         getDeploymentTaskId = "/deployit/deployment/validate"
-        #print 'DEBUG: validate for deployment object %s \n' % deployment
+        # print 'DEBUG: validate for deployment object %s \n' % deployment
         deploymentWithValidation_response = self.http_request.post(getDeploymentTaskId, deployment, contentType='application/xml')
-        #print 'DEBUG: deploymentWithValidation response is %s \n' % (deploymentWithValidation_response.getResponse())
+        # print 'DEBUG: deploymentWithValidation response is %s \n' % (deploymentWithValidation_response.getResponse())
         deployment = deploymentWithValidation_response.getResponse()
         root = ET.fromstring(deployment)
-        return map(lambda vm : "CI: %s Message: %s" % (vm.attrib['ci'],vm.text) , root.iter('validation-message'))
+        return map(lambda vm: "CI: %s Message: %s" % (vm.attrib['ci'], vm.text), root.iter('validation-message'))
 
     def get_deployment_task_id(self, deployment):
         getDeploymentTaskId = "/deployit/deployment"
@@ -212,17 +203,17 @@ class XLDeployClient(object):
         deploymentTaskId_response = self.http_request.post(getDeploymentTaskId, deployment, contentType='application/xml')
         # print 'DEBUG: getDeploymentTaskId response is %s \n' % (deploymentTaskId_response.getResponse())
         return deploymentTaskId_response.getResponse()
-    
+
     def deployment_rollback(self, taskId):
         deploymentRollback = "/deployit/deployment/rollback/%s" % taskId
         # print 'DEBUG: calling rollback for taskId %s \n' % taskId
-        deploymentRollback_response = self.http_request.post(deploymentRollback,'',contentType='application/xml')
+        deploymentRollback_response = self.http_request.post(deploymentRollback, '', contentType='application/xml')
         # print 'DEBUG: received rollback taskId %s \n' % deploymentRollback_response.getResponse()
         return deploymentRollback_response.getResponse()
-    
+
     def archive_task(self, task_id):
         archive_task = "/deployit/task/%s/archive" % task_id
-        self.http_request.post(archive_task,'',contentType='application/xml')
+        self.http_request.post(archive_task, '', contentType='application/xml')
 
     def cancel_task(self, taskId):
         cancelTask = "/deployit/task/%s" % taskId
@@ -230,7 +221,7 @@ class XLDeployClient(object):
 
     def stop_task(self, taskId):
         stopTask = "/deployit/task/%s/stop" % taskId
-        self.http_request.post(stopTask,'',contentType='application/xml')
+        self.http_request.post(stopTask, '', contentType='application/xml')
 
     def get_download_uuid(self, deploymentPackage):
         exportTask = "/deployit/export/deploymentpackage/%s" % deploymentPackage
@@ -252,12 +243,12 @@ class XLDeployClient(object):
         return latest_package
 
     def get_latest_deployed_version(self, environment_id, application_name):
-        query_task_response = self.get_ci(self,"%s/%s" % (environment_id, application_name), 'xml')
+        query_task_response = self.get_ci(self, "%s/%s" % (environment_id, application_name), 'xml')
         root = ET.fromstring(query_task_response)
         items = root.findall('version')
         latest_package = ''
         for item in items:
-             latest_package = item.attrib['ref']
+            latest_package = item.attrib['ref']
         # End for
         return latest_package
 
@@ -291,33 +282,33 @@ class XLDeployClient(object):
             raise Exception("Did not find ci with id [%s]" % ci_id)
 
     def add_ci_to_environment(self, env_id, ci_id):
-        get_env_response = self.get_ci(self,env_id, 'xml')
+        get_env_response = self.get_ci(self, env_id, 'xml')
         items = get_env_response.partition('</members>')
         xml = items[0] + '<ci ref="' + ci_id + '"/>' + items[1] + items[2]
         print(xml)
         self.update_ci(env_id, xml, 'xml')
 
     def remove_ci_from_environment(self, env_id, ci_id):
-        get_env_response = self.get_ci(self,env_id, 'xml')
+        get_env_response = self.get_ci(self, env_id, 'xml')
         print get_env_response
         env_root = ET.fromstring(get_env_response)
         member_to_remove = None
         for child in env_root:
-          if child.tag == 'members':
-            for member in child:
-              if member.attrib['ref'] == ci_id:
-                print 'Found ' + ci_id + ' in ' + env_id
-                env_members = child
-                member_to_remove = member
+            if child.tag == 'members':
+                for member in child:
+                    if member.attrib['ref'] == ci_id:
+                        print 'Found ' + ci_id + ' in ' + env_id
+                        env_members = child
+                        member_to_remove = member
         if member_to_remove is not None:
-          print 'Removing ' + ci_id + ' from ' + env_id
-          env_members.remove(member_to_remove)
-          self.update_ci(env_id, ET.tostring(env_root), 'xml')
+            print 'Removing ' + ci_id + ' from ' + env_id
+            env_members.remove(member_to_remove)
+            self.update_ci(env_id, ET.tostring(env_root), 'xml')
 
     def get_ci(self, ci_id, accept):
         get_ci = "/deployit/repository/ci/%s" % (ci_id)
         headers = {'Accept': 'application/%s' % accept}
-        return self.http_request.get(get_ci, headers = headers).getResponse()
+        return self.http_request.get(get_ci, headers=headers).getResponse()
 
     def update_ci(self, ci_id, data, content_type):
         update_ci = "/deployit/repository/ci/%s" % ci_id
@@ -345,5 +336,5 @@ class XLDeployClient(object):
                             if item.tag in ('description', 'startDate', 'completionDate'):
                                 print '%s %s\n' % (str(item.tag), str(item.text))
                             else:
-                                print str(item.tag) + '\n' 
-                                print str(item.text) + '\n' 
+                                print str(item.tag) + '\n'
+                                print str(item.text) + '\n'
