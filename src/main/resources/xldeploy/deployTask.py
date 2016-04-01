@@ -3,7 +3,6 @@
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS
 # FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 #
-
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
 xldClient = XLDeployClientUtil.createXLDeployClient(xldeployServer, username, password)
@@ -17,12 +16,20 @@ else:
     deployment = xldClient.deploymentPrepareInitial(deploymentPackage, environment)
 
 # Mapping deployables to the target environment
+# deploymentProperties + configure orchestrators
 print "Mapping all deployables \n"
 deployment = xldClient.deployment_prepare_deployeds(deployment, orchestrators, deployedApplicationProperties, deployedProperties)
 
-# deploymentProperties + configure orchestrators
-# print "DEBUG: Deployment description is now: %s" % deployment
-# Validating the deployment
+print"Validating the deployment\n"
+validation_messages = xldClient.validate(deployment)
+if len(validation_messages) == 0:
+    print "The deployment specification is valid"
+else:
+    for vm in validation_messages:
+        print "* ERROR : %s" % vm
+    print ""
+    raise Exception("ERROR Validation failed")
+
 print "Creating a deployment task \n"
 taskId = xldClient.get_deployment_task_id(deployment)
 

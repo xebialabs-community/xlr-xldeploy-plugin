@@ -195,7 +195,17 @@ class XLDeployClient(object):
         # print 'DEBUG: Deployment object after updating orchestrators: %s \n' % ET.tostring(root)
         deployment_xml = self.set_deployed_properties(deployment_xml, deployed_properties)
         return deployment_xml
-    
+
+
+    def validate(self, deployment):
+        getDeploymentTaskId = "/deployit/deployment/validate"
+        #print 'DEBUG: validate for deployment object %s \n' % deployment
+        deploymentWithValidation_response = self.http_request.post(getDeploymentTaskId, deployment, contentType='application/xml')
+        #print 'DEBUG: deploymentWithValidation response is %s \n' % (deploymentWithValidation_response.getResponse())
+        deployment = deploymentWithValidation_response.getResponse()
+        root = ET.fromstring(deployment)
+        return map(lambda vm : "CI: %s Message: %s" % (vm.attrib['ci'],vm.text) , root.iter('validation-message'))
+
     def get_deployment_task_id(self, deployment):
         getDeploymentTaskId = "/deployit/deployment"
         # print 'DEBUG: creating task id for deployment object %s \n' % deployment
