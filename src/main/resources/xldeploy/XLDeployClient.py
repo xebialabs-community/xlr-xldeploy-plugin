@@ -334,7 +334,7 @@ class XLDeployClient(object):
                         print 'DEPLOYMENT STEP %d:  Failures=%s  State=%s\n' % (step_counter, str(grandchild.attrib['failures']), str(grandchild.attrib['state']))
                         for item in grandchild:
                             if item.tag in ('description', 'startDate', 'completionDate'):
-                                print '%s %s\n' % (str(item.tag), str(item.text))
+                                print '%s %s\n' % (item.tag, item.text)
                             else:
-                                print str(item.tag) + '\n'
-                                print str(item.text) + '\n'
+                                print "%s\n" % item.tag
+                                print "%s\n" % item.text
