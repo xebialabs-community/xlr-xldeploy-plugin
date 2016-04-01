@@ -3,3 +3,6 @@
 build
 *swp
 xlr-xldeploy-plugin.iml
+xlr-xldeploy-plugin.ipr
+xlr-xldeploy-plugin.iws
+*.pyc
