@@ -253,9 +253,11 @@ class XLDeployClient(object):
         return latest_package
 
     def check_CI_exist(self, ci_id):
-        queryTask = "/deployit/repository/exists/%s" % ci_id
-        queryTask_response = self.http_request.get(queryTask, contentType='application/xml')
-        return queryTask_response.getResponse().find('true') > 0
+        query_task = "/deployit/repository/exists/%s" % ci_id
+        query_task_response = self.http_request.get(query_task, contentType='application/xml')
+        if not query_task_response.isSuccessful():
+            raise Exception("Failed to check ci [%s]. Server return [%s], with content [%s]" % (ci_id, query_task_response.status, query_task_response.response))
+        return query_task_response.getResponse().find('true') > 0
 
     def create_directory(self, ciId):
         createTask = "/deployit/repository/ci/%s" % ciId
@@ -306,9 +308,12 @@ class XLDeployClient(object):
             self.update_ci(env_id, ET.tostring(env_root), 'xml')
 
     def get_ci(self, ci_id, accept):
-        get_ci = "/deployit/repository/ci/%s" % (ci_id)
+        get_ci = "/deployit/repository/ci/%s" % ci_id
         headers = {'Accept': 'application/%s' % accept}
-        return self.http_request.get(get_ci, headers=headers).getResponse()
+        response = self.http_request.get(get_ci, headers=headers)
+        if not response.isSuccessful():
+            raise Exception("Failed to get ci [%s]. Server return [%s], with content [%s]" % (ci_id, response.status, response.response))
+        return response.getResponse()
 
     def update_ci(self, ci_id, data, content_type):
         update_ci = "/deployit/repository/ci/%s" % ci_id
