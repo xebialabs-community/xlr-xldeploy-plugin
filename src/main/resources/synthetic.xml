@@ -34,7 +34,7 @@
         <property name="deployedProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
         <property name="rollbackOnError" category="input" kind="boolean" />
         <property name="failOnPause" category="input" kind="boolean" default="true" />
-
+        <property name="displayStepLogs" category="input" kind="boolean" default="true" />
     </type>
 
     <type type="xldeploy.UndeployTask" extends="xldeploy.TaskRunningTask" description="Executes an undeployment in XL Deploy">
