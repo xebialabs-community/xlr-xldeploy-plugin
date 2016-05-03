@@ -47,6 +47,9 @@ if rollbackOnError and task_state in ('FAILED', 'STOPPED'):
     xld_client.archive_task(rollback_task_id)
     sys.exit(1)
 elif task_state in ('FAILED', 'STOPPED'):
-    print "Task failed, rollback not enabled. \n"
-    xld_client.cancel_task(task_id)
+    if cancelOnError:
+        print "Task failed; cancelling task. \n"
+        xld_client.cancel_task(task_id)
+    else:
+        print "Task failed; leaving as-is in XL Deploy. \n"
     sys.exit(1)
