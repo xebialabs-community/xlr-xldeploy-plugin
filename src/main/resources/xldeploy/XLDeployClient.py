@@ -12,12 +12,12 @@ from xlrelease.HttpRequest import HttpRequest
 
 
 class XLDeployClient(object):
-    def __init__(self, httpConnection, username=None, password=None):
-        self.http_request = HttpRequest(httpConnection, username, password)
+    def __init__(self, http_connection, username=None, password=None):
+        self.http_request = HttpRequest(http_connection, username, password)
 
     @staticmethod
-    def create_client(httpConnection, username=None, password=None):
-        return XLDeployClient(httpConnection, username, password)
+    def create_client(http_connection, username=None, password=None):
+        return XLDeployClient(http_connection, username, password)
 
     def extract_state(self, task_state_xml):
         state_pos = task_state_xml.find('state2="')
@@ -243,7 +243,7 @@ class XLDeployClient(object):
         return latest_package
 
     def get_latest_deployed_version(self, environment_id, application_name):
-        query_task_response = self.get_ci(self, "%s/%s" % (environment_id, application_name), 'xml')
+        query_task_response = self.get_ci("%s/%s" % (environment_id, application_name), 'xml')
         root = ET.fromstring(query_task_response)
         items = root.findall('version')
         latest_package = ''
@@ -284,14 +284,14 @@ class XLDeployClient(object):
             raise Exception("Did not find ci with id [%s]" % ci_id)
 
     def add_ci_to_environment(self, env_id, ci_id):
-        get_env_response = self.get_ci(self, env_id, 'xml')
+        get_env_response = self.get_ci(env_id, 'xml')
         items = get_env_response.partition('</members>')
         xml = items[0] + '<ci ref="' + ci_id + '"/>' + items[1] + items[2]
         print(xml)
         self.update_ci(env_id, xml, 'xml')
 
     def remove_ci_from_environment(self, env_id, ci_id):
-        get_env_response = self.get_ci(self, env_id, 'xml')
+        get_env_response = self.get_ci(env_id, 'xml')
         print get_env_response
         env_root = ET.fromstring(get_env_response)
         member_to_remove = None
