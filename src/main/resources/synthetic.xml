@@ -13,23 +13,23 @@
         <property name="taskColor" hidden="true" default="#68B749" />
 
         <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
-        <property name="username" category="input" label="username" required="true" />
+        <property name="username" category="input" required="true" />
         <property name="password" password="true" category="input" required="true" />
     </type>
 
     <type type="xldeploy.TaskRunningTask" extends="xldeploy.Task" virtual="true">
         <property name="continueIfStepFails" category="input" kind="boolean" />
         <property name="numberOfContinueRetrials" category="input" kind="integer" />
-        <property name="pollingInterval" category="input" label="Polling Interval" default="10" required="true" kind="integer" description="Polling interval in seconds to check task status."/>
+        <property name="pollingInterval" category="input" default="10" required="true" kind="integer" description="Polling interval in seconds to check task status."/>
         <property name="numberOfPollingTrials" category="input" label="Polling Retry Count" required="true" kind="integer" description="Number of times to retry check for task status."/>
     </type>
 
     <type type="xldeploy.DeployTask" extends="xldeploy.TaskRunningTask" description="Executes a deployment in XL Deploy">
         <property name="scriptLocation" default="xldeploy/deployTask.py" hidden="true" />
         
-        <property name="deploymentPackage" category="input" label="Deployment Package" required="true" />
-        <property name="environment" category="input" label="Environment" default="" required="true" />
-        <property name="orchestrators" category="input" label="Orchestrators" default="" required="false" />
+        <property name="deploymentPackage" category="input" required="true" />
+        <property name="environment" category="input" default="" required="true" />
+        <property name="orchestrators" category="input" default="" required="false" />
         <property name="deployedApplicationProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
         <property name="deployedProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
         <property name="rollbackOnError" category="input" kind="boolean" required="false" description="Perform rollback in XL Deploy if the task fails."/>
@@ -55,8 +55,8 @@
     <type type="xldeploy.ControlTask" extends="xldeploy.TaskRunningTask" description="Invokes a control task on an XL Deploy Configuration Item">
         <property name="scriptLocation" default="xldeploy/controlTask.py" hidden="true" />
 
-        <property name="ciId" category="input" label="Configuration Item Id" required="true" />
-        <property name="controlTaskName" category="input" label="Control Task Name" default="" required="false" />
+        <property name="ciId" category="input" label="Configuration Item ID" required="true" />
+        <property name="controlTaskName" category="input" default="" required="false" />
         <property name="parameters" category="input" default="" required="false" description="A dictionary with key value pairs" />
     </type>
 
@@ -84,11 +84,8 @@
         <property name="applicationId" category="output" label="Application ID" />
     </type>
 
-    <type type="xldeploy.CreateCI" extends="xlrelease.PythonScript" label="Create CI" description="Creates a CI and optionally adds it to an environment">
+    <type type="xldeploy.CreateCI" extends="xldeploy.Task" label="Create CI" description="Creates a CI and optionally adds it to an environment">
         <property name="scriptLocation" default="xldeploy/createCITask.py" hidden="true" />
-        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
-        <property name="username" category="input" label="username" required="true" />
-        <property name="password" password="true" category="input" required="true" />
         <property name="ciID" category="input" label="CI ID" required="true" />
         <property name="ciType" category="input" required="true" />
         <property name="xmlDescriptor" category="input" required="true" size="large"/>
@@ -96,11 +93,8 @@
         <property name="envID" category="input" label="Env ID" />
     </type>
 
-    <type type="xldeploy.DeleteCI" extends="xlrelease.PythonScript" label="Delete CI" description="Deletes a CI after optionally removing it from an environment">
+    <type type="xldeploy.DeleteCI" extends="xldeploy.Task" label="Delete CI" description="Deletes a CI after optionally removing it from an environment">
         <property name="scriptLocation" default="xldeploy/deleteCITask.py" hidden="true" />
-        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
-        <property name="username" category="input" label="username" required="true" />
-        <property name="password" password="true" category="input" required="true" />
         <property name="ciID" category="input" label="CI ID" required="true" />
         <property name="envID" category="input" label="Env ID" />
     </type>
@@ -150,7 +144,6 @@
         <property name="urlPassword"      category="input" password="true" />
         <property name="options"          category="input" default="" />
     </type>
-
 
     <type type="xldeploy.Server" extends="configuration.HttpConnection"/>
 </synthetic>
