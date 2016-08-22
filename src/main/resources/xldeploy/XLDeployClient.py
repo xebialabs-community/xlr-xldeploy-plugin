@@ -259,20 +259,18 @@ class XLDeployClient(object):
             raise Exception("Failed to check ci [%s]. Server return [%s], with content [%s]" % (ci_id, query_task_response.status, query_task_response.response))
         return query_task_response.getResponse().find('true') > 0
 
-    def create_directory(self, ciId):
-        createTask = "/deployit/repository/ci/%s" % ciId
-        xml = '<core.Directory id="' + ciId + '" />'
-        self.http_request.post(createTask, xml, contentType='application/xml')
+    def create_directory(self, ci_id):
+        self.create_ci(ci_id, 'udm.Directory')
 
-    def create_application(self, appId):
-        createTask = "/deployit/repository/ci/%s" % appId
-        xml = '<udm.Application id="' + appId + '" />'
-        self.http_request.post(createTask, xml, contentType='application/xml')
+    def create_application(self, app_id):
+        self.create_ci(app_id, 'udm.Application')
 
-    def createCI(self, id, ciType, xmlDescriptor):
-        xml = '<' + ciType + ' id="' + id + '">' + xmlDescriptor + '</' + ciType + '>'
-        createTask = '/deployit/repository/ci/' + id
-        self.http_request.post(createTask, xml, contentType='application/xml')
+    def create_ci(self, id, ci_type, xml_descriptor = ''):
+        xml = '<' + ci_type + ' id="' + id + '">' + xml_descriptor + '</' + ci_type + '>'
+        create_task = '/deployit/repository/ci/%s' % id
+        response = self.http_request.post(create_task, xml, contentType='application/xml')
+        if not response.isSuccessful():
+            raise Exception("Failed to create ci [%s]. Server return [%s], with content [%s]" % (id, response.status, response.response))
 
     def update_ci_property(self, ci_id, ci_property, property_value):
         if self.check_CI_exist(ci_id):

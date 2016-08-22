@@ -13,8 +13,8 @@
         <property name="taskColor" hidden="true" default="#68B749" />
 
         <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
-        <property name="username" category="input" required="true" />
-        <property name="password" password="true" category="input" required="true" />
+        <property name="username" category="input" required="false" />
+        <property name="password" password="true" category="input" required="false" />
     </type>
 
     <type type="xldeploy.TaskRunningTask" extends="xldeploy.Task" virtual="true">
@@ -88,9 +88,9 @@
         <property name="scriptLocation" default="xldeploy/createCITask.py" hidden="true" />
         <property name="ciID" category="input" label="CI ID" required="true" />
         <property name="ciType" category="input" required="true" />
-        <property name="xmlDescriptor" category="input" required="true" size="large"/>
-        <property name="addToEnvironment" category="input" kind="boolean" />
-        <property name="envID" category="input" label="Env ID" />
+        <property name="xmlDescriptor" category="input" required="false" size="large" description="XML with the fields to set on the CI"/>
+        <property name="addToEnvironment" category="input" kind="boolean" required="false" description="Switch to decide if to add the CI to an environment"/>
+        <property name="envID" category="input" label="Env ID" required="false" description="Environment to add the CI to."/>
     </type>
 
     <type type="xldeploy.DeleteCI" extends="xldeploy.Task" label="Delete CI" description="Deletes a CI after optionally removing it from an environment">
