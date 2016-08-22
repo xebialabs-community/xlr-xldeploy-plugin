@@ -1,13 +1,23 @@
-# Build Status #
-
-[![Build Status](https://travis-ci.org/xebialabs-community/xlr-xldeploy-plugin.svg?branch=master)](https://travis-ci.org/xebialabs-community/xlr-xldeploy-plugin)
-
-
 # Preface #
 
 This document describes the functionality provided by the xlr-xldeploy-plugin.
 
-See the **XL Release Reference Manual** for background information on XL Release and release concepts.
+See the **[XL Release Documentation](https://docs.xebialabs.com/xl-release/index.html)** for background information on XL Release and release concepts.
+
+# CI status #
+
+[![Build Status][xlr-xldeploy-travis-image] ][xlr-xldeploy-travis-url]
+[![Build Status][xlr-xldeploy-codacy-image] ][xlr-xldeploy-codacy-url]
+[![Build Status][xlr-xldeploy-code-climate-image] ][xlr-xldeploy-code-climate-url]
+
+
+[xlr-xldeploy-travis-image]: https://travis-ci.org/xebialabs-community/xlr-xldeploy-plugin.svg?branch=master
+[xlr-xldeploy-travis-url]: https://travis-ci.org/xebialabs-community/xlr-xldeploy-plugin
+[xlr-xldeploy-codacy-image]: https://api.codacy.com/project/badge/Grade/b78313b1eb1b4b058dc4512b4d48c26f
+[xlr-xldeploy-codacy-url]: https://www.codacy.com/app/rvanstone/xlr-xldeploy-plugin
+[xlr-xldeploy-code-climate-image]: https://codeclimate.com/github/xebialabs-community/xlr-xldeploy-plugin/badges/gpa.svg
+[xlr-xldeploy-code-climate-url]: https://codeclimate.com/github/xebialabs-community/xlr-xldeploy-plugin
+
 
 # Overview #
 
