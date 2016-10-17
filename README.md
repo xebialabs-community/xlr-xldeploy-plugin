@@ -104,7 +104,9 @@ returned package ID
   * `password` - Override password
   * `ciID` - Repo path to CI to create, e.g. `Infrastructure/myHost`
   * `ciType` - Type of CI to create, e.g. `overthere.CifsHost`
-  * `xmlDescriptor` - XML with the fields to set on the CI, e.g. `<os>WINDOWS</os><connectionType>WINRM_NATIVE</connectionType><address>${address}</address><username>${username}</username><password>${password}</password>`
+  * `xmlDescriptor` - XML with the fields to set on the CI, e.g.  `<os>WINDOWS</os><connectionType>WINRM_NATIVE</connectionType><address>${address}</address><username>${username}</username><password>${password}</password>` 
+  * or if you use Credential Objects:
+  `<os>WINDOWS</os><connectionType>WINRM_NATIVE</connectionType><address>${address}</address><credential ref="Configuration/MyCredential"/>`
   * `addToEnvironment` - Switch to decide if to add the CI to an environment
   * `envID` - Environment to add the CI to.
   
