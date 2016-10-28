@@ -1,0 +1,22 @@
+#
+# THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS
+# FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
+#
+
+xld:
+  image: xebialabs/xl-docker-demo-xld:v5.5.5.1
+  volumes:
+    - ~/xl-licenses:/license
+  ports:
+   - "4516:4516"
+
+xlr:
+  image: xebialabs/xlr_dev_run:v5.0.1.11
+  volumes:
+    - ~/xl-licenses:/license
+    - ./../../../../:/data
+  links:
+   - xld
+  ports:
+   - "5516:5516"
