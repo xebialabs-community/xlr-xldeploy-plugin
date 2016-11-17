@@ -337,8 +337,10 @@ class XLDeployClient(object):
                                 print "%s\n" % item.tag
                                 print "%s\n" % item.text
 
-    def query_archived_tasks(self):
+    def query_archived_tasks(self, end_date = None):
         get_tasks = '/deployit/tasks/v2/query'
+        if end_date:
+            get_tasks += '?begindate=2008-01-01&enddate=%s' % end_date
         headers = {'Accept': 'application/json'}
         response = self.http_request.get(get_tasks, headers=headers)
         if not response.isSuccessful():
@@ -351,8 +353,8 @@ class XLDeployClient(object):
                    "version": task["metadata"]["version"], "owner": task["owner"], "date": task["completionDate"]}
         return row_map
 
-    def get_deployed_applications_for_environment(self, environment):
-        archived_tasks = self.query_archived_tasks()
+    def get_deployed_applications_for_environment(self, environment, date = None):
+        archived_tasks = self.query_archived_tasks(date)
         deployed_apps = {}
         if archived_tasks:
             tasks = json.loads(archived_tasks)

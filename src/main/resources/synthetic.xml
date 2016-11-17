@@ -156,7 +156,7 @@
         <property name="username" category="input" required="false" />
         <property name="password" password="true" category="input" required="false" />
         <property name="environment" category="input" default="" description="Name of the environment to check for deployed applications (For example: Environments/TST)" required="true" />
-        <property name="date" category="input" default="" required="true" />
+        <property name="date" category="input" default="" required="false" description="Date in format yyyy-MM-dd. If not provided, latest deployed applications are shown."/>
 
     </type>
 
