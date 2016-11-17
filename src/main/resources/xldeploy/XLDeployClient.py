@@ -5,7 +5,7 @@
 #
 
 import sys, time, ast, re
-import com.xhaus.jyson.JysonCodec as json
+import json
 
 from xml.etree import ElementTree as ET
 from xlrelease.HttpRequest import HttpRequest
@@ -106,7 +106,6 @@ class XLDeployClient(object):
 
     def deployment_exists(self, deployment_package, environment):
         deployment_exists_url = "/deployit/deployment/exists?application=%s&environment=%s" % (deployment_package.rsplit('/', 1)[0], environment)
-        # print 'DEBUG: checking deployment exists with url %s \n' % deployment_exists_url
         deployment_exists_response = self.http_request.get(deployment_exists_url, contentType='application/xml')
         response = deployment_exists_response.getResponse()
         return 'true' in response
@@ -199,38 +198,34 @@ class XLDeployClient(object):
 
     def get_deployment_task_id(self, deployment):
         getDeploymentTaskId = "/deployit/deployment"
-        # print 'DEBUG: creating task id for deployment object %s \n' % deployment
         deploymentTaskId_response = self.http_request.post(getDeploymentTaskId, deployment, contentType='application/xml')
-        # print 'DEBUG: getDeploymentTaskId response is %s \n' % (deploymentTaskId_response.getResponse())
         return deploymentTaskId_response.getResponse()
 
     def deployment_rollback(self, taskId):
         deploymentRollback = "/deployit/deployment/rollback/%s" % taskId
-        # print 'DEBUG: calling rollback for taskId %s \n' % taskId
         deploymentRollback_response = self.http_request.post(deploymentRollback, '', contentType='application/xml')
-        # print 'DEBUG: received rollback taskId %s \n' % deploymentRollback_response.getResponse()
         return deploymentRollback_response.getResponse()
 
     def archive_task(self, task_id):
         archive_task = "/deployit/task/%s/archive" % task_id
         self.http_request.post(archive_task, '', contentType='application/xml')
 
-    def cancel_task(self, taskId):
-        cancelTask = "/deployit/task/%s" % taskId
-        self.http_request.delete(cancelTask, contentType='application/xml')
+    def cancel_task(self, task_id):
+        cancel_task = "/deployit/task/%s" % task_id
+        self.http_request.delete(cancel_task, contentType='application/xml')
 
-    def stop_task(self, taskId):
-        stopTask = "/deployit/task/%s/stop" % taskId
-        self.http_request.post(stopTask, '', contentType='application/xml')
+    def stop_task(self, task_id):
+        stop_task = "/deployit/task/%s/stop" % task_id
+        self.http_request.post(stop_task, '', contentType='application/xml')
 
-    def get_download_uuid(self, deploymentPackage):
-        exportTask = "/deployit/export/deploymentpackage/%s" % deploymentPackage
-        exportTask_response = self.http_request.get(exportTask, contentType='application/xml')
-        return exportTask_response.getResponse()
+    def get_download_uuid(self, deployment_package):
+        export_task = "/deployit/export/deploymentpackage/%s" % deployment_package
+        export_task_response = self.http_request.get(export_task, contentType='application/xml')
+        return export_task_response.getResponse()
 
-    def fetch_package(self, fetchURL):
-        fetchTask = "/deployit/package/fetch"
-        self.http_request.post(fetchTask, fetchURL, contentType='application/xml')
+    def fetch_package(self, fetch_url):
+        fetch_task = "/deployit/package/fetch"
+        self.http_request.post(fetch_task, fetch_url, contentType='application/xml')
 
     def get_latest_package_version(self, application_id):
         query_task = "/deployit/repository/query?parent=%s&resultsPerPage=-1" % application_id
@@ -341,3 +336,33 @@ class XLDeployClient(object):
                             else:
                                 print "%s\n" % item.tag
                                 print "%s\n" % item.text
+
+    def query_archived_tasks(self):
+        get_tasks = '/deployit/tasks/v2/query'
+        headers = {'Accept': 'application/json'}
+        response = self.http_request.get(get_tasks, headers=headers)
+        if not response.isSuccessful():
+            raise Exception("Failed to get archived tasks. Server return [%s], with content [%s]" % (response.status, response.response))
+        return response.getResponse()
+
+    @staticmethod
+    def get_row_data(task):
+        row_map = {"id": task["id"], "application": task["metadata"]["application"],
+                   "version": task["metadata"]["version"], "owner": task["owner"], "date": task["completionDate"]}
+        return row_map
+
+    def get_deployed_applications_for_environment(self, environment):
+        archived_tasks = self.query_archived_tasks()
+        deployed_apps = {}
+        if archived_tasks:
+            tasks = json.loads(archived_tasks)
+            for task in tasks:
+                if task['state'] == 'DONE' and task['metadata']['environment_id'] == environment:
+                    if task['metadata']['taskType'] in ('INITIAL', 'UPGRADE', 'ROLLBACK'):
+                        deployed_apps[task['metadata']['application']] = self.get_row_data(task)
+                    if task['metadata']['taskType'] in ('UNDEPLOY'):
+                        del deployed_apps[task['metadata']['application']]
+        return deployed_apps
+
+
+

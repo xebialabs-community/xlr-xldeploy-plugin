@@ -11,8 +11,8 @@ apply plugin: 'eclipse'
 apply plugin: 'maven'
 
 xlrDocker {
-    compileVersion = 'v5.0.1.11'
-    runVersion = 'v5.0.1.11'
+    compileVersion = 'v6.0.0.1'
+    runVersion = 'v6.0.0.1'
 }
 
 license {

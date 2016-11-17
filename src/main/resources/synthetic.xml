@@ -146,4 +146,18 @@
     </type>
 
     <type type="xldeploy.Server" extends="configuration.HttpConnection"/>
+
+
+    <type type="xldeploy.XLDVersionsTile" label="XLD Version Tile" extends="xlrelease.Tile">
+        <property name="uri" hidden="true" default="include/XLDVersionsTile/xld-versions-tile-view.html" />
+        <property name="title" description="Tile title" default="Deployed versions Summary"/>
+
+        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
+        <property name="username" category="input" required="false" />
+        <property name="password" password="true" category="input" required="false" />
+        <property name="environment" category="input" default="" required="true" />
+        <property name="date" category="input" default="" required="true" />
+
+    </type>
+
 </synthetic>

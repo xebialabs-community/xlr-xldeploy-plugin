@@ -6,11 +6,11 @@
 
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
-xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
+if not xldeployServer:
+    raise Exception("XL Deploy server ID must be provided")
 
-if xmlDescriptor:
-    xld_client.create_ci(ciID, ciType, xmlDescriptor)
+xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
+if xld_client.check_CI_exist(environment):
+    data = xld_client.get_deployed_applications_for_environment(environment)
 else:
-    xld_client.create_ci(ciID, ciType)
-if addToEnvironment:
-    xld_client.add_ci_to_environment(envID, ciID)
+    data = {"Invalid environment name"}
