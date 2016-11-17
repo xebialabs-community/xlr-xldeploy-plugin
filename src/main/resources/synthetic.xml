@@ -155,7 +155,7 @@
         <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
         <property name="username" category="input" required="false" />
         <property name="password" password="true" category="input" required="false" />
-        <property name="environment" category="input" default="" required="true" />
+        <property name="environment" category="input" default="" description="Name of the environment to check for deployed applications (For example: Environments/TST)" required="true" />
         <property name="date" category="input" default="" required="true" />
 
     </type>
