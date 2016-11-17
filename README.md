@@ -85,7 +85,7 @@ This plugin (2.x.x+) requires XLR 4.8
   * `username` - Override username
   * `password` - Override password
   * `applicationId` - ID of the application to query for all package versions
-  * `packageId` - Return value with the all package IDs of the application (**NOTE:** this needs to be a variable of the *set* type, and needs to be defined beforehand)
+  * `packageId` - Return value with the all package IDs of the application (**NOTE:** this needs to be a variable of the *list* type, and needs to be defined beforehand)
 
 + Get Latest Version
   * `server` - Server to query
