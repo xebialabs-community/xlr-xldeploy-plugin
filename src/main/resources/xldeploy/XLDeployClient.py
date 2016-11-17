@@ -242,9 +242,9 @@ class XLDeployClient(object):
         query_task_response = self.http_request.get(query_task, contentType='application/xml')
         root = ET.fromstring(query_task_response.getResponse())
         items = root.findall('ci')
-        all_package = ''
+        all_package = list()
         for item in items:
-            all_package = item.attrib['ref']
+            all_package.append(item.attrib['ref'])
         return all_package
 
     def get_latest_deployed_version(self, environment_id, application_name):

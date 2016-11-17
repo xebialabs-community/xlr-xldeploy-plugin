@@ -9,7 +9,7 @@ from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
 xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
-packageId = xld_client.get_all_package_version(applicationId)
+packageIds = xld_client.get_all_package_version(applicationId)
 
-if stripApplications:
-    packageId = packageId.partition('/')[2]
+# if stripApplications:
+#     packageIds = packageIds.partition('/')[2]
