@@ -44,7 +44,7 @@ This plugin (2.x.x+) requires XLR 4.8
   * `numberOfContinueRetrials` (Number of times to retry a step)
   * `pollingInterval`
   * `numberOfPollingTrials`
-  
+
 + DeployTask (compatible with XL Deploy 4.5.1 and up)
   * `deploymentPackage` (ID of the deployment package to deploy e.g.: `Applications/XL Release/XLR/1.0`)
   * `environment` (ID of the environment to deploy to e.g.: `Environments/Xl Release/XL Release`)
@@ -80,6 +80,14 @@ This plugin (2.x.x+) requires XLR 4.8
   * `deploymentPackage` - ID of the package to migrate
   * `autoCreatePath` - If set the task will automatically create the path and application if it doesn't exist in the destination
 
++ Import Package
+  * `server` - Server to import a package to
+  * `username` - Override username
+  * `password` - Override password
+  * `repositoryUrl` - Url of the package
+  * `repositoryUsername` - Optional username for the repository
+  * `repositoryPassword` - Optional password for the repository
+
 + Get All Versions
   * `server` - Server to query
   * `username` - Override username
@@ -95,7 +103,7 @@ This plugin (2.x.x+) requires XLR 4.8
   * `stripApplications` - Whether to strip "Applications/" from the beginning of the returned package ID
   * `packageId` - Return value with the latest package ID
 
-+ Get Last Version Deployed 
++ Get Last Version Deployed
   * `server` - Server to query
   * `username` - Override username
   * `password` - Override password
@@ -111,12 +119,12 @@ returned package ID
   * `password` - Override password
   * `ciID` - Repo path to CI to create, e.g. `Infrastructure/myHost`
   * `ciType` - Type of CI to create, e.g. `overthere.CifsHost`
-  * `xmlDescriptor` - XML with the fields to set on the CI, e.g.  `<os>WINDOWS</os><connectionType>WINRM_NATIVE</connectionType><address>${address}</address><username>${username}</username><password>${password}</password>` 
+  * `xmlDescriptor` - XML with the fields to set on the CI, e.g.  `<os>WINDOWS</os><connectionType>WINRM_NATIVE</connectionType><address>${address}</address><username>${username}</username><password>${password}</password>`
   * or if you use Credential Objects:
   `<os>WINDOWS</os><connectionType>WINRM_NATIVE</connectionType><address>${address}</address><credential ref="Configuration/MyCredential"/>`
   * `addToEnvironment` - Switch to decide if to add the CI to an environment
   * `envID` - Environment to add the CI to.
-  
+
 + Update CI property
   * `server` - Server to query
   * `username` - Override username
@@ -136,22 +144,22 @@ returned package ID
   * `XLD Socket timeout` - Connection timeout to XL Deploy
   * `XLD User Name` - User name to connect to XL Deploy
   * `XLD Password` - Password to connect to XL Deploy
-  
+
   ![image](images/XLD_CLI_Config.png)
-  
+
 + CLI
   * `script` - CLI Script to execute
-  
-  
+
+
   ![image](images/Task_Config.png)
-  
+
 + CLI URL
   * `scriptURL` - URL to CLI Script to execute
-  
-  
+
+
   ![image](images/Task_Config2.png)
-  
-  
+
+
 ## Tiles ##
 
 + Deployed applications on an environment at a specific moment in time
