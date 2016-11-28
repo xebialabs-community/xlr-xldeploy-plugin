@@ -227,6 +227,17 @@ class XLDeployClient(object):
         fetch_task = "/deployit/package/fetch"
         self.http_request.post(fetch_task, fetch_url, contentType='application/xml')
 
+    def fetch_package2(self, url, user_name, password):
+        fetch_task = "/deployit/package/fetch2"
+        params = {
+            "url": url,
+            "user": user_name,
+            "password": password
+        }
+        response = self.http_request.post(fetch_task, json.dumps(params), contentType='application/json')
+        if not response.isSuccessful():
+            raise Exception("Failed to import package. Server return [%s], with content [%s]" % (response.status, response.response))
+
     def get_latest_package_version(self, application_id):
         query_task = "/deployit/repository/query?parent=%s&resultsPerPage=-1" % application_id
         query_task_response = self.http_request.get(query_task, contentType='application/xml')
@@ -375,6 +386,3 @@ class XLDeployClient(object):
                     if task['metadata']['taskType'] in ('UNDEPLOY'):
                         del deployed_apps[task['metadata']['application']]
         return deployed_apps
-
-
-
