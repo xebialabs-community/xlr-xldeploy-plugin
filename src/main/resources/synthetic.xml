@@ -7,7 +7,7 @@
 
 -->
 <synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    
+
     <type type="xldeploy.Task" extends="xlrelease.PythonScript" virtual="true">
         <property name="iconLocation" default="xldeploy/xldeploy-icon-black-small.png" hidden="true" />
         <property name="taskColor" hidden="true" default="#68B749" />
@@ -26,7 +26,7 @@
 
     <type type="xldeploy.DeployTask" extends="xldeploy.TaskRunningTask" description="Executes a deployment in XL Deploy">
         <property name="scriptLocation" default="xldeploy/deployTask.py" hidden="true" />
-        
+
         <property name="deploymentPackage" category="input" required="true" />
         <property name="environment" category="input" default="" required="true" />
         <property name="orchestrators" category="input" default="" required="false" />
@@ -67,6 +67,13 @@
         <property name="destinationPassword" password="true" category="input" label="Destination password" required="true" />
         <property name="deploymentPackage" category="input" label="Deployment Package" required="true" />
         <property name="autoCreatePath" category="input" kind="boolean" />
+    </type>
+
+    <type type="xldeploy.ImportTask" extends="xldeploy.Task" description="Imports a package from a remote URL">
+        <property name="scriptLocation" default="xldeploy/importTask.py" hidden="true" />
+        <property name="repositoryUrl" category="input" label="Repository URL" required="true" />
+        <property name="repositoryUsername" category="input" label="Repository username" required="false" />
+        <property name="repositoryPassword" password="true" category="input" label="Repository password" required="false" />
     </type>
 
     <type type="xldeploy.GetLatestVersionTask" extends="xldeploy.Task" description="Finds the latest Deployment Package version for an Application in XL Deploy">
@@ -134,17 +141,17 @@
         <property name="output" required="false" category="output" description="Console output of the process."/>
         <property name="err"    required="false" category="output" description="Error stream of the process."/>
     </type>
-  
+
     <type type="xldeploy.cli" extends="xldeploy.cliTask">
         <property name="script"           category="input" size="large" />
         <property name="options"          category="input" default="" />
     </type>
- 
+
     <type type="xldeploy.cliFile" extends="xldeploy.cliTask">
         <property name="script"           category="input" />
         <property name="options"          category="input" default="" />
     </type>
- 
+
     <type type="xldeploy.cliUrl" extends="xldeploy.cliTask">
         <property name="scriptUrl"        category="input" />
         <property name="urlUserName"      category="input" />
