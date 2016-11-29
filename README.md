@@ -70,14 +70,14 @@ This plugin (2.x.x+) requires XLR 4.8
   * `numberOfPollingTrials` (Number of times to poll for task status)
   * `failOnPause` (If checked task will fail if the deployment enters a STOPPED state, for example if the xld-pause-plugin is in use. Set to True by default for backwards compatibility)
 
-+ Migrate Package
++ Migrate Package (compatible with XL Deploy 6.0.0 and up)
   * `server` - Server to pull a package from
   * `username` - Override source username
   * `password` - Override source password
   * `destinationServer` - Server to pull package to
   * `destinationUsername` - Override destination username
   * `destinationPassword` - Override destination password
-  * `deploymentPackage` - ID of the package to migrate
+  * `deploymentPackage` - ID of the package to migrate (starting with `Applications/`)
   * `autoCreatePath` - If set the task will automatically create the path and application if it doesn't exist in the destination
 
 + Import Package

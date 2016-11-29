@@ -4,12 +4,21 @@
 # FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 #
 
-xld:
+xld1:
   image: xebialabs/xl-docker-demo-xld:v6.0.0.1
   volumes:
     - ~/xl-licenses:/license
   ports:
-   - "4516:4516"
+   - "14516:4516"
+
+xld2:
+  image: xebialabs/xl-docker-demo-xld:v6.0.0.1
+  volumes:
+    - ~/xl-licenses:/license
+  links:
+    - xld1
+  ports:
+   - "24516:4516"
 
 xlr:
   image: xebialabs/xlr_dev_run:v6.0.0.1
@@ -17,6 +26,7 @@ xlr:
     - ~/xl-licenses:/license
     - ./../../../../:/data
   links:
-   - xld
+   - xld1
+   - xld2
   ports:
    - "15516:5516"

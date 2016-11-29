@@ -10,7 +10,7 @@ if not xldeployServer:
     raise Exception("XL Deploy server ID must be provided")
 
 xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
-if xld_client.check_CI_exist(environment):
+if xld_client.check_ci_exist(environment):
     if date:
         data = xld_client.get_deployed_applications_for_environment(environment, date)
     else:

@@ -63,9 +63,9 @@
     <type type="xldeploy.MigrateTask" extends="xldeploy.Task" description="Migrates a package from one XL Deploy server to another XL Deploy server">
         <property name="scriptLocation" default="xldeploy/migrateTask.py" hidden="true" />
         <property name="destinationXLDeployServer" category="input" label="Destination server" referenced-type="xldeploy.Server" kind="ci"/>
-        <property name="destinationUsername" category="input" label="Destination username" required="true" />
-        <property name="destinationPassword" password="true" category="input" label="Destination password" required="true" />
-        <property name="deploymentPackage" category="input" label="Deployment Package" required="true" />
+        <property name="destinationUsername" category="input" label="Destination username" required="false" />
+        <property name="destinationPassword" password="true" category="input" label="Destination password" required="false" />
+        <property name="deploymentPackage" category="input" label="Deployment Package" required="true" description="ID of the package to migrate (starting `with `Applications/`)"/>
         <property name="autoCreatePath" category="input" kind="boolean" />
     </type>
 

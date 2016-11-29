@@ -223,10 +223,6 @@ class XLDeployClient(object):
         export_task_response = self.http_request.get(export_task, contentType='application/xml')
         return export_task_response.getResponse()
 
-    def fetch_package(self, fetch_url):
-        fetch_task = "/deployit/package/fetch"
-        self.http_request.post(fetch_task, fetch_url, contentType='application/xml')
-
     def fetch_package2(self, url, user_name, password):
         fetch_task = "/deployit/package/fetch2"
         params = {
@@ -268,7 +264,7 @@ class XLDeployClient(object):
         # End for
         return latest_package
 
-    def check_CI_exist(self, ci_id):
+    def check_ci_exist(self, ci_id):
         query_task = "/deployit/repository/exists/%s" % ci_id
         query_task_response = self.http_request.get(query_task, contentType='application/xml')
         if not query_task_response.isSuccessful():
@@ -276,7 +272,7 @@ class XLDeployClient(object):
         return query_task_response.getResponse().find('true') > 0
 
     def create_directory(self, ci_id):
-        self.create_ci(ci_id, 'udm.Directory')
+        self.create_ci(ci_id, 'core.Directory')
 
     def create_application(self, app_id):
         self.create_ci(app_id, 'udm.Application')
@@ -289,7 +285,7 @@ class XLDeployClient(object):
             raise Exception("Failed to create ci [%s]. Server return [%s], with content [%s]" % (id, response.status, response.response))
 
     def update_ci_property(self, ci_id, ci_property, property_value):
-        if self.check_CI_exist(ci_id):
+        if self.check_ci_exist(ci_id):
             ci = self.get_ci(ci_id, 'json')
             data = json.loads(ci)
             data[ci_property] = property_value
