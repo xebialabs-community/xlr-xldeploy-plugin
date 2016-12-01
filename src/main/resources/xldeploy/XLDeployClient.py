@@ -26,50 +26,48 @@ class XLDeployClient(object):
         state = task_state_xml[state_pos + state_offset:state_end_pos]
         return state
 
-    def getParameterTypeName(self, root):
+    def get_parameter_type_name(self, root):
         params = root.find("parameters")
         if params:
             for child in params:
                 return child.tag
 
-    def getParameterNames(self, parameterTypeId):
-        metadata_url = "/deployit/metadata/type/%s" % (parameterTypeId)
+    def get_parameter_names(self, parameter_type_id):
+        metadata_url = "/deployit/metadata/type/%s" % (parameter_type_id)
         metadata_response = self.http_request.get(metadata_url, contentType='application/xml')
         root = ET.fromstring(metadata_response.getResponse())
         params = root.find("property-descriptors")
         if params:
-            parameterNames = []
+            parameter_names = []
             for child in params:
-                parameterNames.append(child.get("name"))
-        return parameterNames
+                parameter_names.append(child.get("name"))
+        return parameter_names
 
-    def addParameter(self, root, parameterTypeId, parameterName, parameters):
+    def add_parameter(self, root, parameter_type_id, parameter_name, parameters):
         params = root.find("parameters")
-        propertyDict = dict(ast.literal_eval(parameters))
+        property_dict = dict(ast.literal_eval(parameters))
         if params:
             for child in params:
-                if child.tag == parameterTypeId:
-                    param = ET.SubElement(child, parameterName)
-                    param.text = propertyDict[parameterName]
+                if child.tag == parameter_type_id:
+                    param = ET.SubElement(child, parameter_name)
+                    param.text = property_dict[parameter_name]
 
     def prepare_control_task(self, control_task_name, target_ci_id, parameters=None):
-        # print 'DEBUG: prepare the control task'
         prepare_control_task_url = "/deployit/control/prepare/%s/%s" % (control_task_name, target_ci_id)
         prepare_response = self.http_request.get(prepare_control_task_url, contentType='application/xml')
+        if not prepare_response.isSuccessful():
+            raise Exception("Failed to prepare control task [%s]. Server return [%s], with content [%s]" % (target_ci_id, prepare_response.status, prepare_response.response))
         control_obj = prepare_response.getResponse()
         root = ET.fromstring(control_obj)
-        # print 'DEBUG: Control obj from /prepare', control_obj, '\n'
-        parameterTypeId = self.getParameterTypeName(root)
-        # print 'DEBUG: got parameterTypeId: %s' % parameterTypeId
-        if parameterTypeId:
-            parameterNames = self.getParameterNames(parameterTypeId)
-            # print 'Found parameter names: %s' % parameterNames
-            for parameterName in parameterNames:
-                self.addParameter(root, parameterTypeId, parameterName, parameters)
-        # print 'DEBUG: Control obj after udating parameters ', ET.tostring(root), '\n'
+        parameter_type_id = self.get_parameter_type_name(root)
+        if parameter_type_id:
+            parameter_names = self.get_parameter_names(parameter_type_id)
+            for parameterName in parameter_names:
+                self.add_parameter(root, parameter_type_id, parameterName, parameters)
         invoke_response = self.http_request.post('/deployit/control', ET.tostring(root), contentType='application/xml')
+        if not invoke_response.isSuccessful():
+            raise Exception("Failed to create control task [%s]. Server return [%s], with content [%s]" % (target_ci_id, invoke_response.status, invoke_response.response))
         task_id = invoke_response.getResponse()
-        # print 'DEBUG: Control task ID', task_id, '\n'
         return task_id
 
     def invoke_task_and_wait_for_result(self, task_id, polling_interval=10, number_of_trials=None, continue_if_step_fails=False, number_of_continue_retrials=0, fail_on_pause=True):
