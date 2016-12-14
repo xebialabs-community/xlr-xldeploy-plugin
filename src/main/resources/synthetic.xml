@@ -98,9 +98,19 @@
         <property name="applicationId" category="output" label="Application ID" />
     </type>
 
+    <type type="xldeploy.DoesCIExist" extends="xldeploy.Task" label="Does CI exist" description="Checks if a CI exists">
+        <property name="scriptLocation" default="xldeploy/doesCIExistTask.py" hidden="true" />
+
+        <property name="ciID" category="input" label="CI ID" required="true" />
+
+        <property name="exists" category="output" kind="boolean" label="CI exists" description="If True, the CI exists in XLD" />
+    </type>
+
     <type type="xldeploy.CreateCI" extends="xldeploy.Task" label="Create CI" description="Creates a CI and optionally adds it to an environment">
         <property name="scriptLocation" default="xldeploy/createCITask.py" hidden="true" />
+
         <property name="ciID" category="input" label="CI ID" required="true" />
+
         <property name="ciType" category="input" required="true" />
         <property name="xmlDescriptor" category="input" required="false" size="large" description="XML with the fields to set on the CI"/>
         <property name="addToEnvironment" category="input" kind="boolean" required="false" description="Switch to decide if to add the CI to an environment"/>
@@ -109,6 +119,7 @@
 
     <type type="xldeploy.DeleteCI" extends="xldeploy.Task" label="Delete CI" description="Deletes a CI after optionally removing it from an environment">
         <property name="scriptLocation" default="xldeploy/deleteCITask.py" hidden="true" />
+
         <property name="ciID" category="input" label="CI ID" required="true" />
         <property name="envID" category="input" label="Env ID" />
     </type>

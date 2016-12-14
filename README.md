@@ -112,7 +112,12 @@ This plugin (2.x.x+) requires XLR 4.8
 returned package ID
   * `applicationId` - Return value with the current application ID
 
-
++ Does CI exist
+  * `server` - Server to query
+  * `username` - Override username
+  * `password` - Override password
+  * `ciID` - Repo path to CI to check for existence, e.g. `Infrastructure/myHost`
+  
 + Create CI
   * `server` - Server to query
   * `username` - Override username
