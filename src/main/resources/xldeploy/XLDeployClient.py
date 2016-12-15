@@ -276,7 +276,7 @@ class XLDeployClient(object):
         self.create_ci(app_id, 'udm.Application')
 
     def create_ci(self, id, ci_type, xml_descriptor = ''):
-        xml = '<' + ci_type + ' id="' + id + '">' + xml_descriptor + '</' + ci_type + '>'
+        xml = '<' + ci_type + ' id="' + id + '">' + xml_descriptor.strip() + '</' + ci_type + '>'
         create_task = '/deployit/repository/ci/%s' % id
         response = self.http_request.post(create_task, xml, contentType='application/xml')
         if not response.isSuccessful():
