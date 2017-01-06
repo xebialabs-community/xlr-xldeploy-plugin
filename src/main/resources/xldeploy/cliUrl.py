@@ -4,7 +4,6 @@
 # FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 #
 import sys
-import java.lang.System as System
 import httplib
 import re
 
@@ -12,9 +11,6 @@ from java.lang import Exception
 from java.io import PrintWriter
 from java.io import StringWriter
 
-from com.xebialabs.overthere import CmdLine, ConnectionOptions, OperatingSystemFamily, Overthere
-from com.xebialabs.overthere.util import CapturingOverthereExecutionOutputHandler, OverthereUtils
-from com.xebialabs.overthere.local import LocalConnection, LocalFile, LocalProcess
 from xldeploy.LocalCLI import localCliScript
 
 print "Script URL = %s" % ( scriptUrl )
