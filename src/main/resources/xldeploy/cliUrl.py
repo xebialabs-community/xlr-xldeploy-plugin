@@ -11,7 +11,7 @@ from java.lang import Exception
 from java.io import PrintWriter
 from java.io import StringWriter
 
-from xldeploy.LocalCLI import localCliScript
+from xldeploy.LocalCLI import Localcliscript
 
 print "Script URL = %s" % ( scriptUrl )
 host=scriptUrl.split('//')[1].split('/')[0]
@@ -32,7 +32,7 @@ try:
    print response.status, response.reason
    script = response.read()
 
-   cliScript = localCliScript(cli['cliHome'], cli['xldHost'], cli['xldPort'], cli['xldContext'], cli['xldProxyHost'], cli['xldProxyPort'], cli['xldSocketTimeout'], cli['xldUserName'], cli['xldPassword'], script, cli['cliExecutable'], options)
+   cliScript = Localcliscript(cli['cliHome'], cli['xldHost'], cli['xldPort'], cli['xldContext'], cli['xldProxyHost'], cli['xldProxyPort'], cli['xldSocketTimeout'], cli['xldUserName'], cli['xldPassword'], script, cli['cliExecutable'], options)
    exitCode = cliScript.execute()
 
    output = cliScript.getStdout()

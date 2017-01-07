@@ -4,7 +4,7 @@
 # FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 #
 
-import sys, time, ast, re
+import time, ast, re
 import json
 
 from xml.etree import ElementTree as ET

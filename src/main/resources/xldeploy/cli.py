@@ -4,15 +4,15 @@
 # FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 #
 import sys
-from xldeploy.LocalCLI import localCliScript
+from xldeploy.LocalCLI import Localcliscript
 
-cliScript = localCliScript(cli['cliHome'], cli['xldHost'], cli['xldPort'], cli['xldContext'], cli['xldProxyHost'], cli['xldProxyPort'], cli['xldSocketTimeout'], cli['xldUserName'], cli['xldPassword'], script, cli['cliExecutable'], options)
+cliScript = Localcliscript(cli['cliHome'], cli['xldHost'], cli['xldPort'], cli['xldContext'], cli['xldProxyHost'], cli['xldProxyPort'], cli['xldSocketTimeout'], cli['xldUserName'], cli['xldPassword'], script, cli['cliExecutable'], options)
 exitCode = cliScript.execute()
 
 output = cliScript.getStdout()
 err = cliScript.getStderr()
 
-if (exitCode == 0 ):
+if exitCode == 0:
    print output
 else:
    print
@@ -21,7 +21,6 @@ else:
    print
    print "### Output:"
    print output
-   
    print "### Error stream:"
    print err
    print 
