@@ -11,10 +11,10 @@ xldClient = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, 
 deployment = None
 if xldClient.deployment_exists(deploymentPackage, environment):
     print "Upgrading deployment \n"
-    deployment = xldClient.deploymentPrepareUpdate(deploymentPackage,environment)
+    deployment = xldClient.deployment_prepare_update(deploymentPackage, environment)
 else:
     print "Creating initial deploy \n"
-    deployment = xldClient.deploymentPrepareInitial(deploymentPackage, environment)
+    deployment = xldClient.deployment_prepare_initial(deploymentPackage, environment)
 
 # Mapping deployables to the target environment
 # deploymentProperties + configure orchestrators
