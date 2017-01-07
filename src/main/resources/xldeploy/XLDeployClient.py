@@ -70,6 +70,19 @@ def get_row_data(task):
                "version": task["metadata"]["version"], "owner": task["owner"], "date": task["completionDate"]}
     return row_map
 
+
+def add_orchestrators(deployment_xml, orchestrators):
+    root = ET.fromstring(deployment_xml)
+    if orchestrators:
+        params = root.find(".//orchestrator")
+        params.clear()
+        orchs = orchestrators.split(",")
+        for orch in orchs:
+            orchestrator = ET.SubElement(params, 'value')
+            orchestrator.text = orch.strip()
+    return ET.tostring(root)
+
+
 class XLDeployClient(object):
     def __init__(self, http_connection, username=None, password=None):
         self.http_request = HttpRequest(http_connection, username, password)
@@ -157,25 +170,14 @@ class XLDeployClient(object):
         deployment_prepare_initial_response = self.http_request.get(deployment_prepare_initial_url, contentType='application/xml')
         return deployment_prepare_initial_response.getResponse()
 
-    def add_orchestrators(self, deployment_xml, orchestrators):
-        root = ET.fromstring(deployment_xml)
-        if orchestrators:
-            params = root.find(".//orchestrator")
-            params.clear()
-            orchs = orchestrators.split(",")
-            for orch in orchs:
-                orchestrator = ET.SubElement(params, 'value')
-                orchestrator.text = orch.strip()
-        return ET.tostring(root)
-
     def deployment_prepare_deployeds(self, deployment, orchestrators=None, deployed_application_properties=None, deployed_properties=None):
         deployment_prepare_deployeds = "/deployit/deployment/prepare/deployeds"
         deployment_prepare_deployeds_response = self.http_request.post(deployment_prepare_deployeds, deployment, contentType='application/xml')
         if not deployment_prepare_deployeds_response.isSuccessful():
             raise Exception("Failed to prepare deployeds. Server return [%s], with content [%s]" % (deployment_prepare_deployeds_response.status, deployment_prepare_deployeds_response.response))
         deployment_xml = deployment_prepare_deployeds_response.getResponse()
-        deployment_xml = self.add_orchestrators(deployment_xml, orchestrators)
-        deployment_xml = self.set_deployed_application_properties(deployment_xml, deployed_application_properties)
+        deployment_xml = add_orchestrators(deployment_xml, orchestrators)
+        deployment_xml = set_deployed_application_properties(deployment_xml, deployed_application_properties)
         deployment_xml = set_deployed_properties(deployment_xml, deployed_properties)
         return deployment_xml
 
