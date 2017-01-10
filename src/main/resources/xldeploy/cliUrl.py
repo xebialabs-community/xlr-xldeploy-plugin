@@ -13,14 +13,14 @@ from java.io import StringWriter
 
 from xldeploy.LocalCLI import Localcliscript
 
-print "Script URL = %s" % ( scriptUrl )
+print "Script URL = %s" % scriptUrl
 host=scriptUrl.split('//')[1].split('/')[0]
-print "Host       = %s" % ( host )
-regex='^.*%s' % ( host )
+print "Host       = %s" % host
+regex='^.*%s' % host
 uri=re.sub( regex, '', scriptUrl )
-print "URI        = %s" % ( uri )
+print "URI        = %s" % uri
 try:
-   if ( scriptUrl.startswith('https') ):
+   if scriptUrl.startswith('https'):
        print "Make HTTPS connection"
        URLSource = httplib.HTTPSConnection( host )
    else:
@@ -47,7 +47,7 @@ finally:
       URLSource.close()
 # End try
 
-if (exitCode == 0 ):
+if exitCode == 0:
    print output
 else:
    print
