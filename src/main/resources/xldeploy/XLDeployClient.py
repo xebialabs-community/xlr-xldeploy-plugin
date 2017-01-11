@@ -121,16 +121,16 @@ class XLDeployClient(object):
         return task_id
 
     def invoke_task_and_wait_for_result(self, task_id, polling_interval=10, number_of_trials=None, continue_if_step_fails=False, number_of_continue_retrials=0, fail_on_pause=True):
-        start_task_url = "/deployit/task/%s/start" % (task_id)
+        start_task_url = "/deployit/task/%s/start" % task_id
         self.http_request.post(start_task_url, '', contentType='application/xml')
         trial = 0
         while not number_of_trials or trial < number_of_trials:
             trial += 1
-            get_task_status_url = "/deployit/task/%s" % (task_id)
+            get_task_status_url = "/deployit/task/%s" % task_id
             task_state_response = self.http_request.get(get_task_status_url, contentType='application/xml')
             task_state_xml = task_state_response.getResponse()
             status = extract_state(task_state_xml)
-            print 'Task', task_id, 'now in state', status, '\n'
+            print 'Task [%s] now in state [%s] \n' % (task_id, status)
             if fail_on_pause:
                 if status in ('FAILED', 'ABORTED', 'STOPPED') and continue_if_step_fails and number_of_continue_retrials > 0:
                     status = self.invoke_task_and_wait_for_result(task_id, polling_interval, number_of_trials, continue_if_step_fails, number_of_continue_retrials - 1)
@@ -274,6 +274,7 @@ class XLDeployClient(object):
         response = self.http_request.post(create_task, xml, contentType='application/xml')
         if not response.isSuccessful():
             raise Exception("Failed to create ci [%s]. Server return [%s], with content [%s]" % (id, response.status, response.response))
+        print "Created ci [%s] and received response [%s]" % (id, response.response)
 
     def update_ci_property(self, ci_id, ci_property, property_value):
         if self.check_ci_exist(ci_id):
