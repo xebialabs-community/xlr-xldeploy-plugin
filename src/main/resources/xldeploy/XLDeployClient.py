@@ -59,7 +59,7 @@ def override_deployed_properties(deployment_xml, deployed_properties):
             pkey_xml.text = deployeds_properties_dict[key]
     return ET.tostring(root)
 
-# Deprecated, should be removed starting version 3.1.0
+# Deprecated, should be removed starting version 3.0.0
 def set_deployed_properties(deployment_xml, deployed_properties):
     root = ET.fromstring(deployment_xml)
     if deployed_properties:
@@ -189,7 +189,7 @@ class XLDeployClient(object):
         deployment_xml = add_orchestrators(deployment_xml, orchestrators)
         deployment_xml = set_deployed_application_properties(deployment_xml, deployed_application_properties)
         deployment_xml = override_deployed_properties(deployment_xml, overrideDeployedProps)
-        deployment_xml = set_deployed_properties(deployment_xml, deployed_properties) # Deprecated. Should be remove starting 3.1.0
+        deployment_xml = set_deployed_properties(deployment_xml, deployed_properties) # Deprecated. Should be remove starting 3.0.0
         return deployment_xml
 
     def validate(self, deployment):
