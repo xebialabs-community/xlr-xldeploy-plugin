@@ -49,7 +49,17 @@ def set_deployed_application_properties(deployment_xml, deployed_application_pro
             pkey_xml.text = deployeds_application_properties_dict[key]
     return ET.tostring(root)
 
+# deployed_properties must be a string, as the map_string_string type has a bug when putting the '=' in the key.
+def override_deployed_properties(deployment_xml, deployed_properties):
+    root = ET.fromstring(deployment_xml)
+    if deployed_properties:
+        deployeds_properties_dict = dict(ast.literal_eval(deployed_properties))
+        for key in deployeds_properties_dict:
+            pkey_xml = root.find(key)
+            pkey_xml.text = deployeds_properties_dict[key]
+    return ET.tostring(root)
 
+# Deprecated, should be removed starting version 3.1.0
 def set_deployed_properties(deployment_xml, deployed_properties):
     root = ET.fromstring(deployment_xml)
     if deployed_properties:
@@ -170,7 +180,7 @@ class XLDeployClient(object):
         deployment_prepare_initial_response = self.http_request.get(deployment_prepare_initial_url, contentType='application/xml')
         return deployment_prepare_initial_response.getResponse()
 
-    def deployment_prepare_deployeds(self, deployment, orchestrators=None, deployed_application_properties=None, deployed_properties=None):
+    def deployment_prepare_deployeds(self, deployment, orchestrators=None, deployed_application_properties=None, overrideDeployedProps=None, deployed_properties=None):
         deployment_prepare_deployeds = "/deployit/deployment/prepare/deployeds"
         deployment_prepare_deployeds_response = self.http_request.post(deployment_prepare_deployeds, deployment, contentType='application/xml')
         if not deployment_prepare_deployeds_response.isSuccessful():
@@ -178,7 +188,8 @@ class XLDeployClient(object):
         deployment_xml = deployment_prepare_deployeds_response.getResponse()
         deployment_xml = add_orchestrators(deployment_xml, orchestrators)
         deployment_xml = set_deployed_application_properties(deployment_xml, deployed_application_properties)
-        deployment_xml = set_deployed_properties(deployment_xml, deployed_properties)
+        deployment_xml = override_deployed_properties(deployment_xml, overrideDeployedProps)
+        deployment_xml = set_deployed_properties(deployment_xml, deployed_properties) # Deprecated. Should be remove starting 3.1.0
         return deployment_xml
 
     def validate(self, deployment):

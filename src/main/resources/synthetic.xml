@@ -31,7 +31,8 @@
         <property name="environment" category="input" default="" required="true" />
         <property name="orchestrators" category="input" default="" required="false" />
         <property name="deployedApplicationProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
-        <property name="deployedProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
+        <property name="overrideDeployedProps" category="input" default="" label="Deployed Properties" kind="string" required="false" description="A dictionary with key value pairs. The key being an xpath expression, the value overriding the deployed properties." />
+        <property name="deployedProperties" category="input" default="" label="Deployed Props (deprecated)" required="false" description="A dictionary with key value pairs - DEPRECATED" />
         <property name="rollbackOnError" category="input" kind="boolean" required="false" description="Perform rollback in XL Deploy if the task fails."/>
         <property name="cancelOnError" category="input" kind="boolean" required="false" label="Cancel If Not Rollbacking" default="true" description="Cancel the task in XL Deploy if the tasks fails and Rollback On Error is not selected."/>
         <property name="failOnPause" category="input" kind="boolean" required="false" default="true" />

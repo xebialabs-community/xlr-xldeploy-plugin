@@ -19,7 +19,7 @@ else:
 # Mapping deployables to the target environment
 # deploymentProperties + configure orchestrators
 print "Mapping all deployables \n"
-deployment = xldClient.deployment_prepare_deployeds(deployment, orchestrators, deployedApplicationProperties, deployedProperties)
+deployment = xldClient.deployment_prepare_deployeds(deployment, orchestrators, deployedApplicationProperties, overrideDeployedProps, deployedProperties)
 
 print"Validating the deployment\n"
 validation_messages = xldClient.validate(deployment)

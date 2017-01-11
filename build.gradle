@@ -3,7 +3,7 @@ plugins {
   id "com.xebialabs.xl.docker" version "1.0.0"
 }
 
-version = "2.6.2"
+version = "3.0.0"
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -22,4 +22,4 @@ license {
   header rootProject.file('src/main/license/xebialabs_community.license')
   strictCheck false
 }
-1
+
