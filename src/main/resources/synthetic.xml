@@ -11,7 +11,6 @@
     <type type="xldeploy.Task" extends="xlrelease.PythonScript" virtual="true">
         <property name="iconLocation" default="xldeploy/xldeploy-icon-black-small.png" hidden="true" />
         <property name="taskColor" hidden="true" default="#68B749" />
-
         <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
         <property name="username" category="input" required="false" />
         <property name="password" password="true" category="input" required="false" />
@@ -41,16 +40,13 @@
 
     <type type="xldeploy.UndeployTask" extends="xldeploy.TaskRunningTask" description="Executes an undeployment in XL Deploy">
         <property name="scriptLocation" default="xldeploy/undeployTask.py" hidden="true" />
-
         <property name="deployedApplication" category="input" label="Deployed Application" required="true" description="Name of the deployed application you want to undeploy (Only the name, without Environments, etc...)" />
         <property name="environment" category="input" label="Environment" default="" required="true" description="Environment you want to undeploy from (fully qualified starting with Environments/...)" />
-
         <property name="orchestrators" category="input" label="Orchestrators" default="" required="false" />
         <property name="deployedApplicationProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
         <property name="rollbackOnError" category="input" kind="boolean" required="false" description="Perform rollback in XL Deploy if the task fails."/>
         <property name="cancelOnError" category="input" kind="boolean" required="false" label="Cancel If Not Rollbacking" default="true" description="Cancel the task in XL Deploy if the tasks fails and Rollback On Error is not selected."/>
         <property name="failOnPause" category="input" kind="boolean" required="false" default="true" />
-
     </type>
 
     <type type="xldeploy.ControlTask" extends="xldeploy.TaskRunningTask" description="Invokes a control task on an XL Deploy Configuration Item">
@@ -109,9 +105,7 @@
 
     <type type="xldeploy.CreateCI" extends="xldeploy.Task" label="Create CI" description="Creates a CI and optionally adds it to an environment">
         <property name="scriptLocation" default="xldeploy/createCITask.py" hidden="true" />
-
         <property name="ciID" category="input" label="CI ID" required="true" />
-
         <property name="ciType" category="input" required="true" />
         <property name="xmlDescriptor" category="input" required="false" size="large" description="XML with the fields to set on the CI"/>
         <property name="addToEnvironment" category="input" kind="boolean" required="false" description="Switch to decide if to add the CI to an environment"/>
@@ -149,7 +143,6 @@
         <property name="iconLocation" default="xldeploy/xldeploy-icon-black-small.png" hidden="true" />
         <property name="taskColor" hidden="true" default="#68B749" />
         <property name="cli" kind="ci" referenced-type="xldeploy.CliConfig" required="true" category="input" />
-
         <property name="output" required="false" category="output" description="Console output of the process."/>
         <property name="err"    required="false" category="output" description="Error stream of the process."/>
     </type>
@@ -173,17 +166,13 @@
 
     <type type="xldeploy.Server" extends="configuration.HttpConnection"/>
 
-
     <type type="xldeploy.XLDVersionsTile" label="XLD Version Tile" extends="xlrelease.Tile">
         <property name="uri" hidden="true" default="include/XLDVersionsTile/xld-versions-tile-view.html" />
         <property name="title" description="Tile title" default="Deployed versions Summary"/>
-
         <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
         <property name="username" category="input" required="false" />
         <property name="password" password="true" category="input" required="false" />
         <property name="environment" category="input" default="" description="Name of the environment to check for deployed applications (For example: Environments/TST)" required="true" />
         <property name="date" category="input" default="" required="false" description="Date in format yyyy-MM-dd. If not provided, latest deployed applications are shown."/>
-
     </type>
-
 </synthetic>
