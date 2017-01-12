@@ -118,6 +118,7 @@ returned package ID
   * `username` - Override username
   * `password` - Override password
   * `ciID` - Repo path to CI to check for existence, e.g. `Infrastructure/myHost`
+  * `throwOnFail` - Boolean - If True, a False return will Fail the task rather than just returning False.
   
 + Create CI
   * `server` - Server to query
