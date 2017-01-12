@@ -51,7 +51,6 @@
 
     <type type="xldeploy.ControlTask" extends="xldeploy.TaskRunningTask" description="Invokes a control task on an XL Deploy Configuration Item">
         <property name="scriptLocation" default="xldeploy/controlTask.py" hidden="true" />
-
         <property name="ciId" category="input" label="Configuration Item ID" required="true" />
         <property name="controlTaskName" category="input" default="" required="false" />
         <property name="parameters" category="input" default="" required="false" description="A dictionary with key value pairs" />
@@ -91,13 +90,11 @@
         <property name="scriptLocation" default="xldeploy/getLatestDeployedTask.py" hidden="true" />
         <property name="environmentId" category="input" label="Environment ID" required="true" />
         <property name="applicationName" category="input" label="Application Name" required="true" />
-
         <property name="applicationId" category="output" label="Application ID" />
     </type>
 
     <type type="xldeploy.DoesCIExist" extends="xldeploy.Task" label="Does CI exist" description="Checks if a CI exists">
         <property name="scriptLocation" default="xldeploy/doesCIExistTask.py" hidden="true" />
-
         <property name="ciID" category="input" label="CI ID" required="true" />
         <property name="throwOnFail" category="input" kind="boolean" label="Throw on Fail" description="If True, the Task will fail if the CI doesn't exist" />
         <property name="exists" category="output" kind="boolean" label="CI exists" description="If True, the CI exists in XLD" />
@@ -114,7 +111,6 @@
 
     <type type="xldeploy.DeleteCI" extends="xldeploy.Task" label="Delete CI" description="Deletes a CI after optionally removing it from an environment">
         <property name="scriptLocation" default="xldeploy/deleteCITask.py" hidden="true" />
-
         <property name="ciID" category="input" label="CI ID" required="true" />
         <property name="envID" category="input" label="Env ID" />
     </type>
