@@ -7,7 +7,7 @@
 
 -->
 <synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    
+
     <type type="xldeploy.Task" extends="xlrelease.PythonScript" virtual="true">
         <property name="iconLocation" default="xldeploy/xldeploy-icon-black-small.png" hidden="true" />
         <property name="taskColor" hidden="true" default="#68B749" />
@@ -26,12 +26,13 @@
 
     <type type="xldeploy.DeployTask" extends="xldeploy.TaskRunningTask" description="Executes a deployment in XL Deploy">
         <property name="scriptLocation" default="xldeploy/deployTask.py" hidden="true" />
-        
+
         <property name="deploymentPackage" category="input" required="true" />
         <property name="environment" category="input" default="" required="true" />
         <property name="orchestrators" category="input" default="" required="false" />
         <property name="deployedApplicationProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
-        <property name="deployedProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
+        <property name="overrideDeployedProps" category="input" default="" label="Deployed Properties" kind="string" required="false" description="A dictionary with key value pairs. The key being an xpath expression, the value overriding the deployed properties." />
+        <property name="deployedProperties" category="input" default="" label="Deployed Props (deprecated)" required="false" description="A dictionary with key value pairs - DEPRECATED" />
         <property name="rollbackOnError" category="input" kind="boolean" required="false" description="Perform rollback in XL Deploy if the task fails."/>
         <property name="cancelOnError" category="input" kind="boolean" required="false" label="Cancel If Not Rollbacking" default="true" description="Cancel the task in XL Deploy if the tasks fails and Rollback On Error is not selected."/>
         <property name="failOnPause" category="input" kind="boolean" required="false" default="true" />
@@ -63,10 +64,17 @@
     <type type="xldeploy.MigrateTask" extends="xldeploy.Task" description="Migrates a package from one XL Deploy server to another XL Deploy server">
         <property name="scriptLocation" default="xldeploy/migrateTask.py" hidden="true" />
         <property name="destinationXLDeployServer" category="input" label="Destination server" referenced-type="xldeploy.Server" kind="ci"/>
-        <property name="destinationUsername" category="input" label="Destination username" required="true" />
-        <property name="destinationPassword" password="true" category="input" label="Destination password" required="true" />
-        <property name="deploymentPackage" category="input" label="Deployment Package" required="true" />
+        <property name="destinationUsername" category="input" label="Destination username" required="false" />
+        <property name="destinationPassword" password="true" category="input" label="Destination password" required="false" />
+        <property name="deploymentPackage" category="input" label="Deployment Package" required="true" description="ID of the package to migrate (starting `with `Applications/`)"/>
         <property name="autoCreatePath" category="input" kind="boolean" />
+    </type>
+
+    <type type="xldeploy.ImportTask" extends="xldeploy.Task" description="Imports a package from a remote URL">
+        <property name="scriptLocation" default="xldeploy/importTask.py" hidden="true" />
+        <property name="repositoryUrl" category="input" label="Repository URL" required="true" />
+        <property name="repositoryUsername" category="input" label="Repository username" required="false" />
+        <property name="repositoryPassword" password="true" category="input" label="Repository password" required="false" />
     </type>
 
     <type type="xldeploy.GetLatestVersionTask" extends="xldeploy.Task" description="Finds the latest Deployment Package version for an Application in XL Deploy">
@@ -74,6 +82,13 @@
         <property name="applicationId" category="input" label="Application ID" required="true" />
         <property name="stripApplications" category="input" kind="boolean" />
         <property name="packageId" category="output" label="Package ID" />
+    </type>
+
+    <type type="xldeploy.GetAllVersionsTask" extends="xldeploy.Task" description="Finds all Deployment Package versions for an Application in XL Deploy">
+        <property name="scriptLocation" default="xldeploy/getAllVersionsTask.py" hidden="true" />
+        <property name="applicationId" category="input" label="Application ID" required="true" />
+        <!-- <property name="stripApplications" category="input" kind="boolean" /> -->
+        <property name="packageIds" category="output" kind="list_of_string" label="Package IDs" />
     </type>
 
     <type type="xldeploy.GetLastVersionDeployedTask" extends="xldeploy.Task" description="Finds the latest version of the Package deployed in XL Deploy">
@@ -84,9 +99,19 @@
         <property name="applicationId" category="output" label="Application ID" />
     </type>
 
+    <type type="xldeploy.DoesCIExist" extends="xldeploy.Task" label="Does CI exist" description="Checks if a CI exists">
+        <property name="scriptLocation" default="xldeploy/doesCIExistTask.py" hidden="true" />
+
+        <property name="ciID" category="input" label="CI ID" required="true" />
+
+        <property name="exists" category="output" kind="boolean" label="CI exists" description="If True, the CI exists in XLD" />
+    </type>
+
     <type type="xldeploy.CreateCI" extends="xldeploy.Task" label="Create CI" description="Creates a CI and optionally adds it to an environment">
         <property name="scriptLocation" default="xldeploy/createCITask.py" hidden="true" />
+
         <property name="ciID" category="input" label="CI ID" required="true" />
+
         <property name="ciType" category="input" required="true" />
         <property name="xmlDescriptor" category="input" required="false" size="large" description="XML with the fields to set on the CI"/>
         <property name="addToEnvironment" category="input" kind="boolean" required="false" description="Switch to decide if to add the CI to an environment"/>
@@ -95,6 +120,7 @@
 
     <type type="xldeploy.DeleteCI" extends="xldeploy.Task" label="Delete CI" description="Deletes a CI after optionally removing it from an environment">
         <property name="scriptLocation" default="xldeploy/deleteCITask.py" hidden="true" />
+
         <property name="ciID" category="input" label="CI ID" required="true" />
         <property name="envID" category="input" label="Env ID" />
     </type>
@@ -127,17 +153,17 @@
         <property name="output" required="false" category="output" description="Console output of the process."/>
         <property name="err"    required="false" category="output" description="Error stream of the process."/>
     </type>
-  
+
     <type type="xldeploy.cli" extends="xldeploy.cliTask">
         <property name="script"           category="input" size="large" />
         <property name="options"          category="input" default="" />
     </type>
- 
+
     <type type="xldeploy.cliFile" extends="xldeploy.cliTask">
         <property name="script"           category="input" />
         <property name="options"          category="input" default="" />
     </type>
- 
+
     <type type="xldeploy.cliUrl" extends="xldeploy.cliTask">
         <property name="scriptUrl"        category="input" />
         <property name="urlUserName"      category="input" />
@@ -146,4 +172,18 @@
     </type>
 
     <type type="xldeploy.Server" extends="configuration.HttpConnection"/>
+
+
+    <type type="xldeploy.XLDVersionsTile" label="XLD Version Tile" extends="xlrelease.Tile">
+        <property name="uri" hidden="true" default="include/XLDVersionsTile/xld-versions-tile-view.html" />
+        <property name="title" description="Tile title" default="Deployed versions Summary"/>
+
+        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
+        <property name="username" category="input" required="false" />
+        <property name="password" password="true" category="input" required="false" />
+        <property name="environment" category="input" default="" description="Name of the environment to check for deployed applications (For example: Environments/TST)" required="true" />
+        <property name="date" category="input" default="" required="false" description="Date in format yyyy-MM-dd. If not provided, latest deployed applications are shown."/>
+
+    </type>
+
 </synthetic>

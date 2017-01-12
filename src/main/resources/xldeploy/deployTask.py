@@ -11,15 +11,15 @@ xldClient = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, 
 deployment = None
 if xldClient.deployment_exists(deploymentPackage, environment):
     print "Upgrading deployment \n"
-    deployment = xldClient.deploymentPrepareUpdate(deploymentPackage,environment)
+    deployment = xldClient.deployment_prepare_update(deploymentPackage, environment)
 else:
     print "Creating initial deploy \n"
-    deployment = xldClient.deploymentPrepareInitial(deploymentPackage, environment)
+    deployment = xldClient.deployment_prepare_initial(deploymentPackage, environment)
 
 # Mapping deployables to the target environment
 # deploymentProperties + configure orchestrators
 print "Mapping all deployables \n"
-deployment = xldClient.deployment_prepare_deployeds(deployment, orchestrators, deployedApplicationProperties, deployedProperties)
+deployment = xldClient.deployment_prepare_deployeds(deployment, orchestrators, deployedApplicationProperties, overrideDeployedProps, deployedProperties)
 
 print"Validating the deployment\n"
 validation_messages = xldClient.validate(deployment)

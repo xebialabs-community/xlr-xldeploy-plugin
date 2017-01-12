@@ -4,7 +4,6 @@
 # FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 #
 
-import sys
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
 xldClient = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)

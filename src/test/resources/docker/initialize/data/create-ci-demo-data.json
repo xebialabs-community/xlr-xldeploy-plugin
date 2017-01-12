@@ -1,0 +1,181 @@
+/**
+ * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS
+ * FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
+ */
+[
+    {
+        "id": "Applications\/Release814320823",
+        "type": "xlrelease.Release",
+        "$createdBy": "admin",
+        "$createdAt": "2016-12-15T20:08:30.490+0000",
+        "$lastModifiedBy": "admin",
+        "$lastModifiedAt": "2016-12-15T20:12:14.268+0000",
+        "title": "create ci test",
+        "scheduledStartDate": "2016-12-15T17:00:00Z",
+        "flagStatus": "OK",
+        "maxConcurrentReleases": 100,
+        "releaseTriggers": [],
+        "teams": [
+            {
+                "id": "Applications\/Release814320823\/Team527096634",
+                "type": "xlrelease.Team",
+                "teamName": "Release Admin",
+                "members": [],
+                "roles": [],
+                "permissions": [
+                    "release#edit",
+                    "release#start",
+                    "release#reassign_task",
+                    "template#view",
+                    "release#edit_security",
+                    "release#abort",
+                    "release#view",
+                    "release#edit_task"
+                ]
+            },
+            {
+                "id": "Applications\/Release814320823\/Team52387389",
+                "type": "xlrelease.Team",
+                "teamName": "Template Owner",
+                "members": [
+                    "admin"
+                ],
+                "roles": [],
+                "permissions": [
+                    "template#edit",
+                    "template#view",
+                    "template#edit_triggers",
+                    "template#edit_security",
+                    "template#create_release"
+                ]
+            }
+        ],
+        "memberViewers": [],
+        "roleViewers": [],
+        "attachments": [],
+        "phases": [
+            {
+                "id": "Applications\/Release814320823\/Phase418065522",
+                "type": "xlrelease.Phase",
+                "$createdBy": "admin",
+                "$createdAt": "2016-12-15T20:08:30.570+0000",
+                "$lastModifiedBy": "admin",
+                "$lastModifiedAt": "2016-12-15T20:08:59.314+0000",
+                "title": "New Phase",
+                "flagStatus": "OK",
+                "tasks": [
+                    {
+                        "id": "Applications\/Release814320823\/Phase418065522\/Task481530066",
+                        "type": "xlrelease.CustomScriptTask",
+                        "$createdBy": "admin",
+                        "$createdAt": "2016-12-15T20:08:53.272+0000",
+                        "$lastModifiedBy": "admin",
+                        "$lastModifiedAt": "2016-12-15T20:11:52.710+0000",
+                        "title": "create ci without space",
+                        "flagStatus": "OK",
+                        "comments": [],
+                        "container": "Applications\/Release814320823\/Phase418065522",
+                        "attachments": [],
+                        "status": "PLANNED",
+                        "overdueNotified": false,
+                        "waitForScheduledStartDate": true,
+                        "hasBeenFlagged": false,
+                        "hasBeenDelayed": false,
+                        "failuresCount": 0,
+                        "variableMapping": {},
+                        "tags": [],
+                        "pythonScript": {
+                            "id": "Applications\/Release814320823\/Phase418065522\/Task481530066\/PythonScript",
+                            "type": "xldeploy.CreateCI",
+                            "$createdBy": "admin",
+                            "$createdAt": "2016-12-15T20:08:53.272+0000",
+                            "$lastModifiedBy": "admin",
+                            "$lastModifiedAt": "2016-12-15T20:11:52.711+0000",
+                            "customScriptTask": "Applications\/Release814320823\/Phase418065522\/Task481530066",
+                            "xldeployServer": "Configuration\/Custom\/xld1",
+                            "ciID": "Applications\/Test5-Random-Numbers",
+                            "ciType": "udm.Application",
+                            "xmlDescriptor": "<lastVersion>1.0</lastVersion>",
+                            "addToEnvironment": false
+                        }
+                    },
+                    {
+                        "id": "Applications\/Release814320823\/Phase418065522\/Task319758187",
+                        "type": "xlrelease.CustomScriptTask",
+                        "$createdBy": "admin",
+                        "$createdAt": "2016-12-15T20:08:53.272+0000",
+                        "$lastModifiedBy": "admin",
+                        "$lastModifiedAt": "2016-12-15T20:12:14.247+0000",
+                        "title": "create ci with space",
+                        "flagStatus": "OK",
+                        "comments": [],
+                        "container": "Applications\/Release814320823\/Phase418065522",
+                        "attachments": [],
+                        "status": "PLANNED",
+                        "overdueNotified": false,
+                        "waitForScheduledStartDate": true,
+                        "hasBeenFlagged": false,
+                        "hasBeenDelayed": false,
+                        "failuresCount": 0,
+                        "variableMapping": {},
+                        "tags": [],
+                        "pythonScript": {
+                            "id": "Applications\/Release814320823\/Phase418065522\/Task319758187\/PythonScript",
+                            "type": "xldeploy.CreateCI",
+                            "$createdBy": "admin",
+                            "$createdAt": "2016-12-15T20:08:53.272+0000",
+                            "$lastModifiedBy": "admin",
+                            "$lastModifiedAt": "2016-12-15T20:12:14.247+0000",
+                            "customScriptTask": "Applications\/Release814320823\/Phase418065522\/Task319758187",
+                            "xldeployServer": "Configuration\/Custom\/xld1",
+                            "ciID": "Applications\/Test5-Random-Numbers2",
+                            "ciType": "udm.Application",
+                            "xmlDescriptor": "  <lastVersion>1.0</lastVersion>  ",
+                            "addToEnvironment": false
+                        }
+                    },
+                    {
+                        "id": "Applications\/Release814320823\/Phase418065522\/Task520244086",
+                        "type": "xlrelease.Task",
+                        "$createdBy": "admin",
+                        "$createdAt": "2016-12-15T20:08:38.796+0000",
+                        "$lastModifiedBy": "admin",
+                        "$lastModifiedAt": "2016-12-15T20:08:38.796+0000",
+                        "title": "wait to finish",
+                        "flagStatus": "OK",
+                        "comments": [],
+                        "container": "Applications\/Release814320823\/Phase418065522",
+                        "attachments": [],
+                        "status": "PLANNED",
+                        "overdueNotified": false,
+                        "waitForScheduledStartDate": true,
+                        "hasBeenFlagged": false,
+                        "hasBeenDelayed": false,
+                        "failuresCount": 0,
+                        "variableMapping": {},
+                        "tags": []
+                    }
+                ],
+                "release": "Applications\/Release814320823",
+                "status": "PLANNED"
+            }
+        ],
+        "queryableStartDate": "2016-12-15T17:00:00Z",
+        "realFlagStatus": "OK",
+        "status": "TEMPLATE",
+        "tags": [],
+        "variables": [],
+        "calendarPublished": false,
+        "tutorial": false,
+        "abortOnFailure": false,
+        "allowConcurrentReleasesFromTrigger": true,
+        "runningTriggeredReleasesCount": 0,
+        "createdFromTrigger": false,
+        "extensions": [],
+        "$metadata": {
+            "globalVariables": null,
+            "security": null
+        }
+    }
+]

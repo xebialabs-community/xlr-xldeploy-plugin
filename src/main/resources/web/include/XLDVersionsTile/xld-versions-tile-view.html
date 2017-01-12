@@ -1,0 +1,25 @@
+<!--
+
+    THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS
+    FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
+
+-->
+
+<div data-ng-controller="xldeploy.XLDVersionsTileViewController as xldVersionsTile" class="dashboard-tile">
+
+  <div class="no-results" ng-if="xldVersionsTile.invalidEnvironment">
+    Environment not found
+  </div>
+  <div class="no-results" ng-if="!xldVersionsTile.invalidEnvironment && xldVersionsTile.deployedAppsCounter === 0">
+    There are no Deployed Applications found
+  </div>
+  <div ng-if="!xldVersionsTile.invalidEnvironment && !xldVersionsTile.loading && xldVersionsTile.deployedAppsCounter > 0">
+    <div data-ng-if="xldVersionsTile.summaryGridOptions" ui-grid="xldVersionsTile.summaryGridOptions" class="grid-container" />
+  </div>
+
+  <div ng-if="xldVersionsTile.loading" class="spinner" style="text-align: center">
+    <img src="static/@project.version@/img/big-ajax-loader.gif" alt="Loading..."/>
+  </div>
+
+</div>

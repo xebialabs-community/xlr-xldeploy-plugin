@@ -4,7 +4,6 @@
 # FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 #
 import sys
-import java.lang.System as System
 import httplib
 import re
 
@@ -12,19 +11,16 @@ from java.lang import Exception
 from java.io import PrintWriter
 from java.io import StringWriter
 
-from com.xebialabs.overthere import CmdLine, ConnectionOptions, OperatingSystemFamily, Overthere
-from com.xebialabs.overthere.util import CapturingOverthereExecutionOutputHandler, OverthereUtils
-from com.xebialabs.overthere.local import LocalConnection, LocalFile, LocalProcess
-from xldeploy.LocalCLI import localCliScript
+from xldeploy.LocalCLI import Localcliscript
 
-print "Script URL = %s" % ( scriptUrl )
+print "Script URL = %s" % scriptUrl
 host=scriptUrl.split('//')[1].split('/')[0]
-print "Host       = %s" % ( host )
-regex='^.*%s' % ( host )
+print "Host       = %s" % host
+regex='^.*%s' % host
 uri=re.sub( regex, '', scriptUrl )
-print "URI        = %s" % ( uri )
+print "URI        = %s" % uri
 try:
-   if ( scriptUrl.startswith('https') ):
+   if scriptUrl.startswith('https'):
        print "Make HTTPS connection"
        URLSource = httplib.HTTPSConnection( host )
    else:
@@ -36,7 +32,7 @@ try:
    print response.status, response.reason
    script = response.read()
 
-   cliScript = localCliScript(cli['cliHome'], cli['xldHost'], cli['xldPort'], cli['xldContext'], cli['xldProxyHost'], cli['xldProxyPort'], cli['xldSocketTimeout'], cli['xldUserName'], cli['xldPassword'], script, cli['cliExecutable'], options)
+   cliScript = Localcliscript(cli['cliHome'], cli['xldHost'], cli['xldPort'], cli['xldContext'], cli['xldProxyHost'], cli['xldProxyPort'], cli['xldSocketTimeout'], cli['xldUserName'], cli['xldPassword'], script, cli['cliExecutable'], options)
    exitCode = cliScript.execute()
 
    output = cliScript.getStdout()
@@ -51,7 +47,7 @@ finally:
       URLSource.close()
 # End try
 
-if (exitCode == 0 ):
+if exitCode == 0:
    print output
 else:
    print

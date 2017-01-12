@@ -32,7 +32,7 @@ permission java.io.FilePermission "plugins/*", "read";
 permission java.io.FilePermission "conf/logback.xml", "read";
 ```
 
-This plugin (2.x.x+) requires XLR 4.8
+This plugin (3.x.x+) requires XLR 4.8
 
 ## Types ##
 
@@ -44,13 +44,14 @@ This plugin (2.x.x+) requires XLR 4.8
   * `numberOfContinueRetrials` (Number of times to retry a step)
   * `pollingInterval`
   * `numberOfPollingTrials`
-  
+
 + DeployTask (compatible with XL Deploy 4.5.1 and up)
   * `deploymentPackage` (ID of the deployment package to deploy e.g.: `Applications/XL Release/XLR/1.0`)
   * `environment` (ID of the environment to deploy to e.g.: `Environments/Xl Release/XL Release`)
   * `orchestrators` (Comma separated list of orchestrators to be used: `parallel-by-deployment-group, parallel-by-container`)
   * `deployedApplicationProperties` (Dictionary containing all the deployed application properties to be set (except orchestrators). e.g.: `{"maxContainersInParallel": "2"}`)
-  * `deployedProperties` (Dictionary containing all the properties to be set. Remark: Each key is an xlrTag in the deployeds - See also [https://github.com/xebialabs-community/xld-xlrelease-plugin](https://github.com/xebialabs-community/xld-xlrelease-plugin), e.g.: `{"Gate1": "{'taskId':'1234567890'}"}`)
+  * `overrideDeployedProps` (Map contain xpath expression to override deployed properties.) e.g.: {'deployeds/openshift.ResourceModule[@id="Infrastructure/Server/Openshift/project/myapp"]/placeholders/entry[@key="openshift.placeholder"]', 'value'}
+  * `deployedProperties` DEPRECATED - (use overrideDeployedProps)(Dictionary containing all the properties to be set. Remark: Each key is an xlrTag in the deployeds - See also [https://github.com/xebialabs-community/xld-xlrelease-plugin](https://github.com/xebialabs-community/xld-xlrelease-plugin), e.g.: `{"Gate1": "{'taskId':'1234567890'}"}`)
   * `continueIfStepFails` (Will try to continue if a step in the deployment task fails)
   * `numberOfContinueRetrials` (Number of times to retry a step)
   * `rollbackOnError` (Whether rollback should be done if the deployment fails)
@@ -70,15 +71,30 @@ This plugin (2.x.x+) requires XLR 4.8
   * `numberOfPollingTrials` (Number of times to poll for task status)
   * `failOnPause` (If checked task will fail if the deployment enters a STOPPED state, for example if the xld-pause-plugin is in use. Set to True by default for backwards compatibility)
 
-+ Migrate Package
++ Migrate Package (compatible with XL Deploy 6.0.0 and up)
   * `server` - Server to pull a package from
   * `username` - Override source username
   * `password` - Override source password
   * `destinationServer` - Server to pull package to
   * `destinationUsername` - Override destination username
   * `destinationPassword` - Override destination password
-  * `deploymentPackage` - ID of the package to migrate
+  * `deploymentPackage` - ID of the package to migrate (starting with `Applications/`)
   * `autoCreatePath` - If set the task will automatically create the path and application if it doesn't exist in the destination
+
++ Import Package
+  * `server` - Server to import a package to
+  * `username` - Override username
+  * `password` - Override password
+  * `repositoryUrl` - Url of the package
+  * `repositoryUsername` - Optional username for the repository
+  * `repositoryPassword` - Optional password for the repository
+
++ Get All Versions
+  * `server` - Server to query
+  * `username` - Override username
+  * `password` - Override password
+  * `applicationId` - ID of the application to query for all package versions
+  * `packageId` - Return value with the all package IDs of the application (**NOTE:** this needs to be a variable of the *list* type, and needs to be defined beforehand)
 
 + Get Latest Version
   * `server` - Server to query
@@ -88,7 +104,7 @@ This plugin (2.x.x+) requires XLR 4.8
   * `stripApplications` - Whether to strip "Applications/" from the beginning of the returned package ID
   * `packageId` - Return value with the latest package ID
 
-+ Get Last Version Deployed 
++ Get Last Version Deployed
   * `server` - Server to query
   * `username` - Override username
   * `password` - Override password
@@ -97,17 +113,24 @@ This plugin (2.x.x+) requires XLR 4.8
 returned package ID
   * `applicationId` - Return value with the current application ID
 
-
++ Does CI exist
+  * `server` - Server to query
+  * `username` - Override username
+  * `password` - Override password
+  * `ciID` - Repo path to CI to check for existence, e.g. `Infrastructure/myHost`
+  
 + Create CI
   * `server` - Server to query
   * `username` - Override username
   * `password` - Override password
   * `ciID` - Repo path to CI to create, e.g. `Infrastructure/myHost`
   * `ciType` - Type of CI to create, e.g. `overthere.CifsHost`
-  * `xmlDescriptor` - XML with the fields to set on the CI, e.g. `<os>WINDOWS</os><connectionType>WINRM_NATIVE</connectionType><address>${address}</address><username>${username}</username><password>${password}</password>`
+  * `xmlDescriptor` - XML with the fields to set on the CI, e.g.  `<os>WINDOWS</os><connectionType>WINRM_NATIVE</connectionType><address>${address}</address><username>${username}</username><password>${password}</password>`
+  * or if you use Credential Objects:
+  `<os>WINDOWS</os><connectionType>WINRM_NATIVE</connectionType><address>${address}</address><credential ref="Configuration/MyCredential"/>`
   * `addToEnvironment` - Switch to decide if to add the CI to an environment
   * `envID` - Environment to add the CI to.
-  
+
 + Update CI property
   * `server` - Server to query
   * `username` - Override username
@@ -127,18 +150,24 @@ returned package ID
   * `XLD Socket timeout` - Connection timeout to XL Deploy
   * `XLD User Name` - User name to connect to XL Deploy
   * `XLD Password` - Password to connect to XL Deploy
-  
+
   ![image](images/XLD_CLI_Config.png)
-  
+
 + CLI
   * `script` - CLI Script to execute
-  
-  
+
+
   ![image](images/Task_Config.png)
-  
+
 + CLI URL
   * `scriptURL` - URL to CLI Script to execute
-  
-  
+
+
   ![image](images/Task_Config2.png)
-  
+
+
+## Tiles ##
+
++ Deployed applications on an environment at a specific moment in time
+
+  ![image](images/XLDVersionsTile.png)

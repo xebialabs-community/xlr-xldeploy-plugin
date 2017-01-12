@@ -1,0 +1,23 @@
+/**
+ * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS
+ * FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
+ */
+[
+    {
+        "id": "Configuration/Custom/xld1",
+        "type": "xldeploy.Server",
+        "title": "xld1",
+        "url": "http://xld1:4516",
+        "username": "admin",
+        "password": "admin"
+    },
+    {
+        "id": "Configuration/Custom/xld2",
+        "type": "xldeploy.Server",
+        "title": "xld2",
+        "url": "http://xld2:4516",
+        "username": "admin",
+        "password": "admin"
+    }
+]
