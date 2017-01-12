@@ -15,3 +15,6 @@ except:
     response = False
 
 exists = response
+
+if throwOnFail and not response:
+    raise Exception("The requested CI does not exist")
