@@ -44,7 +44,6 @@
         
         <property name="deployedApplication" category="input" label="Deployed Application" required="true" description="Name of the deployed application you want to undeploy (Only the name, without Environments, etc...)" />
         <property name="environment" category="input" label="Environment" default="" required="true" description="Environment you want to undeploy from (fully qualified starting with Environments/...)" />
-        
         <property name="orchestrators" category="input" label="Orchestrators" default="" required="false" />
         <property name="deployedApplicationProperties" category="input" default="" required="false" description="A dictionary with key value pairs" />
         <property name="rollbackOnError" category="input" kind="boolean" required="false" description="Perform rollback in XL Deploy if the task fails."/>
