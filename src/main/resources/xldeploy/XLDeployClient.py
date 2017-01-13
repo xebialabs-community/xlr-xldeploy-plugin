@@ -297,6 +297,14 @@ class XLDeployClient(object):
             raise Exception("Did not find ci with id [%s]" % ci_id)
 
     def add_ci_to_environment(self, env_id, ci_id):
+        if self.check_ci_exist(env_id):
+            ci = self.get_ci(env_id, 'json')
+            data = json.loads(ci)
+            data["members"].append(ci_id)
+            self.update_ci(env_id, json.dumps(data), 'json')
+        else:
+            raise Exception("Did not find environment with id [%s]" % ci_id)
+
         get_env_response = self.get_ci(env_id, 'xml')
         items = get_env_response.partition('</members>')
         xml = items[0] + '<ci ref="' + ci_id + '"/>' + items[1] + items[2]
