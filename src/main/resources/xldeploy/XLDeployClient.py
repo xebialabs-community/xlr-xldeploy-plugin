@@ -55,7 +55,7 @@ def override_deployed_properties(deployment_xml, deployed_properties):
     if deployed_properties:
         deployeds_properties_dict = dict(ast.literal_eval(deployed_properties))
         for key in deployeds_properties_dict:
-            pkey_xml = root.find(key)
+            pkey_xml = root.findall(key)
             pkey_xml.text = deployeds_properties_dict[key]
     return ET.tostring(root)
 
