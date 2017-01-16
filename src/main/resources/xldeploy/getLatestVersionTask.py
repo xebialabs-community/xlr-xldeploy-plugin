@@ -20,3 +20,6 @@ packageId = xld_client.get_latest_package_version(applicationId)
 
 if stripApplications:
     packageId = packageId.partition('/')[2]
+
+if packageId == "":
+	raise Exception(applicationId + " exists but has no versions")

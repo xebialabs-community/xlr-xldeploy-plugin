@@ -17,3 +17,6 @@ if not response:
 	raise Exception(applicationId + " does not exist")
 
 packageIds = xld_client.get_all_package_version(applicationId)
+
+if len(packageIds) == 0:
+	raise Exception(applicationId + " exists but has no versions")
