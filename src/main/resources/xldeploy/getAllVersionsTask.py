@@ -6,7 +6,14 @@
 
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
-
 xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
+
+try:
+    response = xld_client.check_ci_exist(applicationId)
+except:
+	response = False
+
+if not response:
+	raise Exception(applicationId + " does not exist")
 
 packageIds = xld_client.get_all_package_version(applicationId)
