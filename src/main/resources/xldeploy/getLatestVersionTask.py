@@ -9,11 +9,16 @@ from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
 try:
+	throwOnFail
+except:
+	throwOnFail = False
+	
+try:
     response = xld_client.check_ci_exist(applicationId)
 except:
 	response = False
 
-if not response:
+if throwOnFail and not response:
 	raise Exception(applicationId + " does not exist")
 
 packageId = xld_client.get_latest_package_version(applicationId)
@@ -21,5 +26,5 @@ packageId = xld_client.get_latest_package_version(applicationId)
 if stripApplications:
     packageId = packageId.partition('/')[2]
 
-if packageId == "":
+if throwOnFail and packageId == "":
 	raise Exception(applicationId + " exists but has no versions")
