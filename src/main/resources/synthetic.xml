@@ -81,6 +81,7 @@
         <property name="scriptLocation" default="xldeploy/getLatestVersionTask.py" hidden="true" />
         <property name="applicationId" category="input" label="Application ID" required="true" />
         <property name="stripApplications" category="input" kind="boolean" />
+        <property name="throwOnFail" category="input" kind="boolean" label="Throw on Fail" description="If True, the Task will fail if the CI doesn't exist" />
 
         <property name="packageId" category="output" label="Package ID" />
     </type>
@@ -89,6 +90,7 @@
         <property name="scriptLocation" default="xldeploy/getAllVersionsTask.py" hidden="true" />
         <property name="applicationId" category="input" label="Application ID" required="true" />
         <!-- <property name="stripApplications" category="input" kind="boolean" /> -->
+        <property name="throwOnFail" category="input" kind="boolean" label="Throw on Fail" description="If True, the Task will fail if the CI doesn't exist" />
 
         <property name="packageIds" category="output" kind="list_of_string" label="Package IDs" />
     </type>
