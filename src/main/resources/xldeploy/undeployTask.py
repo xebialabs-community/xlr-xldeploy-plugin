@@ -7,23 +7,16 @@
 import sys
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
-xld_client = XLDeployClientUtil
+xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
 deployment = None
 deployment_package = xld_client.get_deployment_package("%s/%s" % (environment, deployedApplication))
 if xld_client.deployment_exists(deployment_package, environment):
     print "Undeploying [%s] from environment [%s] \n" % (deployment_package, environment)
-    deployment = xld_client.deployment_prepare_undeploy("%s/%s" % (environment, deployedApplication))
+    deployment = xld_client.deployment_prepare_undeploy("%s/%s" % (environment, deployedApplication), orchestrators, deployedApplicationProperties)
 else:
     print "No deployed application found [%s] for environment [%s] \n" % (deployedApplication, environment)
     sys.exit(1)
-
-# Mapping deployables to the target environment
-print "Set orchestrators \n"
-deployment = xld_client.add_orchestrators(deployment, orchestrators)
-
-print "Set Deployed Application Properties \n"
-deployment = xld_client.set_deployed_application_properties(deployment, deployedApplicationProperties)
 
 print "Creating a deployment task \n"
 task_id = xld_client.get_deployment_task_id(deployment)

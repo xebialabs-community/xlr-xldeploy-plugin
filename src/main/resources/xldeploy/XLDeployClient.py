@@ -165,10 +165,15 @@ class XLDeployClient(object):
         response = deployment_exists_response.getResponse()
         return 'true' in response
 
-    def deployment_prepare_undeploy(self, deployed_application_id):
+    def deployment_prepare_undeploy(self, deployed_application_id, orchestrators=None, deployed_application_properties=None):
         deployment_prepare_undeploy_url = "/deployit/deployment/prepare/undeploy?deployedApplication=%s" % deployed_application_id
         deployment_prepare_undeploy_url_response = self.http_request.get(deployment_prepare_undeploy_url, contentType='application/xml')
-        return deployment_prepare_undeploy_url_response.getResponse()
+        if not deployment_prepare_undeploy_url_response.isSuccessful():
+            raise Exception("Failed to prepare undeploy. Server return [%s], with content [%s]" % (deployment_prepare_undeploy_url_response.status, deployment_prepare_undeploy_url_response.response))
+        undeployment_xml = deployment_prepare_undeploy_url_response.getResponse()
+        undeployment_xml = add_orchestrators(undeployment_xml, orchestrators)
+        undeployment_xml = set_deployed_application_properties(undeployment_xml, deployed_application_properties)
+        return undeployment_xml
 
     def deployment_prepare_update(self, deployment_package, environment):
         deployment_prepare_update_url = "/deployit/deployment/prepare/update?version=%s&deployedApplication=%s" % (deployment_package, "%s/%s" % (environment, deployment_package.rsplit('/', 2)[1]))
