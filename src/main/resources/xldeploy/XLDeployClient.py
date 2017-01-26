@@ -178,11 +178,15 @@ class XLDeployClient(object):
     def deployment_prepare_update(self, deployment_package, environment):
         deployment_prepare_update_url = "/deployit/deployment/prepare/update?version=%s&deployedApplication=%s" % (deployment_package, "%s/%s" % (environment, deployment_package.rsplit('/', 2)[1]))
         deployment_prepare_update_response = self.http_request.get(deployment_prepare_update_url, contentType='application/xml')
+        if not deployment_prepare_update_response.isSuccessful():
+            raise Exception("Failed to prepare update deploy. Server return [%s], with content [%s]" % (deployment_prepare_update_response.status, deployment_prepare_update_response.response))
         return deployment_prepare_update_response.getResponse()
 
     def deployment_prepare_initial(self, deployment_package, environment):
         deployment_prepare_initial_url = "/deployit/deployment/prepare/initial?version=%s&environment=%s" % (deployment_package, environment)
         deployment_prepare_initial_response = self.http_request.get(deployment_prepare_initial_url, contentType='application/xml')
+        if not deployment_prepare_initial_response.isSuccessful():
+            raise Exception("Failed to prepare initial deploy. Server return [%s], with content [%s]" % (deployment_prepare_initial_response.status, deployment_prepare_initial_response.response))
         return deployment_prepare_initial_response.getResponse()
 
     def deployment_prepare_deployeds(self, deployment, orchestrators=None, deployed_application_properties=None, overrideDeployedProps=None, deployed_properties=None):

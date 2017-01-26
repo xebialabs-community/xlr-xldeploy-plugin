@@ -6,23 +6,23 @@
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 import sys
 
-xldClient = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
+xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
 deployment = None
-if xldClient.deployment_exists(deploymentPackage, environment):
+if xld_client.deployment_exists(deploymentPackage, environment):
     print "Upgrading deployment \n"
-    deployment = xldClient.deployment_prepare_update(deploymentPackage, environment)
+    deployment = xld_client.deployment_prepare_update(deploymentPackage, environment)
 else:
     print "Creating initial deploy \n"
-    deployment = xldClient.deployment_prepare_initial(deploymentPackage, environment)
+    deployment = xld_client.deployment_prepare_initial(deploymentPackage, environment)
 
 # Mapping deployables to the target environment
 # deploymentProperties + configure orchestrators
 print "Mapping all deployables \n"
-deployment = xldClient.deployment_prepare_deployeds(deployment, orchestrators, deployedApplicationProperties, overrideDeployedProps, deployedProperties)
+deployment = xld_client.deployment_prepare_deployeds(deployment, orchestrators, deployedApplicationProperties, overrideDeployedProps, deployedProperties)
 
-print"Validating the deployment\n"
-validation_messages = xldClient.validate(deployment)
+print "Validating the deployment\n"
+validation_messages = xld_client.validate(deployment)
 if len(validation_messages) == 0:
     print "The deployment specification is valid"
 else:
@@ -32,31 +32,31 @@ else:
     raise Exception("ERROR Validation failed")
 
 print "Creating a deployment task \n"
-taskId = xldClient.get_deployment_task_id(deployment)
+taskId = xld_client.get_deployment_task_id(deployment)
 
 print "Execute task with id: %s" % taskId
-taskState = xldClient.invoke_task_and_wait_for_result(taskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials, failOnPause)
+taskState = xld_client.invoke_task_and_wait_for_result(taskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials, failOnPause)
 
 if displayStepLogs:
     print "Display the step logs"
-    xldClient.display_step_logs(taskId)
+    xld_client.display_step_logs(taskId)
 
 if taskState in ('DONE', 'EXECUTED'):
     print "Deployment ended in %s \n" % taskState
-    xldClient.archive_task(taskId)
+    xld_client.archive_task(taskId)
     sys.exit(0)
 
 # manage the task failure
 if taskState in ('FAILED', 'STOPPED'):
     if rollbackOnError and taskState in ('FAILED', 'STOPPED'):
         print "Going to rollback \n"
-        xldClient.stop_task(taskId)
-        rollBackTaskId = xldClient.deployment_rollback(taskId)
-        taskState = xldClient.invoke_task_and_wait_for_result(rollBackTaskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials)
-        xldClient.archive_task(rollBackTaskId)
+        xld_client.stop_task(taskId)
+        rollBackTaskId = xld_client.deployment_rollback(taskId)
+        taskState = xld_client.invoke_task_and_wait_for_result(rollBackTaskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials)
+        xld_client.archive_task(rollBackTaskId)
     elif cancelOnError:
         print "Task failed; cancelling task. \n"
-        xldClient.cancel_task(taskId)
+        xld_client.cancel_task(taskId)
     else:
         print "Task failed; leaving as-is in XL Deploy. \n"
 
