@@ -3,7 +3,7 @@ plugins {
   id "com.xebialabs.xl.docker" version "1.0.0"
 }
 
-version = "2.8.4"
+version = "2.8.5"
 
 apply plugin: 'java'
 apply plugin: 'idea'

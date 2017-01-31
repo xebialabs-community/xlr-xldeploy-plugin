@@ -390,7 +390,7 @@ class XLDeployClient(object):
         if archived_tasks:
             tasks = json.loads(archived_tasks)
             for task in tasks:
-                if task['state'] == 'DONE' and task['metadata']['taskType'] != 'CONTROL' and task['metadata']['environment_id'] == environment:
+                if task['state'] == 'DONE' and task['metadata']['taskType'] not in ('CONTROL', 'INSPECTION','DEFAULT') and task['metadata']['environment_id'] == environment:
                     if task['metadata']['taskType'] in ('INITIAL', 'UPGRADE', 'ROLLBACK'):
                         deployed_apps[task['metadata']['application']] = get_row_data(task)
                     if task['metadata']['taskType'] in ('UNDEPLOY'):
