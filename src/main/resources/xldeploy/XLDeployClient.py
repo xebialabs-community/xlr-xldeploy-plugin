@@ -178,6 +178,12 @@ class XLDeployClient(object):
         response = deployment_exists_response.getResponse()
         return 'true' in response
 
+    def deployment_exists2(self, deployed_application):
+        deployment_exists_url = "/deployit/repository/exists/{0}".format(deployed_application)
+        deployment_exists_response = self.http_request.get(deployment_exists_url, contentType='application/xml')
+        response = deployment_exists_response.getResponse()
+        return 'true' in response
+
     def deployment_prepare_undeploy(self, deployed_application_id, orchestrators=None,
                                     deployed_application_properties=None):
         deployment_prepare_undeploy_url = "/deployit/deployment/prepare/undeploy?deployedApplication=%s" % deployed_application_id

@@ -12,8 +12,8 @@ xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username,
 
 deployment = None
 deployment_package = "{0}/{1}".format(environment, deployedApplication)
-print "deployment package is {0}".format(deployment_package)
-if xld_client.deployment_exists(deployment_package, environment):
+print "* deployment package is {0}".format(deployment_package)
+if xld_client.deployment_exists2(deployment_package):
     print "Undeploying [%s] from environment [%s] \n" % (deployment_package, environment)
     deployment = xld_client.deployment_prepare_undeploy("%s/%s" % (environment, deployedApplication), orchestrators,
                                                         deployedApplicationProperties)
