@@ -9,7 +9,7 @@ See the **[XL Release Documentation](https://docs.xebialabs.com/xl-release/index
 [![Build Status][xlr-xldeploy-travis-image] ][xlr-xldeploy-travis-url]
 [![Codacy][xlr-xldeploy-codacy-image] ][xlr-xldeploy-codacy-url]
 [![Code Climate][xlr-xldeploy-code-climate-image] ][xlr-xldeploy-code-climate-url]
-[![License: MIT](xlr-xldeploy-plugin-license-image] ][xlr-xldeploy-plugin-license-url]
+[![License: MIT][xlr-xldeploy-plugin-license-image] ][xlr-xldeploy-plugin-license-url]
 
 
 [xlr-xldeploy-travis-image]: https://travis-ci.org/xebialabs-community/xlr-xldeploy-plugin.svg?branch=master
