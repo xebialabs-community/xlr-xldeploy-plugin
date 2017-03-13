@@ -7,8 +7,9 @@ See the **[XL Release Documentation](https://docs.xebialabs.com/xl-release/index
 # CI status #
 
 [![Build Status][xlr-xldeploy-travis-image] ][xlr-xldeploy-travis-url]
-[![Build Status][xlr-xldeploy-codacy-image] ][xlr-xldeploy-codacy-url]
-[![Build Status][xlr-xldeploy-code-climate-image] ][xlr-xldeploy-code-climate-url]
+[![Codacy][xlr-xldeploy-codacy-image] ][xlr-xldeploy-codacy-url]
+[![Code Climate][xlr-xldeploy-code-climate-image] ][xlr-xldeploy-code-climate-url]
+[![License: MIT](xlr-xldeploy-plugin-license-image] ][xlr-xldeploy-plugin-license-url]
 
 
 [xlr-xldeploy-travis-image]: https://travis-ci.org/xebialabs-community/xlr-xldeploy-plugin.svg?branch=master
@@ -17,6 +18,8 @@ See the **[XL Release Documentation](https://docs.xebialabs.com/xl-release/index
 [xlr-xldeploy-codacy-url]: https://www.codacy.com/app/rvanstone/xlr-xldeploy-plugin
 [xlr-xldeploy-code-climate-image]: https://codeclimate.com/github/xebialabs-community/xlr-xldeploy-plugin/badges/gpa.svg
 [xlr-xldeploy-code-climate-url]: https://codeclimate.com/github/xebialabs-community/xlr-xldeploy-plugin
+[xlr-xldeploy-plugin-license-image]: https://img.shields.io/badge/License-MIT-yellow.svg
+[xlr-xldeploy-plugin-license-url]: https://opensource.org/licenses/MIT
 
 
 # Overview #

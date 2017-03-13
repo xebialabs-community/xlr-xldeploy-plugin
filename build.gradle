@@ -12,14 +12,14 @@ apply plugin: 'maven'
 
 xlDocker {
   compileImage = 'xebialabs/xlr_dev_compile'
-  compileVersion = 'v6.0.0.1'
+  compileVersion = 'v6.1.0.1'
   runImage = 'xebialabs/xlr_dev_run'
-  runVersion = 'v6.0.0.1'
+  runVersion = 'v6.1.0.1'
   runPortMapping = '15516:5516'
 }
 
 license {
-  header rootProject.file('src/main/license/xebialabs_community.license')
+  header rootProject.file('License.md')
   strictCheck false
 }
 
