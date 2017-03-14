@@ -439,6 +439,6 @@ class XLDeployClient(object):
                     'CONTROL', 'INSPECTION', 'DEFAULT') and task['metadata']['environment_id'] == environment:
                     if task['metadata']['taskType'] in ('INITIAL', 'UPGRADE', 'ROLLBACK'):
                         deployed_apps[task['metadata']['application']] = get_row_data(task)
-                    if task['metadata']['taskType'] in ('UNDEPLOY'):
+                    if task['metadata']['taskType'] in ('UNDEPLOY') and task['metadata']['application'] in deployed_apps:
                         del deployed_apps[task['metadata']['application']]
         return deployed_apps

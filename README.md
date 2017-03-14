@@ -6,18 +6,18 @@ See the **[XL Release Documentation](https://docs.xebialabs.com/xl-release/index
 
 # CI status #
 
-[![Build Status][xlr-xldeploy-travis-image] ][xlr-xldeploy-travis-url]
-[![Codacy][xlr-xldeploy-codacy-image] ][xlr-xldeploy-codacy-url]
-[![Code Climate][xlr-xldeploy-code-climate-image] ][xlr-xldeploy-code-climate-url]
+[![Build Status][xlr-xldeploy-plugin-travis-image] ][xlr-xldeploy-plugin-travis-url]
+[![Codacy][xlr-xldeploy-plugin-codacy-image] ][xlr-xldeploy-plugin-codacy-url]
+[![Code Climate][xlr-xldeploy-plugin-code-climate-image] ][xlr-xldeploy-plugin-code-climate-url]
 [![License: MIT][xlr-xldeploy-plugin-license-image] ][xlr-xldeploy-plugin-license-url]
 
 
-[xlr-xldeploy-travis-image]: https://travis-ci.org/xebialabs-community/xlr-xldeploy-plugin.svg?branch=master
-[xlr-xldeploy-travis-url]: https://travis-ci.org/xebialabs-community/xlr-xldeploy-plugin
-[xlr-xldeploy-codacy-image]: https://api.codacy.com/project/badge/Grade/b78313b1eb1b4b058dc4512b4d48c26f
-[xlr-xldeploy-codacy-url]: https://www.codacy.com/app/rvanstone/xlr-xldeploy-plugin
-[xlr-xldeploy-code-climate-image]: https://codeclimate.com/github/xebialabs-community/xlr-xldeploy-plugin/badges/gpa.svg
-[xlr-xldeploy-code-climate-url]: https://codeclimate.com/github/xebialabs-community/xlr-xldeploy-plugin
+[xlr-xldeploy-plugin-travis-image]: https://travis-ci.org/xebialabs-community/xlr-xldeploy-plugin.svg?branch=master
+[xlr-xldeploy-plugin-travis-url]: https://travis-ci.org/xebialabs-community/xlr-xldeploy-plugin
+[xlr-xldeploy-plugin-codacy-image]: https://api.codacy.com/project/badge/Grade/b78313b1eb1b4b058dc4512b4d48c26f
+[xlr-xldeploy-plugin-codacy-url]: https://www.codacy.com/app/rvanstone/xlr-xldeploy-plugin
+[xlr-xldeploy-plugin-code-climate-image]: https://codeclimate.com/github/xebialabs-community/xlr-xldeploy-plugin/badges/gpa.svg
+[xlr-xldeploy-plugin-code-climate-url]: https://codeclimate.com/github/xebialabs-community/xlr-xldeploy-plugin
 [xlr-xldeploy-plugin-license-image]: https://img.shields.io/badge/License-MIT-yellow.svg
 [xlr-xldeploy-plugin-license-url]: https://opensource.org/licenses/MIT
 
