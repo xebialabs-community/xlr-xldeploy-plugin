@@ -73,6 +73,7 @@
         <property name="destinationPassword" password="true" category="input" label="Destination password" required="false" />
         <property name="deploymentPackage" category="input" label="Deployment Package" required="true" description="ID of the package to migrate (starting `with `Applications/`)"/>
         <property name="autoCreatePath" category="input" kind="boolean" />
+        <property name="idempotent" category="input" kind="boolean" label="Overwrite on Destination" default="false" description="If marked true and a package with the same ID already exists on the destination server, this will overwrite it. If false, it will throw an error." />
     </type>
 
     <type type="xldeploy.ImportTask" extends="xldeploy.Task" description="Imports a package from a remote URL">
