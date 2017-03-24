@@ -36,7 +36,7 @@ if autoCreatePath:
         parent = app_path.rpartition('/')[0]
         if not xld_destination_client.check_ci_exist(parent):
             create_path(parent)
-        xld_destination_client.create_application(app_path) 
+        xld_destination_client.create_application(app_path)
 
 if xld_destination_client.check_ci_exist(deploymentPackage):
     if idempotent:
