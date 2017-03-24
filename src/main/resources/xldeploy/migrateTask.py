@@ -36,11 +36,15 @@ if autoCreatePath:
         parent = app_path.rpartition('/')[0]
         if not xld_destination_client.check_ci_exist(parent):
             create_path(parent)
-        xld_destination_client.create_application(app_path)
+        xld_destination_client.create_application(app_path) 
+
+if xld_destination_client.check_ci_exist(deploymentPackage):
+    if idempotent:
+        xld_destination_client.delete_ci(deploymentPackage)
+    else:
+        raise Exception("[%s] already exists on destination server!" % deploymentPackage)
 
 package_uuid = xld_source_client.get_download_uuid(deploymentPackage)
 fetch_url = xldeployServer['url'] + '/deployit/internal/download/' + package_uuid
 print(fetch_url)
 xld_destination_client.fetch_package2(fetch_url, get_username(), get_password())
-
-
