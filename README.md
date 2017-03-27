@@ -83,6 +83,7 @@ This plugin (2.3.x+) requires XLR 5.x+
   * `destinationPassword` - Override destination password
   * `deploymentPackage` - ID of the package to migrate (starting with `Applications/`)
   * `autoCreatePath` - If set the task will automatically create the path and application if it doesn't exist in the destination
+  * `idempotent` - If True and `deploymentPackage` exists on `destinationServer`, it will be overwritten. If false, it will error.
 
 + Import Package
   * `server` - Server to import a package to
