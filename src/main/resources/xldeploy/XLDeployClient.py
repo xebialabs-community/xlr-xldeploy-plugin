@@ -151,6 +151,10 @@ class XLDeployClient(object):
             task_state_response = self.http_request.get(get_task_status_url, contentType='application/xml')
             task_state_xml = task_state_response.getResponse()
             status = extract_state(task_state_xml)
+            
+            if not task_state_response.isSuccessful():
+                raise Exception("Failure to get task status: %s" % status)
+                
             print 'Task [%s] now in state [%s] \n' % (task_id, status)
             if fail_on_pause:
                 if status in (
