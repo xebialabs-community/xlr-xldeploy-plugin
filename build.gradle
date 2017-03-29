@@ -1,14 +1,27 @@
 plugins {
-    id "com.github.hierynomus.license" version "0.11.0"
+  id "com.github.hierynomus.license" version "0.13.1"
+  id "com.xebialabs.xl.docker" version "1.0.0"
 }
 
-version="2.0.2"
+version = "2.8.9"
 
-apply plugin: "com.github.hierynomus.license"
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+
+xlDocker {
+  compileImage = 'xebialabs/xlr_dev_compile'
+  compileVersion = 'v6.1.0.1'
+  runImage = 'xebialabs/xlr_dev_run'
+  runVersion = 'v6.1.0.1'
+  runPortMapping = '15516:5516'
+}
 
 license {
-    header rootProject.file('src/main/license/xebialabs_community.license')
-    strictCheck false
+  header rootProject.file('License.md')
+  strictCheck false
+  ext.year = Calendar.getInstance().get(Calendar.YEAR)
+  ext.name = 'XEBIALABS'
 }
+

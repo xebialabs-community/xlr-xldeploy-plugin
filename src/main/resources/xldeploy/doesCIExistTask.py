@@ -9,12 +9,17 @@
 #
 
 
-
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
-xldClient = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
+xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
-if envID:
-	xldClient.remove_ci_from_environment(envID,ciID)
+response = False
+try:
+    response = xld_client.check_ci_exist(ciID)
+except:
+    response = False
 
-xldClient.delete_ci(ciID)
+exists = response
+
+if throwOnFail and not response:
+    raise Exception("The requested CI does not exist")

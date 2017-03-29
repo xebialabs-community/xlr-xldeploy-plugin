@@ -1,3 +1,4 @@
+#!/bin/sh
 #
 # Copyright 2017 XEBIALABS
 #
@@ -9,12 +10,22 @@
 #
 
 
+SCRIPT=$(readlink -f "$0")
+# Absolute path this script is in, thus /home/user/bin
+SCRIPTPATH=$(dirname "$SCRIPT")
 
-from xldeploy.XLDeployClientUtil import XLDeployClientUtil
+####################### XLD server data
 
-xldClient = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
-if envID:
-	xldClient.remove_ci_from_environment(envID,ciID)
+wget --http-user=admin --http-password=admin --auth-no-challenge \
+     --header="Accept: application/json" \
+     --header="Content-type: application/json" \
+     --post-file=$SCRIPTPATH/data/server-configs.json \
+    http://localhost:5516/repository/cis -O /dev/null
 
-xldClient.delete_ci(ciID)
+wget --http-user=admin --http-password=admin --auth-no-challenge \
+     --header="Accept: application/json" \
+     --header="Content-type: application/json" \
+     --post-file=$SCRIPTPATH/data/create-ci-demo-data.json \
+     http://localhost:5516/api/v1/templates/import -O /dev/null
+

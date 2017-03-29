@@ -9,12 +9,7 @@
 #
 
 
-
 from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
 xldClient = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
-
-if envID:
-	xldClient.remove_ci_from_environment(envID,ciID)
-
-xldClient.delete_ci(ciID)
+xldClient.fetch_package2(repositoryUrl, repositoryUsername, repositoryPassword)
