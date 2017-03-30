@@ -22,5 +22,5 @@ except:
 if response == False:
     raise Exception(xldCI + " does not exist")
 
-myCI = json.loads( xld_client.get_ci(xldCI, 'json') )
-xldTags = myCI["tags"]
+my_ci = json.loads( xld_client.get_ci(xldCI, 'json') )
+xldTags = my_ci["tags"]

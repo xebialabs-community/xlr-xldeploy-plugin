@@ -23,7 +23,7 @@ except:
 if response == False:
     raise Exception(xldCI + " does not exist")
 
-myCI = json.loads( xld_client.get_ci(xldCI, 'json') )
-myCI["tags"].append(xldNewTag)
-xldTags = myCI["tags"]
+my_ci = json.loads( xld_client.get_ci(xldCI, 'json') )
+my_ci["tags"].append(xldNewTag)
+xldTags = my_ci["tags"]
 xld_client.update_ci_property(xldCI, "tags", xldTags)
