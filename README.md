@@ -10,6 +10,7 @@ See the **[XL Release Documentation](https://docs.xebialabs.com/xl-release/index
 [![Codacy][xlr-xldeploy-plugin-codacy-image] ][xlr-xldeploy-plugin-codacy-url]
 [![Code Climate][xlr-xldeploy-plugin-code-climate-image] ][xlr-xldeploy-plugin-code-climate-url]
 [![License: MIT][xlr-xldeploy-plugin-license-image] ][xlr-xldeploy-plugin-license-url]
+[![Github All Releases][xlr-xldeploy-plugin-downloads-image] ]()
 
 
 [xlr-xldeploy-plugin-travis-image]: https://travis-ci.org/xebialabs-community/xlr-xldeploy-plugin.svg?branch=master
@@ -20,6 +21,7 @@ See the **[XL Release Documentation](https://docs.xebialabs.com/xl-release/index
 [xlr-xldeploy-plugin-code-climate-url]: https://codeclimate.com/github/xebialabs-community/xlr-xldeploy-plugin
 [xlr-xldeploy-plugin-license-image]: https://img.shields.io/badge/License-MIT-yellow.svg
 [xlr-xldeploy-plugin-license-url]: https://opensource.org/licenses/MIT
+[xlr-xldeploy-plugin-downloads-image]: https://img.shields.io/github/downloads/xebialabs-community/xlr-xldeploy-plugin/total.svg
 
 
 # Overview #
