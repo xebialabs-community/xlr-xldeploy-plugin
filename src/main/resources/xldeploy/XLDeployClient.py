@@ -399,6 +399,15 @@ class XLDeployClient(object):
         delete_task = '/deployit/repository/ci/' + ci_id
         self.http_request.delete(delete_task)
 
+    def get_ci_tree(self, ci_id):
+        infrastructure_list = [ci_id]
+        query = '/deployit/repository/query?parent=%s' % ci_id
+        response = self.http_request.get(query)
+        root = ET.fromstring(response.getResponse())
+        for ci in root.findall('ci'):
+            infrastructure_list.extend(self.get_ci_tree(ci.get('ref')))
+        return infrastructure_list
+
     def display_step_logs(self, task_id):
         get_task_steps = '/deployit/task/' + task_id + '/step'
         get_task_steps_response = self.http_request.get(get_task_steps, contentType='application/xml')

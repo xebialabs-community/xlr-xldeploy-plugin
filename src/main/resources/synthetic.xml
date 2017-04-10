@@ -131,10 +131,15 @@
 
     <type type="xldeploy.DeleteCI" extends="xldeploy.Task" label="Delete CI" description="Deletes a CI after optionally removing it from an environment">
         <property name="scriptLocation" default="xldeploy/deleteCITask.py" hidden="true" />
-
         <property name="ciID" category="input" label="CI ID" required="true" />
         <property name="envID" category="input" label="Env ID" />
     </type>
+
+    <type type="xldeploy.DeleteInfrastructure" extends="xldeploy.Task" label="Delete Infrastructure" description="Deletes specified Infrastructure removing all dependencies on it beforehand.">
+        <property name="scriptLocation" default="xldeploy/deleteInfrastructureTask.py" hidden="true" />
+        <property name="ci_id" category="input" label="Infrastructure ID" required="true" />
+    </type>
+
 
     <type type="xldeploy.UpdateCIProperty" extends="xldeploy.Task" label="Update CI property" description="Update a property from a CI">
         <property name="scriptLocation" default="xldeploy/updateCIProperty.py" hidden="true" />

@@ -136,14 +136,11 @@ returned package ID
   * `addToEnvironment` - Switch to decide if to add the CI to an environment
   * `envID` - Environment to add the CI to.
 
-+ Update CI property
++ Delete Infrastructure - This task will delete the specified Infrastructure CI, AND will also undeploy any deployed applications on the infrastrucutre as well as remove the infrastructure from any environments where it is referenced as a container.
   * `server` - Server to query
   * `username` - Override username
   * `password` - Override password
-  * `ciID` - Fully qualified id from the CI to update
-  * `ciProperty` - Name of the property to update
-  * `propertyValue` - Value of the property to update
-
+  * `ci_id` - Fully qualified id from the Infrastructure CI to delete
 
 + CLI Config (Global Configuration)
   * `CLI Home` - Home directory where XL Deploy CLI is installed
