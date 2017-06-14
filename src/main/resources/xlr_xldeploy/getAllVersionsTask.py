@@ -8,30 +8,19 @@
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+from xlr_xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
-import sys
-from xldeploy.LocalCLI import Localcliscript
+xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
-script = "%s" % ( str(script) )
-cliScript = Localcliscript(cli['cliHome'], cli['xldHost'], cli['xldPort'], cli['xldContext'], cli['xldProxyHost'], cli['xldProxyPort'], cli['xldSocketTimeout'], cli['xldUserName'], cli['xldPassword'], script, cli['cliExecutable'], options)
-exitCode = cliScript.executeFile()
+try:
+    response = xld_client.check_ci_exist(applicationId)
+except:
+	response = False
 
-output = cliScript.getStdout()
-err = cliScript.getStderr()
+if throwOnFail and not response:
+	raise Exception(applicationId + " does not exist")
 
-if (exitCode == 0 ):
-   print output
-else:
-   print
-   print "### Exit code "
-   print exitCode
-   print
-   print "### Output:"
-   print output
-   
-   print "### Error stream:"
-   print err
-   print 
-   print "----"
+packageIds = xld_client.get_all_package_version(applicationId)
 
-sys.exit(exitCode)
+if throwOnFail and len(packageIds) == 0:
+	raise Exception(applicationId + " exists but has no versions")

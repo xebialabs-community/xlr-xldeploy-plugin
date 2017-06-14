@@ -9,13 +9,20 @@
 #
 
 
-from xldeploy.XLDeployClientUtil import XLDeployClientUtil
+import sys
+from xlr_xldeploy.XLDeployClientUtil import XLDeployClientUtil
+
 
 xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
-if xmlDescriptor:
-    xld_client.create_ci(ciID, ciType, xmlDescriptor)
-else:
-    xld_client.create_ci(ciID, ciType)
-if addToEnvironment:
-    xld_client.add_ci_to_environment(envID, ciID)
+print 'DEBUG: About to prepare %s on %s\n' % (controlTaskName, ciId)
+task_id = xld_client.prepare_control_task(controlTaskName, ciId, parameters)
+print 'DEBUG: About to invoke task and wait for response', task_id, '\n'
+task_state = xld_client.invoke_task_and_wait_for_result(task_id, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials)
+print 'DEBUG: Task state for', task_id, ':', task_state, '\n'
+xld_client.archive_task(task_id)
+if task_state in ('DONE','EXECUTED'):
+    sys.exit(0)
+sys.exit(1)
+
+

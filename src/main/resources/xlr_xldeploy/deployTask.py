@@ -9,7 +9,7 @@
 #
 
 
-from xldeploy.XLDeployClientUtil import XLDeployClientUtil
+from xlr_xldeploy.XLDeployClientUtil import XLDeployClientUtil
 import sys
 
 xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)

@@ -16,7 +16,7 @@ from java.lang import Exception
 from java.io import PrintWriter
 from java.io import StringWriter
 
-from xldeploy.LocalCLI import Localcliscript
+from xlr_xldeploy.LocalCLI import Localcliscript
 
 print "Script URL = %s" % scriptUrl
 host=scriptUrl.split('//')[1].split('/')[0]

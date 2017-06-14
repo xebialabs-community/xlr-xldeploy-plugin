@@ -8,22 +8,13 @@
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-from xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
-xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
-	
-try:
-    response = xld_client.check_ci_exist(applicationId)
-except:
-	response = False
 
-if throwOnFail and not response:
-	raise Exception(applicationId + " does not exist")
+from xlr_xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
-packageId = xld_client.get_latest_package_version(applicationId)
+xldClient = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
-if stripApplications:
-    packageId = packageId.partition('/')[2]
+if envID:
+	xldClient.remove_ci_from_environment(envID,ciID)
 
-if throwOnFail and packageId == "":
-	raise Exception(applicationId + " exists but has no versions")
+xldClient.delete_ci(ciID)
