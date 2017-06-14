@@ -13,7 +13,7 @@
 <synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
     <type type="xldeploy.Task" extends="xlrelease.PythonScript" virtual="true">
-        <property name="iconLocation" default="xlr_xldeploy/xlr_xldeploy-icon-black-small.png" hidden="true" />
+        <property name="iconLocation" default="xlr_xldeploy/xldeploy-icon-black-small.png" hidden="true" />
         <property name="taskColor" hidden="true" default="#68B749" />
 
         <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
