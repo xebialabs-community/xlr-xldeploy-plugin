@@ -9,7 +9,7 @@
 #
 
 
-from xldeploy.XLDeployClientUtil import XLDeployClientUtil
+from xlr_xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
 def create_path(path):
     parent = path.rpartition('/')[0]

@@ -9,12 +9,13 @@
 #
 
 
+from xlr_xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
-from xldeploy.XLDeployClientUtil import XLDeployClientUtil
+xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
-xldClient = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
-
-if envID:
-	xldClient.remove_ci_from_environment(envID,ciID)
-
-xldClient.delete_ci(ciID)
+if xmlDescriptor:
+    xld_client.create_ci(ciID, ciType, xmlDescriptor)
+else:
+    xld_client.create_ci(ciID, ciType)
+if addToEnvironment:
+    xld_client.add_ci_to_environment(envID, ciID)

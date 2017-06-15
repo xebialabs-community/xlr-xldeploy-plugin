@@ -8,27 +8,10 @@
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-import sys
-from xldeploy.LocalCLI import Localcliscript
+from xlr_xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
-cliScript = Localcliscript(cli['cliHome'], cli['xldHost'], cli['xldPort'], cli['xldContext'], cli['xldProxyHost'], cli['xldProxyPort'], cli['xldSocketTimeout'], cli['xldUserName'], cli['xldPassword'], script, cli['cliExecutable'], options)
-exitCode = cliScript.execute()
 
-output = cliScript.getStdout()
-err = cliScript.getStderr()
+xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
-if exitCode == 0:
-   print output
-else:
-   print
-   print "### Exit code "
-   print exitCode
-   print
-   print "### Output:"
-   print output
-   print "### Error stream:"
-   print err
-   print 
-   print "----"
+applicationId = xld_client.get_latest_deployed_version(environmentId, applicationName)
 
-sys.exit(exitCode)

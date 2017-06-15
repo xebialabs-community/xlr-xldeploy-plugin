@@ -10,7 +10,7 @@
 
 
 import re
-from xldeploy.XLDeployClientUtil import XLDeployClientUtil
+from xlr_xldeploy.XLDeployClientUtil import XLDeployClientUtil
 from xml.etree import ElementTree as ET
 
 class DeleteInfrastructure(object):

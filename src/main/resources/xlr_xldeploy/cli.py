@@ -8,9 +8,27 @@
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-from xldeploy.XLDeployClientUtil import XLDeployClientUtil
+import sys
+from xlr_xldeploy.LocalCLI import Localcliscript
 
+cliScript = Localcliscript(cli['cliHome'], cli['xldHost'], cli['xldPort'], cli['xldContext'], cli['xldProxyHost'], cli['xldProxyPort'], cli['xldSocketTimeout'], cli['xldUserName'], cli['xldPassword'], script, cli['cliExecutable'], options)
+exitCode = cliScript.execute()
 
-xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
+output = cliScript.getStdout()
+err = cliScript.getStderr()
 
-xld_client.update_ci_property(ciID, ciProperty, propertyValue)
+if exitCode == 0:
+   print output
+else:
+   print
+   print "### Exit code "
+   print exitCode
+   print
+   print "### Output:"
+   print output
+   print "### Error stream:"
+   print err
+   print 
+   print "----"
+
+sys.exit(exitCode)

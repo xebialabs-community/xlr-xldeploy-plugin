@@ -10,19 +10,28 @@
 
 
 import sys
-from xldeploy.XLDeployClientUtil import XLDeployClientUtil
+from xlr_xldeploy.LocalCLI import Localcliscript
 
+script = "%s" % ( str(script) )
+cliScript = Localcliscript(cli['cliHome'], cli['xldHost'], cli['xldPort'], cli['xldContext'], cli['xldProxyHost'], cli['xldProxyPort'], cli['xldSocketTimeout'], cli['xldUserName'], cli['xldPassword'], script, cli['cliExecutable'], options)
+exitCode = cliScript.executeFile()
 
-xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
+output = cliScript.getStdout()
+err = cliScript.getStderr()
 
-print 'DEBUG: About to prepare %s on %s\n' % (controlTaskName, ciId)
-task_id = xld_client.prepare_control_task(controlTaskName, ciId, parameters)
-print 'DEBUG: About to invoke task and wait for response', task_id, '\n'
-task_state = xld_client.invoke_task_and_wait_for_result(task_id, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials)
-print 'DEBUG: Task state for', task_id, ':', task_state, '\n'
-xld_client.archive_task(task_id)
-if task_state in ('DONE','EXECUTED'):
-    sys.exit(0)
-sys.exit(1)
+if (exitCode == 0 ):
+   print output
+else:
+   print
+   print "### Exit code "
+   print exitCode
+   print
+   print "### Output:"
+   print output
+   
+   print "### Error stream:"
+   print err
+   print 
+   print "----"
 
-
+sys.exit(exitCode)
