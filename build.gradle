@@ -1,9 +1,9 @@
 plugins {
-  id "com.github.hierynomus.license" version "0.13.1"
-  id "com.xebialabs.xl.docker" version "1.0.0"
+  id "com.github.hierynomus.license" version "0.14.0"
+  id "com.xebialabs.xl.docker" version "1.1.0"
 }
 
-version = "2.9.0"
+version = "2.9.1"
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -12,9 +12,9 @@ apply plugin: 'maven'
 
 xlDocker {
   compileImage = 'xebialabs/xlr_dev_compile'
-  compileVersion = 'v6.1.0.1'
+  compileVersion = 'v7.0.0.1'
   runImage = 'xebialabs/xlr_dev_run'
-  runVersion = 'v6.1.0.1'
+  runVersion = 'v7.0.0.1'
   runPortMapping = '15516:5516'
 }
 
