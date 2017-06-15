@@ -17,7 +17,7 @@
         <property name="iconLocation" default="xlr_xldeploy/xldeploy-icon-black-small.png" hidden="true"/>
         <property name="taskColor" hidden="true" default="#68B749"/>
 
-        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
+        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.XLDeployServer" kind="ci"/>
         <property name="username" category="input" required="false"/>
         <property name="password" password="true" category="input" required="false"/>
     </type>
@@ -31,7 +31,7 @@
                   kind="integer" description="Number of times to retry check for task status."/>
     </type>
 
-    <type type="xldeploy.DeployTask" extends="xldeploy.TaskRunningTask"
+    <type type="xldeploy.DeployTask" label="XL Deploy: Deploy extended" extends="xldeploy.TaskRunningTask"
           description="Executes a deployment in XL Deploy">
         <property name="scriptLocation" default="xlr_xldeploy/deployTask.py" hidden="true"/>
 
@@ -54,7 +54,7 @@
         <property name="displayStepLogs" category="input" kind="boolean" required="false" default="true"/>
     </type>
 
-    <type type="xldeploy.UndeployTask" extends="xldeploy.TaskRunningTask"
+    <type type="xldeploy.UndeployTask" label="XL Deploy: Undeploy extended" extends="xldeploy.TaskRunningTask"
           description="Executes an undeployment in XL Deploy">
         <property name="scriptLocation" default="xlr_xldeploy/undeployTask.py" hidden="true"/>
 
@@ -77,7 +77,7 @@
 
     </type>
 
-    <type type="xldeploy.ControlTask" extends="xldeploy.TaskRunningTask"
+    <type type="xldeploy.ControlTask" label="XL Deploy: Control task" extends="xldeploy.TaskRunningTask"
           description="Invokes a control task on an XL Deploy Configuration Item">
         <property name="scriptLocation" default="xlr_xldeploy/controlTask.py" hidden="true"/>
 
@@ -87,11 +87,11 @@
                   description="A dictionary with key value pairs"/>
     </type>
 
-    <type type="xldeploy.MigrateTask" extends="xldeploy.Task"
+    <type type="xldeploy.MigrateTask" label="XL Deploy: Migrate package" extends="xldeploy.Task"
           description="Migrates a package from one XL Deploy server to another XL Deploy server">
         <property name="scriptLocation" default="xlr_xldeploy/migrateTask.py" hidden="true"/>
         <property name="destinationXLDeployServer" category="input" label="Destination server"
-                  referenced-type="xldeploy.Server" kind="ci"/>
+                  referenced-type="xldeploy.XLDeployServer" kind="ci"/>
         <property name="destinationUsername" category="input" label="Destination username" required="false"/>
         <property name="destinationPassword" password="true" category="input" label="Destination password"
                   required="false"/>
@@ -102,7 +102,7 @@
                   description="If marked true and a package with the same ID already exists on the destination server, this will overwrite it. If false, it will throw an error."/>
     </type>
 
-    <type type="xldeploy.ImportTask" extends="xldeploy.Task" description="Imports a package from a remote URL">
+    <type type="xldeploy.ImportTask" label="XL Deploy: Import package" extends="xldeploy.Task" description="Imports a package from a remote URL">
         <property name="scriptLocation" default="xlr_xldeploy/importTask.py" hidden="true"/>
         <property name="repositoryUrl" category="input" label="Repository URL" required="true"/>
         <property name="repositoryUsername" category="input" label="Repository username" required="false"/>
@@ -110,7 +110,7 @@
                   required="false"/>
     </type>
 
-    <type type="xldeploy.GetLatestVersionTask" extends="xldeploy.Task"
+    <type type="xldeploy.GetLatestVersionTask" label="XL Deploy: Get latest version" extends="xldeploy.Task"
           description="Finds the latest Deployment Package version for an Application in XL Deploy">
         <property name="scriptLocation" default="xlr_xldeploy/getLatestVersionTask.py" hidden="true"/>
         <property name="applicationId" category="input" label="Application ID" required="true"/>
@@ -121,7 +121,7 @@
         <property name="packageId" category="output" label="Package ID"/>
     </type>
 
-    <type type="xldeploy.GetAllVersionsTask" extends="xldeploy.Task"
+    <type type="xldeploy.GetAllVersionsTask" label="XL Deploy: Get all versions" extends="xldeploy.Task"
           description="Finds all Deployment Package versions for an Application in XL Deploy">
         <property name="scriptLocation" default="xlr_xldeploy/getAllVersionsTask.py" hidden="true"/>
         <property name="applicationId" category="input" label="Application ID" required="true"/>
@@ -132,7 +132,7 @@
         <property name="packageIds" category="output" kind="list_of_string" label="Package IDs"/>
     </type>
 
-    <type type="xldeploy.GetLastVersionDeployedTask" extends="xldeploy.Task"
+    <type type="xldeploy.GetLastVersionDeployedTask" label="XL Deploy: Get last deployed version" extends="xldeploy.Task"
           description="Finds the latest version of the Package deployed in XL Deploy">
         <property name="scriptLocation" default="xlr_xldeploy/getLatestDeployedTask.py" hidden="true"/>
         <property name="environmentId" category="input" label="Environment ID" required="true"/>
@@ -141,7 +141,7 @@
         <property name="applicationId" category="output" label="Application ID"/>
     </type>
 
-    <type type="xldeploy.DoesCIExist" extends="xldeploy.Task" label="Does CI exist" description="Checks if a CI exists">
+    <type type="xldeploy.DoesCIExist" extends="xldeploy.Task" label="XL Deploy: Does CI exist" description="Checks if a CI exists">
         <property name="scriptLocation" default="xlr_xldeploy/doesCIExistTask.py" hidden="true"/>
 
         <property name="ciID" category="input" label="CI ID" required="true"/>
@@ -152,7 +152,7 @@
                   description="If True, the CI exists in XLD"/>
     </type>
 
-    <type type="xldeploy.CreateCI" extends="xldeploy.Task" label="Create CI"
+    <type type="xldeploy.CreateCI" extends="xldeploy.Task" label="XL Deploy: Create CI"
           description="Creates a CI and optionally adds it to an environment">
         <property name="scriptLocation" default="xlr_xldeploy/createCITask.py" hidden="true"/>
 
@@ -167,21 +167,21 @@
                   description="Environment to add the CI to."/>
     </type>
 
-    <type type="xldeploy.DeleteCI" extends="xldeploy.Task" label="Delete CI"
+    <type type="xldeploy.DeleteCI" extends="xldeploy.Task" label="XL Deploy: Delete CI"
           description="Deletes a CI after optionally removing it from an environment">
         <property name="scriptLocation" default="xlr_xldeploy/deleteCITask.py" hidden="true"/>
         <property name="ciID" category="input" label="CI ID" required="true"/>
         <property name="envID" category="input" label="Env ID"/>
     </type>
 
-    <type type="xldeploy.DeleteInfrastructure" extends="xldeploy.Task" label="Delete Infrastructure"
+    <type type="xldeploy.DeleteInfrastructure" extends="xldeploy.Task" label="XL Deploy: Delete Infrastructure"
           description="Deletes specified Infrastructure removing all dependencies on it beforehand.">
         <property name="scriptLocation" default="xlr_xldeploy/deleteInfrastructureTask.py" hidden="true"/>
         <property name="ci_id" category="input" label="Infrastructure ID" required="true"/>
     </type>
 
 
-    <type type="xldeploy.UpdateCIProperty" extends="xldeploy.Task" label="Update CI property"
+    <type type="xldeploy.UpdateCIProperty" extends="xldeploy.Task" label="XL Deploy: Update CI property"
           description="Update a property from a CI">
         <property name="scriptLocation" default="xlr_xldeploy/updateCIProperty.py" hidden="true"/>
         <property name="ciID" category="input" label="CI ID" required="true"
@@ -192,7 +192,7 @@
                   description="Value of the property to update"/>
     </type>
 
-    <type type="xldeploy.CliConfig" extends="xlrelease.Configuration">
+    <type type="xldeploy.CliConfig" label="XL Deploy CLI config" extends="xlrelease.Configuration">
         <property name="cliHome" category="input"/>
         <property name="cliExecutable" category="input" default="cli" hidden="true"/>
         <property name="xldHost" category="input" default="DEFAULT"/>
@@ -214,25 +214,22 @@
         <property name="err" required="false" category="output" description="Error stream of the process."/>
     </type>
 
-    <type type="xldeploy.cli" extends="xldeploy.cliTask">
+    <type type="xldeploy.cli" label="XL Deploy CLI: Run script" extends="xldeploy.cliTask">
         <property name="script" category="input" size="large"/>
         <property name="options" category="input" default=""/>
     </type>
 
-    <type type="xldeploy.cliFile" extends="xldeploy.cliTask">
+    <type type="xldeploy.cliFile" label="XL Deploy CLI: Run script from file" extends="xldeploy.cliTask">
         <property name="script" category="input"/>
         <property name="options" category="input" default=""/>
     </type>
 
-    <type type="xldeploy.cliUrl" extends="xldeploy.cliTask">
+    <type type="xldeploy.cliUrl" label="XL Deploy CLI: Run script from url" extends="xldeploy.cliTask">
         <property name="scriptUrl" category="input"/>
         <property name="urlUserName" category="input"/>
         <property name="urlPassword" category="input" password="true"/>
         <property name="options" category="input" default=""/>
     </type>
-
-    <type type="xldeploy.Server" extends="configuration.HttpConnection"/>
-
 
     <type type="xldeploy.XLDVersionsTile" label="XLD Version Tile" extends="xlrelease.Tile">
         <property name="scriptLocation" default="xlr_xldeploy/XLDVersionsTile.py" kind="string" hidden="true"/>
@@ -241,7 +238,7 @@
         <property name="embedded" kind="boolean" hidden="true" default="true"
                   required="false"/>  <!-- XLR 7.0.0 compatibility -->
 
-        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.Server" kind="ci"/>
+        <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.XLDeployServer" kind="ci"/>
         <property name="username" category="input" required="false"/>
         <property name="password" password="true" category="input" required="false"/>
         <property name="environment" category="input"

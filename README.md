@@ -37,7 +37,8 @@ permission java.io.FilePermission "plugins/*", "read";
 permission java.io.FilePermission "conf/logback.xml", "read";
 ```
 
-This plugin (2.3.x+) requires XLR 5.x+
++ This plugin (2.3.x+) requires XLR 5.x+
++ Starting version (3.x+) XLR 7.x+ is required.
 
 ## Types ##
 

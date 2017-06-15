@@ -10,7 +10,7 @@
 [
     {
         "id": "Configuration/Custom/xld1",
-        "type": "xldeploy.Server",
+        "type": "xldeploy.XLDeployServer",
         "title": "xld1",
         "url": "http://xld1:4516",
         "username": "admin",
@@ -18,7 +18,7 @@
     },
     {
         "id": "Configuration/Custom/xld2",
-        "type": "xldeploy.Server",
+        "type": "xldeploy.XLDeployServer",
         "title": "xld2",
         "url": "http://xld2:4516",
         "username": "admin",
