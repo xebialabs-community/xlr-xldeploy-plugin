@@ -127,8 +127,9 @@ class XLDeployClient(object):
     def prepare_control_task(self, control_task_name, target_ci_id, parameters=None):
         prepare_control_task_url = "/deployit/control/prepare/%s/%s" % (control_task_name, target_ci_id)
         prepare_response = self.http_request.get(prepare_control_task_url, contentType='application/xml')
-        check_response(prepare_response, "Failed to prepare control task [%s]. Server return [%s], with content [%s]" % (
-            target_ci_id, prepare_response.status, prepare_response.response))
+        check_response(prepare_response,
+                       "Failed to prepare control task [%s]. Server return [%s], with content [%s]" % (
+                           target_ci_id, prepare_response.status, prepare_response.response))
         control_obj = prepare_response.getResponse()
         root = ET.fromstring(control_obj)
         parameter_type_id = get_parameter_type_name(root)
@@ -198,8 +199,10 @@ class XLDeployClient(object):
         deployment_prepare_undeploy_url = "/deployit/deployment/prepare/undeploy?deployedApplication=%s" % deployed_application_id
         deployment_prepare_undeploy_url_response = self.http_request.get(deployment_prepare_undeploy_url,
                                                                          contentType='application/xml')
-        check_response(deployment_prepare_undeploy_url_response, "Failed to prepare undeploy. Server return [%s], with content [%s]" % (
-            deployment_prepare_undeploy_url_response.status, deployment_prepare_undeploy_url_response.response))
+        check_response(deployment_prepare_undeploy_url_response,
+                       "Failed to prepare undeploy. Server return [%s], with content [%s]" % (
+                           deployment_prepare_undeploy_url_response.status,
+                           deployment_prepare_undeploy_url_response.response))
         undeployment_xml = deployment_prepare_undeploy_url_response.getResponse()
         undeployment_xml = add_orchestrators(undeployment_xml, orchestrators)
         undeployment_xml = set_deployed_application_properties(undeployment_xml, deployed_application_properties)
@@ -210,8 +213,9 @@ class XLDeployClient(object):
             deployment_package, "%s/%s" % (environment, deployment_package.rsplit('/', 2)[1]))
         deployment_prepare_update_response = self.http_request.get(deployment_prepare_update_url,
                                                                    contentType='application/xml')
-        check_response(deployment_prepare_update_response, "Failed to prepare update deploy. Server return [%s], with content [%s]" % (
-            deployment_prepare_update_response.status, deployment_prepare_update_response.response))
+        check_response(deployment_prepare_update_response,
+                       "Failed to prepare update deploy. Server return [%s], with content [%s]" % (
+                           deployment_prepare_update_response.status, deployment_prepare_update_response.response))
         return deployment_prepare_update_response.getResponse()
 
     def deployment_prepare_initial(self, deployment_package, environment):
@@ -219,8 +223,9 @@ class XLDeployClient(object):
             deployment_package, environment)
         deployment_prepare_initial_response = self.http_request.get(deployment_prepare_initial_url,
                                                                     contentType='application/xml')
-        check_response(deployment_prepare_initial_response, "Failed to prepare initial deploy. Server return [%s], with content [%s]" % (
-            deployment_prepare_initial_response.status, deployment_prepare_initial_response.response))
+        check_response(deployment_prepare_initial_response,
+                       "Failed to prepare initial deploy. Server return [%s], with content [%s]" % (
+                           deployment_prepare_initial_response.status, deployment_prepare_initial_response.response))
         return deployment_prepare_initial_response.getResponse()
 
     def deployment_prepare_deployeds(self, deployment, orchestrators=None, deployed_application_properties=None,
@@ -228,8 +233,10 @@ class XLDeployClient(object):
         deployment_prepare_deployeds = "/deployit/deployment/prepare/deployeds"
         deployment_prepare_deployeds_response = self.http_request.post(deployment_prepare_deployeds, deployment,
                                                                        contentType='application/xml')
-        check_response(deployment_prepare_deployeds_response, "Failed to prepare deployeds. Server return [%s], with content [%s]" % (
-            deployment_prepare_deployeds_response.status, deployment_prepare_deployeds_response.response))
+        check_response(deployment_prepare_deployeds_response,
+                       "Failed to prepare deployeds. Server return [%s], with content [%s]" % (
+                           deployment_prepare_deployeds_response.status,
+                           deployment_prepare_deployeds_response.response))
         deployment_xml = deployment_prepare_deployeds_response.getResponse()
         deployment_xml = add_orchestrators(deployment_xml, orchestrators)
         deployment_xml = set_deployed_application_properties(deployment_xml, deployed_application_properties)
@@ -314,13 +321,17 @@ class XLDeployClient(object):
             latest_package = item.attrib['ref']
         return latest_package
 
-    def check_ci_exist(self, ci_id):
+    def check_ci_exist(self, ci_id, throw_on_fail=False):
         query_task = "/deployit/repository/exists/%s" % ci_id
         headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
         query_task_response = self.http_request.get(query_task, headers=headers)
         check_response(query_task_response, "Failed to check ci [%s]. Server return [%s], with content [%s]" % (
             ci_id, query_task_response.status, query_task_response.response))
-        return query_task_response.getResponse().find('true') > 0
+        if query_task_response.getResponse().find('true') > 0:
+            return True
+        if throw_on_fail:
+            raise Exception("CI with id [%s] does not exist." % ci_id)
+        return False
 
     def create_directory(self, ci_id):
         self.create_ci(ci_id, 'core.Directory')
@@ -394,7 +405,10 @@ class XLDeployClient(object):
 
     def delete_ci(self, ci_id):
         delete_task = '/deployit/repository/ci/' + ci_id
-        self.http_request.delete(delete_task)
+        headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+        response = self.http_request.delete(delete_task, headers=headers)
+        check_response(response, "Failed to delete ci with id [%s]. Server return [%s], with content [%s]" % (
+            ci_id, response.status, response.response))
 
     def get_ci_tree(self, ci_id):
         infrastructure_list = [ci_id]

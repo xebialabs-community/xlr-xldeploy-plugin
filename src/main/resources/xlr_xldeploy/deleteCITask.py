@@ -12,9 +12,10 @@
 
 from xlr_xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
-xldClient = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
+xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
+xld_client.check_ci_exist(ciID, throwOnFail)
 if envID:
-	xldClient.remove_ci_from_environment(envID,ciID)
+	xld_client.remove_ci_from_environment(envID, ciID)
 
-xldClient.delete_ci(ciID)
+xld_client.delete_ci(ciID)

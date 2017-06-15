@@ -138,6 +138,14 @@ returned package ID
   `<os>WINDOWS</os><connectionType>WINRM_NATIVE</connectionType><address>${address}</address><credential ref="Configuration/MyCredential"/>`
   * `addToEnvironment` - Switch to decide if to add the CI to an environment
   * `envID` - Environment to add the CI to.
+  
++ Delete CI
+  * `server` - Server to query
+  * `username` - Override username
+  * `password` - Override password
+  * `ciID` - ID of the Configuration Item you want to delete
+  * `envID` - If provided, will remove the CI from an Environment first
+  * `throwOnFail` - Boolean - If True, the Task will fail if the Deletion does not succeed.
 
 + Delete Infrastructure - This task will delete the specified Infrastructure CI, AND will also undeploy any deployed applications on the infrastrucutre as well as remove the infrastructure from any environments where it is referenced as a container.
   * `server` - Server to query
