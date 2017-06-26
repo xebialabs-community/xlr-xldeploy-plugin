@@ -14,6 +14,8 @@
            xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd"
            xmlns="http://www.xebialabs.com/deployit/synthetic">
 
+    <type type="xldeploy.Server" extends="xldeploy.XLDeployServer"/>
+
     <type type="xldeploy.Task" extends="xlrelease.PythonScript" virtual="true">
         <property name="iconLocation" default="xlr_xldeploy/xldeploy-icon-black-small.png" hidden="true"/>
         <property name="taskColor" hidden="true" default="#68B749"/>
