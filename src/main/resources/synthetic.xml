@@ -14,6 +14,7 @@
            xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd"
            xmlns="http://www.xebialabs.com/deployit/synthetic">
 
+    <!-- Deprecated since 3.x -->
     <type type="xldeploy.Server" extends="xldeploy.XLDeployServer"/>
 
     <type type="xldeploy.Task" extends="xlrelease.PythonScript" virtual="true">
