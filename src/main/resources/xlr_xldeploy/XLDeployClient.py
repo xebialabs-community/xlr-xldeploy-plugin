@@ -351,7 +351,7 @@ class XLDeployClient(object):
         if self.check_ci_exist(ci_id):
             ci = self.get_ci(ci_id, 'json')
             data = json.loads(ci)
-            if type(data[ci_property]) is list:
+            if isinstance(data[ci_property], list):
                 data[ci_property] = eval(property_value)
             else:
                 data[ci_property] = property_value
