@@ -351,7 +351,10 @@ class XLDeployClient(object):
         if self.check_ci_exist(ci_id):
             ci = self.get_ci(ci_id, 'json')
             data = json.loads(ci)
-            data[ci_property] = property_value
+            if type(data[ci_property]) is list:
+                data[ci_property] = eval(property_value)
+            else:
+                data[ci_property] = property_value
             self.update_ci(ci_id, json.dumps(data), 'json')
         else:
             raise Exception("Did not find ci with id [%s]" % ci_id)
