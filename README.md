@@ -38,8 +38,8 @@ permission java.io.FilePermission "conf/logback.xml", "read";
 ```
 
 + This plugin (2.3.x+) requires XLR 5.x+
-+ When using XL Release 7.x
-    + `v2.9.x` is compatible with XLR 7.x and lower. Use this version if you don't want to go experimental.
++ When using XL Release 7.x:
+    + `v2.9.1` is compatible with XLR 7.x. Use this version if you don't want to go experimental.
     + `v3.x` will only work with XLR 7.x+ and has breaking changes. This means shared configurations and tasks will need to be reconfigured. When an upgrader has been written this will also be mentioned here.
     + If you're using a `v7.x` of the plugin, these are deprecated and should be replaced with a `v3.x` version.
 
