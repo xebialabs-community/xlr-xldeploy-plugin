@@ -17,10 +17,12 @@
     <!-- Deprecated since 3.x -->
     <type type="xldeploy.Server" extends="xldeploy.XLDeployServer"/>
 
-    <type type="xldeploy.Task" extends="xlrelease.PythonScript" virtual="true">
+    <type type="xldeploy.VirtualTask" extends="xlrelease.PythonScript" virtual="true">
         <property name="iconLocation" default="xlr_xldeploy/xldeploy-icon-black-small.png" hidden="true"/>
         <property name="taskColor" hidden="true" default="#68B749"/>
+    </type>
 
+    <type type="xldeploy.Task" extends="xldeploy.VirtualTask" virtual="true">
         <property name="xldeployServer" category="input" label="Server" referenced-type="xldeploy.XLDeployServer"
                   kind="ci"/>
         <property name="username" category="input" required="false"/>
@@ -216,9 +218,7 @@
         <property name="xldPassword" category="input" default="admin" password="true"/>
     </type>
 
-    <type type="xldeploy.cliTask" extends="xlrelease.PythonScript" virtual="true">
-        <property name="iconLocation" default="xlr_xldeploy/xlr_xldeploy-icon-black-small.png" hidden="true"/>
-        <property name="taskColor" hidden="true" default="#68B749"/>
+    <type type="xldeploy.cliTask" extends="xldeploy.VirtualTask" virtual="true">
         <property name="cli" kind="ci" referenced-type="xldeploy.CliConfig" required="true" category="input"/>
 
         <property name="output" required="false" category="output" description="Console output of the process."/>
