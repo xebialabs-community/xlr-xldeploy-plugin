@@ -220,22 +220,24 @@
 
     <type type="xldeploy.cliTask" extends="xldeploy.VirtualTask" virtual="true">
         <property name="cli" kind="ci" referenced-type="xldeploy.CliConfig" required="true" category="input"/>
-
         <property name="output" required="false" category="output" description="Console output of the process."/>
         <property name="err" required="false" category="output" description="Error stream of the process."/>
     </type>
 
     <type type="xldeploy.cli" label="XL Deploy CLI: Run script" extends="xldeploy.cliTask">
+        <property name="scriptLocation" default="xlr_xldeploy/cli.py" hidden="true"/>
         <property name="script" category="input" size="large"/>
         <property name="options" category="input" default=""/>
     </type>
 
     <type type="xldeploy.cliFile" label="XL Deploy CLI: Run script from file" extends="xldeploy.cliTask">
+        <property name="scriptLocation" default="xlr_xldeploy/cliFile.py" hidden="true"/>
         <property name="script" category="input"/>
         <property name="options" category="input" default=""/>
     </type>
 
     <type type="xldeploy.cliUrl" label="XL Deploy CLI: Run script from url" extends="xldeploy.cliTask">
+        <property name="scriptLocation" default="xlr_xldeploy/cliUrl.py" hidden="true"/>
         <property name="scriptUrl" category="input"/>
         <property name="urlUserName" category="input"/>
         <property name="urlPassword" category="input" password="true"/>
