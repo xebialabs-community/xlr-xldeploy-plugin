@@ -166,7 +166,7 @@
           description="Creates a Folder or Folder Tree (if required)">
         <property name="scriptLocation" default="xlr_xldeploy/createFolder.py" hidden="true"/>
         <property name="folderID" category="input" label="Folder ID" required="true"/>
-        <property name="folderType" category="input" label="Folder Type" required="true" description="The type of folder to create: Applications, Environment, Infrastructure" kind="enum">
+        <property name="folderType" category="input" label="Folder Type" required="true" description="The type of folder to create: Applications, Environment, Infrastructure, Configuration" kind="enum">
             <enum-values>
                 <value>Applications</value>
                 <value>Environments</value>

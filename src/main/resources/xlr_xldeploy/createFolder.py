@@ -12,4 +12,4 @@ from xlr_xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
 xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
-folderID = xld_client.create_folder_tree(folderID, folderType)
+xld_client.create_folder_tree(folderID, folderType)
