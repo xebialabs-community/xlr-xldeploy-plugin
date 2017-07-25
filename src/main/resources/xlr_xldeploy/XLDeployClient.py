@@ -335,9 +335,9 @@ class XLDeployClient(object):
 
     def create_folder_tree(self, folder_id, folder_type):
         folders = folder_id.split("/")
-        folderCreate = '%s' % folder_type
+        folder_create = '%s' % folder_type
         for folder in folders:
-            folderCreate += "/" + folder
+            folder_create += "/" + folder
             # Start the request to XLD
             body = '<list><core.Directory id="' + folderCreate + '"/></list>'
             create_task = "/deployit/repository/cis"
