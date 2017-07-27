@@ -333,6 +333,18 @@ class XLDeployClient(object):
             raise Exception("CI with id [%s] does not exist." % ci_id)
         return False
 
+    def create_folder_tree(self, folder_id, folder_type):
+        folders = folder_id.split("/")
+        folder_create = '%s' % folder_type
+        for folder in folders:
+            folder_create += "/" + folder
+            if self.check_ci_exist(folder_create):
+                print "Folder [%s] already exists" % folder_create
+                print "\n"
+            else:
+                self.create_directory(folder_create)
+                print "\n"
+
     def create_directory(self, ci_id):
         self.create_ci(ci_id, 'core.Directory')
 

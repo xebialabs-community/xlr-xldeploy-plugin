@@ -162,6 +162,20 @@
                   description="If True, the CI exists in XLD"/>
     </type>
 
+    <type type="xldeploy.CreateFolderTree" extends="xldeploy.Task" label="XL Deploy: Create Folder (Tree)"
+          description="Creates a Folder or Folder Tree (if required)">
+        <property name="scriptLocation" default="xlr_xldeploy/createFolder.py" hidden="true"/>
+        <property name="folderID" category="input" label="Folder ID" required="true"/>
+        <property name="folderType" category="input" label="Folder Type" required="true" description="The type of folder to create: Applications, Environment, Infrastructure, Configuration" kind="enum">
+            <enum-values>
+                <value>Applications</value>
+                <value>Environments</value>
+                <value>Infrastructure</value>
+                <value>Configuration</value>
+            </enum-values>
+        </property>
+    </type>
+
     <type type="xldeploy.CreateCI" extends="xldeploy.Task" label="XL Deploy: Create CI"
           description="Creates a CI and optionally adds it to an environment">
         <property name="scriptLocation" default="xlr_xldeploy/createCITask.py" hidden="true"/>

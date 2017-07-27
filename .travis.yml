@@ -8,7 +8,7 @@ deploy:
   provider: releases
   api_key:
     secure: aoVXZyLOBmB4Q2lLKLaqEN8zcqN3K3/3agRBA1znM1PLeqXSE3CwQe6sHkX6BrfMoDDtjqeepDMgJ9TsqJFq+lPY+HuVFzOqGlrWlIZHBUKI3hmfjgM/61CkdK2eBO42Ym4tqCQ4L1Tp42fcrB6M/a/0TGI5ENW2bJk8+ofRT8M=
-  file: build/libs/xlr-xldeploy-plugin-3.1.4.jar
+  file: build/libs/xlr-xldeploy-plugin-3.2.0.jar
   skip_cleanup: true
   on:
     all_branches: true
