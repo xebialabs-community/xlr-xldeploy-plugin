@@ -141,7 +141,14 @@ returned package ID
   `<os>WINDOWS</os><connectionType>WINRM_NATIVE</connectionType><address>${address}</address><credential ref="Configuration/MyCredential"/>`
   * `addToEnvironment` - Switch to decide if to add the CI to an environment
   * `envID` - Environment to add the CI to.
-  
+
+  + Create Folder (Tree)
+  * `server` - Server to query
+  * `username` - Override username
+  * `password` - Override password
+  * `folder_id` - Path of folder structure you wish to create without top level type, e.g. `TeamA/DEV/Application`
+  * `folder_type` - Top level type under which the folder should be created e.g. `Applications`
+
 + Delete CI
   * `server` - Server to query
   * `username` - Override username
