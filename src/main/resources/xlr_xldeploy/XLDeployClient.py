@@ -338,14 +338,12 @@ class XLDeployClient(object):
         folder_create = '%s' % folder_type
         for folder in folders:
             folder_create += "/" + folder
-            # Start the request to XLD
-            body = '<list><core.Directory id="' + folderCreate + '"/></list>'
-            create_task = "/deployit/repository/cis"
-            response = self.http_request.put(create_task, body, contentType='application/xml')
-            check_response(response, "Failed to create ci [%s]. Server return [%s], with content [%s]" % (
-                folderCreate, response.status, response.response))
-            print "Created ci [%s] and received response [%s]" % (folderCreate, response.response)
-            print "\n"
+            if self.check_ci_exist(folder_create):
+                print "Folder [%s] already exists" % folder_create
+                print "\n"
+            else:
+                self.create_directory(folder_create)
+                print "\n"
 
     def create_directory(self, ci_id):
         self.create_ci(ci_id, 'core.Directory')
