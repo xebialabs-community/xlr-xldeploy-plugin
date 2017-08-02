@@ -142,7 +142,7 @@ returned package ID
   * `addToEnvironment` - Switch to decide if to add the CI to an environment
   * `envID` - Environment to add the CI to.
 
-  + Create Folder (Tree)
++ Create Folder (Tree)
   * `server` - Server to query
   * `username` - Override username
   * `password` - Override password
