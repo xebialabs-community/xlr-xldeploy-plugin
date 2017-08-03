@@ -224,6 +224,7 @@
         <property name="cliExecutable" category="input" default="cli" hidden="true"/>
         <property name="xldHost" category="input" default="DEFAULT"/>
         <property name="xldPort" category="input" default="DEFAULT"/>
+        <property name="xldSecure" category="input" kind="boolean" default="false"/>
         <property name="xldContext" category="input" default="DEFAULT"/>
         <property name="xldProxyHost" category="input" default="DEFAULT"/>
         <property name="xldProxyPort" category="input" default="DEFAULT"/>

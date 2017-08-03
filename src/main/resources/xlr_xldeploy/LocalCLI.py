@@ -21,7 +21,7 @@ from com.xebialabs.overthere.local import LocalConnection, LocalFile
 
 class Localcliscript():
 
-   def __init__(self, cliHome, xldHost, xldPort, xldContext, xldProxyHost, xldProxyPort, xldSocketTimeout, xldUserName, xldPassword, script, cliExecutable, options):
+   def __init__(self, cliHome, xldHost, xldPort, xldSecure, xldContext, xldProxyHost, xldProxyPort, xldSocketTimeout, xldUserName, xldPassword, script, cliExecutable, options):
       self.cmdLine = CmdLine()
       self.osname = System.getProperty('os.name').lower()
       if self.osname.startswith('win'):
@@ -37,6 +37,8 @@ class Localcliscript():
       if xldPort != "DEFAULT":
          self.cmdLine.addArgument( '-port' )
          self.cmdLine.addArgument( xldPort )
+      if xldSecure:
+          self.cmdLine.addArgument( '-secure' )
       if xldContext != "DEFAULT":
          self.cmdLine.addArgument( '-context' )
          self.cmdLine.addArgument( xldContext )

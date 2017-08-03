@@ -167,6 +167,7 @@ returned package ID
   * `CLI Home` - Home directory where XL Deploy CLI is installed
   * `XLD Host` - Host the CLI should connect to DEFAULT will work if on the same server as XL Deploy
   * `XLD Port` - Port for XL Deploy server.  DEFAULT will work if using the default XL Deploy port
+  * `XLD Secure` - Specify secure connection for XL Deploy. If true, Port will default to 4517
   * `XLD Context` - XLD CLI context.  If no context is needed then DEFAULT will be fine
   * `XLD Proxy Host` - Proxy host if needed.
   * `XLD Proxy Port` - Proxy Port if needed.
