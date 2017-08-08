@@ -428,7 +428,8 @@ class XLDeployClient(object):
     def get_ci_tree(self, ci_id):
         infrastructure_list = [ci_id]
         query = '/deployit/repository/query?parent=%s' % ci_id
-        response = self.http_request.get(query)
+        response = self.http_request.get(query, contentType='application/xml')
+        check_response(response, "Unable to retrieve CI Tree from parent: %s" % ci_id)
         root = ET.fromstring(response.getResponse())
         for ci in root.findall('ci'):
             infrastructure_list.extend(self.get_ci_tree(ci.get('ref')))
