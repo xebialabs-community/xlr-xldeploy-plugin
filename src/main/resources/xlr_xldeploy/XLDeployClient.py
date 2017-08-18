@@ -330,7 +330,7 @@ class XLDeployClient(object):
         if query_task_response.getResponse().find('true') > 0:
             return True
         if throw_on_fail:
-            raise Exception("CI with id [%s] does not exist." % ci_id)
+            raise Exception("CI with id [%s] does not exist or you do not have the correct permissions to read it." % ci_id)
         return False
 
     def create_folder_tree(self, folder_id, folder_type):

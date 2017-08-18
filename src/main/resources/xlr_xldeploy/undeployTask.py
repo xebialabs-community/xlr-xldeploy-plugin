@@ -14,6 +14,7 @@ import sys
 from xlr_xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
 xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
+xld_client.check_ci_exist(environment, throw_on_fail=True)
 
 deployment = None
 deployment_package = "{0}/{1}".format(environment, deployedApplication)

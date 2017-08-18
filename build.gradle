@@ -1,9 +1,8 @@
 plugins {
   id "com.github.hierynomus.license" version "0.14.0"
   id "com.xebialabs.xl.docker" version "1.1.0"
+  id "nebula.release" version "6.0.0"
 }
-
-version = "3.2.2"
 
 apply plugin: 'java'
 apply plugin: 'idea'
