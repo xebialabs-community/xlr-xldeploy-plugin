@@ -139,7 +139,21 @@
 
         <property name="packageIds" category="output" kind="list_of_string" label="Package IDs"/>
     </type>
+    
+    <type type="xldeploy.GetCITask" extends="xldeploy.Task" label="XL Deploy: Get CI" description="Gets a CI XML from XL Deploy">
+        <property name="scriptLocation" default="xlr_xldeploy/getCITask.py" hidden="true" />
+        <property name="ciID" category="input" label="CI ID" required="true"/>
+        <property name="accept" category="input" kind="enum" label="Format" required="true" default="xml" description="What format the CI will return in, XML or JSON">
+                <enum-values>
+                <value>json</value>
+                <value>xml</value>
+            </enum-values>
+        </property>
+        <property name="throwOnFail" category="input" kind="boolean" label="Throw on Fail" description="If True, the Task will fail if the CI doesn't exist" default="false"/>
 
+        <property name="response" category="output" label="CI" />
+    </type>
+    
     <type type="xldeploy.GetLastVersionDeployedTask" label="XL Deploy: Get last deployed version"
           extends="xldeploy.Task"
           description="Finds the latest version of the Package deployed in XL Deploy">
