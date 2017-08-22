@@ -99,6 +99,15 @@ permission java.io.FilePermission "conf/logback.xml", "read";
   * `repositoryUsername` - Optional username for the repository
   * `repositoryPassword` - Optional password for the repository
 
++ Get CI
+  * `server` - Server to query
+  * `username` - Override username
+  * `password` - Override password
+  * `ciID` - ID of the Configuration Item wanted
+  * `accept` - Desired format of the return: XML or JSON
+  * `throwOnFail` - Boolean - If True, a False return will Fail the task rather than just returning False.
+  * `response` - Return value of the CI described in the format requested
+
 + Get All Versions
   * `server` - Server to query
   * `username` - Override username
