@@ -12,10 +12,6 @@ from xlr_xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
 xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 
-test = xld_client.check_ci_exist(ciID)
+test = xld_client.check_ci_exist(ciID,throwOnFail)
 
-if throwOnFail and not test:
-    raise Exception(ciID + " does not exist")
-
-else:
-    response = xld_client.get_ci(ciID,accept)
+response = xld_client.get_ci(ciID,accept)
