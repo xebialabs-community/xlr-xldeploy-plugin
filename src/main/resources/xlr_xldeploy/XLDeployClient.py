@@ -360,25 +360,21 @@ class XLDeployClient(object):
         print "Created ci [%s] and received response [%s]" % (id, response.response)
 
     def update_ci_property(self, ci_id, ci_property, property_value):
-        if self.check_ci_exist(ci_id):
-            ci = self.get_ci(ci_id, 'json')
-            data = json.loads(ci)
-            if isinstance(data[ci_property], list):
-                data[ci_property] = eval(property_value)
-            else:
-                data[ci_property] = property_value
-            self.update_ci(ci_id, json.dumps(data), 'json')
+        self.check_ci_exist(ci_id, throw_on_fail=True)
+        ci = self.get_ci(ci_id, 'json')
+        data = json.loads(ci)
+        if ci_property in data and isinstance(data[ci_property], list):
+            data[ci_property] = eval(property_value)
         else:
-            raise Exception("Did not find ci with id [%s]" % ci_id)
+            data[ci_property] = property_value
+        self.update_ci(ci_id, json.dumps(data), 'json')
 
     def add_ci_to_environment(self, env_id, ci_id):
-        if self.check_ci_exist(env_id):
-            ci = self.get_ci(env_id, 'json')
-            data = json.loads(ci)
-            data["members"].append(ci_id)
-            self.update_ci(env_id, json.dumps(data), 'json')
-        else:
-            raise Exception("Did not find environment with id [%s]" % ci_id)
+        self.check_ci_exist(env_id, throw_on_fail=True)
+        ci = self.get_ci(env_id, 'json')
+        data = json.loads(ci)
+        data["members"].append(ci_id)
+        self.update_ci(env_id, json.dumps(data), 'json')
 
         get_env_response = self.get_ci(env_id, 'xml')
         items = get_env_response.partition('</members>')
