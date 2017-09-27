@@ -199,6 +199,41 @@ returned package ID
 
   ![image](images/Task_Config2.png)
 
++ Get CI Tags
+  * `Server`: XL Deploy Server CI
+  * `Username`
+  * `Password`
+  * `XLD CI`: The XL Deploy CI to get the tags from
+
+  **Outputs**
+  * `XLD Tags`: List of tags returned from the XL Deploy server
+
+  ![GetCITags](images/GetCITags.png)
+  
++ Add CI Tag
+  * `Server`: XL Deploy Server CI
+  * `Username`
+  * `Password`
+  * `XLD CI`: The XL Deploy CI to get the tags from
+  * `XLD New Tag`: New tag to add to the list of tags in the XL Deploy CI
+
+  **Outputs**
+  * `XLD Tags`: List of tags returned from the XL Deploy server
+ 
+ ![AddCITag](images/AddCITag.png)
+ 
++ Set CI Tags
+  * `Server`: XL Deploy Server CI
+  * `Username`
+  * `Password`
+  * `XLD CI`: The XL Deploy CI to get the tags from
+  * `XLD New Tags`: New list of tags to add to the list of tags in the XL Deploy CI
+
+  **Outputs**
+  * `XLD Tags`: List of tags returned from the XL Deploy server
+ 
+ ![SetCITags](images/SetCITags.png)
+ 
 
 ## Tiles ##
 
