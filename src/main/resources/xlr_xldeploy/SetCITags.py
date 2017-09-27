@@ -16,5 +16,6 @@ xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username,
 
 response = xld_client.check_ci_exist(xldCI, True)
 my_ci = json.loads( xld_client.get_ci(xldCI, 'json') )
-xld_client.update_ci_property(xldCI, "tags", xldNewTags)
+print xldNewTags
+xld_client.update_ci_property(xldCI, "tags", json.dumps(xldNewTags))
 xldTags = xldNewTags

@@ -11,10 +11,18 @@ apply plugin: 'maven'
 
 xlDocker {
   compileImage = 'xebialabs/xlr_dev_compile'
-  compileVersion = 'v7.1.0.3'
+  compileVersion = 'v7.1.0.4'
   runImage = 'xebialabs/xlr_dev_run'
   runVersion = 'v7.1.0.1'
   runPortMapping = '15516:5516'
+}
+
+if (!project.hasProperty('release.scope')) {
+  project.ext['release.scope'] = 'patch'
+}
+
+if (!project.hasProperty('release.useLastTag')) {
+  project.ext['release.useLastTag'] = true
 }
 
 license {

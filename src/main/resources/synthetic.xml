@@ -273,27 +273,25 @@
         <property name="options" category="input" default=""/>
     </type>
 
-    <type type="xldeploy.GetCITags" extends="xldeploy.Task" >
+    <type type="xldeploy.GetCITags" extends="xldeploy.Task" label="XL Deploy: Get CI Tags" >
         <property name="scriptLocation"   default="xlr_xldeploy/GetCITags.py" hidden="true" />
         <property name="xldCI"            category="input" description="The CI to the the tags from" />
         <property name="xldTags"          category="output" kind="list_of_string" />
     </type>
 
-    <type type="xldeploy.AddCITag" extends="xldeploy.Task" >
-        <property name="scriptLocation"   default="xlr_xldeploy/AddCITags.py" hidden="true" />
+    <type type="xldeploy.AddCITag" extends="xldeploy.Task" label="XL Deploy: Add CI Tag">
+        <property name="scriptLocation"   default="xlr_xldeploy/AddCITag.py" hidden="true" />
         <property name="xldCI"            category="input" description="The CI to the the tags from" />
         <property name="xldNewTag"        category="input" description="A New tag to add to the CI" />
         <property name="xldTags"          category="output" kind="list_of_string" />
     </type>
 
-    <type type="xldeploy.SetCITags" extends="xldeploy.Task" >
-        <property name="scriptLocation"   default="xlr_xldeploy/AddCITags.py" hidden="true" />
+    <type type="xldeploy.SetCITags" extends="xldeploy.Task" label="XL Deploy: Set CI Tags">
+        <property name="scriptLocation"   default="xlr_xldeploy/SetCITags.py" hidden="true" />
         <property name="xldCI"            category="input" description="The CI to the the tags from" />
         <property name="xldNewTags"       category="input" description="A New tag to add to the CI" kind="list_of_string" />
         <property name="xldTags"          category="output" kind="list_of_string" />
     </type>
-
-    <type type="xldeploy.Server" extends="configuration.HttpConnection"/>
 
     <type type="xldeploy.XLDVersionsTile" label="XLD Version Tile" extends="xlrelease.Tile">
         <property name="scriptLocation" default="xlr_xldeploy/XLDVersionsTile.py" kind="string" hidden="true"/>

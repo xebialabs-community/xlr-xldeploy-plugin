@@ -18,4 +18,4 @@ xld_client.check_ci_exist(xldCI, True)
 my_ci = json.loads( xld_client.get_ci(xldCI, 'json') )
 my_ci["tags"].append(xldNewTag)
 xldTags = my_ci["tags"]
-xld_client.update_ci_property(xldCI, "tags", xldTags)
+xld_client.update_ci_property(xldCI, "tags", json.dumps(xldTags))
