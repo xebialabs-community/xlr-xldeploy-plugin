@@ -18,7 +18,7 @@
     <type type="xldeploy.Server" extends="xldeploy.XLDeployServer"/>
 
     <type type="xldeploy.VirtualTask" extends="xlrelease.PythonScript" virtual="true">
-        <property name="iconLocation" default="xlr_xldeploy/xldeploy-icon-black-small.png" hidden="true"/>
+        <property name="iconLocation" default="xlrxldeploy/xl-deploy.svg" hidden="true"/>
         <property name="taskColor" hidden="true" default="#68B749"/>
     </type>
 
@@ -84,7 +84,7 @@
 
     </type>
 
-    <type type="xldeploy.ControlTask" label="XL Deploy: Control task" extends="xldeploy.TaskRunningTask"
+    <type type="xldeploy.ControlTask" label="XL Deploy: Control task extended" extends="xldeploy.TaskRunningTask"
           description="Invokes a control task on an XL Deploy Configuration Item">
         <property name="scriptLocation" default="xlr_xldeploy/controlTask.py" hidden="true"/>
 
