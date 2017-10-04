@@ -132,11 +132,12 @@ class XLDeployClient(object):
                            target_ci_id, prepare_response.status, prepare_response.response))
         control_obj = prepare_response.getResponse()
         root = ET.fromstring(control_obj)
-        parameter_type_id = get_parameter_type_name(root)
-        if parameter_type_id:
-            parameter_names = self.get_parameter_names(parameter_type_id)
-            for parameterName in parameter_names:
-                add_parameter(root, parameter_type_id, parameterName, parameters)
+        if parameters:
+            parameter_type_id = get_parameter_type_name(root)
+            if parameter_type_id:
+                parameter_names = self.get_parameter_names(parameter_type_id)
+                for parameterName in parameter_names:
+                    add_parameter(root, parameter_type_id, parameterName, parameters)
         invoke_response = self.http_request.post('/deployit/control', ET.tostring(root), contentType='application/xml')
         check_response(invoke_response, "Failed to create control task [%s]. Server return [%s], with content [%s]" % (
             target_ci_id, invoke_response.status, invoke_response.response))
