@@ -11,14 +11,27 @@
 
 from xlr_xldeploy.XLDeployClientUtil import XLDeployClientUtil
 
+import org.joda.time.DateTime
+
 if not xldeployServer:
     raise Exception("XL Deploy server ID must be provided")
+
+today = org.joda.time.DateTime()
+day_range = range(1,91)
+
+# set begindate based on the numberOfDays parameter is set
+if numberOfDays in day_range:
+    #set the begin_date equal to today's date - number of days
+    begin_date = today.minusDays(numberOfDays)
+    begin_date = begin_date.toString("yyyy-MM-dd")
+else:
+    raise Exception("Number of days must be in range of 1 - 90")
 
 xld_client = XLDeployClientUtil.create_xldeploy_client(xldeployServer, username, password)
 if xld_client.check_ci_exist(environment):
     if date:
-        data = xld_client.get_deployed_applications_for_environment(environment, date)
+        data = xld_client.get_deployed_applications_for_environment(environment, begin_date, date)
     else:
-        data = xld_client.get_deployed_applications_for_environment(environment)
+        data = xld_client.get_deployed_applications_for_environment(environment, begin_date)
 else:
     data = {"Invalid environment name"}

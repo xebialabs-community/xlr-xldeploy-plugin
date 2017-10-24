@@ -249,6 +249,8 @@
                   required="true"/>
         <property name="date" category="input" required="false"
                   description="Date in format yyyy-MM-dd. If not provided, latest deployed applications are shown."/>
+        <property name="numberOfDays" category="input" required="false" default='90' kind="integer"
+                  description="The number of days (1-90) worth of release version data to reterive from XL Deploy."/>
 
     </type>
 
