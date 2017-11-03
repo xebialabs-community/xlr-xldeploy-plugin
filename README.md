@@ -237,6 +237,6 @@ returned package ID
 
 ## Tiles ##
 
-+ Deployed applications on an environment at a specific moment in time
++ Deployed applications on an environment at a specific moment in time. This tile will retrieve up to 90 days worth of release version data from XL Deploy.
 
   ![image](images/XLDVersionsTile.png)

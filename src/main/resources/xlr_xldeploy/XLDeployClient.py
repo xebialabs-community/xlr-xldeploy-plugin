@@ -451,18 +451,18 @@ class XLDeployClient(object):
                                 print "%s\n" % item.tag
                                 print "%s\n" % item.text
 
-    def query_archived_tasks(self, end_date=None):
+    def query_archived_tasks(self, begin_date, end_date=None):
         get_tasks = '/deployit/tasks/v2/query'
         if end_date:
-            get_tasks += '?begindate=2008-01-01&enddate=%s' % end_date
+            get_tasks += '?begindate=%s&enddate=%s' % (begin_date, end_date)
         headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
         response = self.http_request.get(get_tasks, headers=headers)
         check_response(response, "Failed to get archived tasks. Server return [%s], with content [%s]" % (
             response.status, response.response))
         return response.getResponse()
 
-    def get_deployed_applications_for_environment(self, environment, date=None):
-        archived_tasks = self.query_archived_tasks(date)
+    def get_deployed_applications_for_environment(self, environment, begin_date, date=None):
+        archived_tasks = self.query_archived_tasks(begin_date, date)
         deployed_apps = {}
         if archived_tasks:
             tasks = json.loads(archived_tasks)
