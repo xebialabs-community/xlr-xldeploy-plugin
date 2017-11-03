@@ -461,8 +461,8 @@ class XLDeployClient(object):
             response.status, response.response))
         return response.getResponse()
 
-    def get_deployed_applications_for_environment(self, environment, begin_date, date=None):
-        archived_tasks = self.query_archived_tasks(begin_date, date)
+    def get_deployed_applications_for_environment(self, environment, begin_date, end_date=None):
+        archived_tasks = self.query_archived_tasks(begin_date, end_date)
         deployed_apps = {}
         if archived_tasks:
             tasks = json.loads(archived_tasks)
