@@ -102,13 +102,12 @@
         }
 
         function createSummaryGridOptions(xldeployData) {
-            var filterHeaderTemplate = "<div data-ng-include=\"'partials/releases/grid/templates/name-filter-template.html'\"></div>";
             var columnDefs = [
                 {
                     displayName: "Application",
                     field: "application",
                     cellTemplate: "static/@project.version@/include/XLDVersionsTile/grid/application.html",
-                    filterHeaderTemplate: filterHeaderTemplate,
+                    filterHeaderTemplate: "static/@project.version@/include/XLDVersionsTile/grid/name-filter-template.html",
                     enableColumnMenu: false,
                     width: '50%'
                 },
@@ -116,7 +115,7 @@
                     displayName: "Version",
                     field: "version",
                     cellTemplate: "static/@project.version@/include/XLDVersionsTile/grid/version.html",
-                    filterHeaderTemplate: filterHeaderTemplate,
+                    filterHeaderTemplate: "static/@project.version@/include/XLDVersionsTile/grid/name-filter-template.html",
                     enableColumnMenu: false,
                     width: '50%'
                 }
