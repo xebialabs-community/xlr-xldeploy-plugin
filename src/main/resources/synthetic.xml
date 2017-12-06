@@ -36,6 +36,7 @@
                   description="Polling interval in seconds to check task status."/>
         <property name="numberOfPollingTrials" category="input" label="Polling Retry Count" required="true"
                   kind="integer" description="Number of times to retry check for task status."/>
+        <property name="displayStepLogs" category="input" kind="boolean" required="false" default="true"/>
     </type>
 
     <type type="xldeploy.DeployTask" label="XL Deploy: Deploy extended" extends="xldeploy.TaskRunningTask"
@@ -58,7 +59,6 @@
                   label="Cancel If Not Rollbacking" default="true"
                   description="Cancel the task in XL Deploy if the tasks fails and Rollback On Error is not selected."/>
         <property name="failOnPause" category="input" kind="boolean" required="false" default="true"/>
-        <property name="displayStepLogs" category="input" kind="boolean" required="false" default="true"/>
     </type>
 
     <type type="xldeploy.UndeployTask" label="XL Deploy: Undeploy extended" extends="xldeploy.TaskRunningTask"

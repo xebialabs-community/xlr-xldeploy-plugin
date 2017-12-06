@@ -146,7 +146,7 @@ class XLDeployClient(object):
 
     def invoke_task_and_wait_for_result(self, task_id, polling_interval=10, number_of_trials=None,
                                         continue_if_step_fails=False, number_of_continue_retrials=0,
-                                        fail_on_pause=True):
+                                        fail_on_pause=True, display_step_logs = False):
         start_task_url = "/deployit/task/%s/start" % task_id
         self.http_request.post(start_task_url, '', contentType='application/xml')
         trial = 0
@@ -175,6 +175,9 @@ class XLDeployClient(object):
                 if status in ('FAILED', 'ABORTED', 'CANCELLED', 'DONE', 'EXECUTED'):
                     break
             time.sleep(polling_interval)
+        if display_step_logs:
+            print "Display the step logs"
+            self.display_step_logs(task_id)
         return status
 
     def get_deployment_package(self, deployed_application_id):
