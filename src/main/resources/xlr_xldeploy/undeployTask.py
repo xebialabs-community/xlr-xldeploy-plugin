@@ -35,7 +35,8 @@ task_id = xld_client.get_deployment_task_id(deployment)
 
 print "Execute task with id: %s" % task_id
 task_state = xld_client.invoke_task_and_wait_for_result(task_id, pollingInterval, numberOfPollingTrials,
-                                                        continueIfStepFails, numberOfContinueRetrials, failOnPause)
+                                                        continueIfStepFails, numberOfContinueRetrials, failOnPause,
+                                                        display_step_logs=displayStepLogs)
 
 xld_client.display_step_logs(task_id)
 
@@ -50,7 +51,8 @@ if rollbackOnError and task_state in ('FAILED', 'STOPPED'):
     xld_client.stop_task(task_id)
     rollback_task_id = xld_client.deployment_rollback(task_id)
     task_state = xld_client.invoke_task_and_wait_for_result(rollback_task_id, pollingInterval, numberOfPollingTrials,
-                                                            continueIfStepFails, numberOfContinueRetrials)
+                                                            continueIfStepFails, numberOfContinueRetrials,
+                                                            display_step_logs=displayStepLogs)
     xld_client.archive_task(rollback_task_id)
     sys.exit(1)
 elif task_state in ('FAILED', 'STOPPED'):

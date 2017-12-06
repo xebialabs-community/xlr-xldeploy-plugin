@@ -25,7 +25,8 @@ else:
 # Mapping deployables to the target environment
 # deploymentProperties + configure orchestrators
 print "Mapping all deployables \n"
-deployment = xld_client.deployment_prepare_deployeds(deployment, orchestrators, deployedApplicationProperties, overrideDeployedProps, deployedProperties)
+deployment = xld_client.deployment_prepare_deployeds(deployment, orchestrators, deployedApplicationProperties,
+                                                     overrideDeployedProps, deployedProperties)
 
 print "Validating the deployment\n"
 validation_messages = xld_client.validate(deployment)
@@ -41,11 +42,9 @@ print "Creating a deployment task \n"
 taskId = xld_client.get_deployment_task_id(deployment)
 
 print "Execute task with id: %s" % taskId
-taskState = xld_client.invoke_task_and_wait_for_result(taskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials, failOnPause)
-
-if displayStepLogs:
-    print "Display the step logs"
-    xld_client.display_step_logs(taskId)
+taskState = xld_client.invoke_task_and_wait_for_result(taskId, pollingInterval, numberOfPollingTrials,
+                                                       continueIfStepFails, numberOfContinueRetrials, failOnPause,
+                                                       display_step_logs=displayStepLogs)
 
 if taskState in ('DONE', 'EXECUTED'):
     print "Deployment ended in %s \n" % taskState
@@ -58,7 +57,9 @@ if taskState in ('FAILED', 'STOPPED'):
         print "Going to rollback \n"
         xld_client.stop_task(taskId)
         rollBackTaskId = xld_client.deployment_rollback(taskId)
-        taskState = xld_client.invoke_task_and_wait_for_result(rollBackTaskId, pollingInterval, numberOfPollingTrials, continueIfStepFails, numberOfContinueRetrials)
+        taskState = xld_client.invoke_task_and_wait_for_result(rollBackTaskId, pollingInterval, numberOfPollingTrials,
+                                                               continueIfStepFails, numberOfContinueRetrials,
+                                                               display_step_logs=displayStepLogs)
         xld_client.archive_task(rollBackTaskId)
     elif cancelOnError:
         print "Task failed; cancelling task. \n"
