@@ -30,14 +30,16 @@ def get_parameter_type_name(root):
             return child.tag
 
 
-def add_parameter(root, parameter_type_id, parameter_name, parameters):
+def add_parameter(root, parameter_type_id, parameter, parameters):
     params = root.find("parameters")
     if params and parameters:
         property_dict = dict(ast.literal_eval(parameters))
         for child in params:
             if child.tag == parameter_type_id:
-                param = ET.SubElement(child, parameter_name)
-                param.text = str(property_dict[parameter_name])
+                name = parameter['name']
+                default = parameter['default']
+                param = ET.SubElement(child, name)
+                param.text = str(property_dict.get(name, default))
 
 
 def set_deployed_application_properties(deployment_xml, deployed_application_properties):
@@ -121,7 +123,7 @@ class XLDeployClient(object):
         parameter_names = []
         if params:
             for child in params:
-                parameter_names.append(child.get("name"))
+                parameter_names.append({'name': child.get("name"), 'default': child.get('default')})
         return parameter_names
 
     def prepare_control_task(self, control_task_name, target_ci_id, parameters=None):
