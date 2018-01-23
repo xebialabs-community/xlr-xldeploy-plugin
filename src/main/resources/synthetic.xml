@@ -201,8 +201,6 @@
                   description="XML with the fields to set on the CI"/>
         <property name="addToEnvironment" category="input" kind="boolean" required="false"
                   description="Switch to decide if to add the CI to an environment"/>
-        <property name="addDictToEnvironment" category="input" kind="boolean" required="false"
-                  description="Switch to decide if to add the dictionary to an environment"/>
         <property name="envID" category="input" label="Env ID" required="false"
                   description="Environment to add the CI to."/>
     </type>

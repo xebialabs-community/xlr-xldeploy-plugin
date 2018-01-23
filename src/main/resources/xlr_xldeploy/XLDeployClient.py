@@ -373,28 +373,21 @@ class XLDeployClient(object):
             data[ci_property] = property_value
         self.update_ci(ci_id, json.dumps(data), 'json')
 
-    def add_ci_to_environment(self, env_id, ci_id):
+    def add_ci_to_environment(self, env_id, ci_id, ci_type):
         self.check_ci_exist(env_id, throw_on_fail=True)
         ci = self.get_ci(env_id, 'json')
         data = json.loads(ci)
-        data["members"].append(ci_id)
+        if str(ci_type) == 'udm.Dictionary':
+            data["dictionaries"].append(ci_id)
+        else:
+            data["members"].append(ci_id)
         self.update_ci(env_id, json.dumps(data), 'json')
 
         get_env_response = self.get_ci(env_id, 'xml')
-        items = get_env_response.partition('</members>')
-        xml = items[0] + '<ci ref="' + ci_id + '"/>' + items[1] + items[2]
-        print(xml)
-        self.update_ci(env_id, xml, 'xml')
-
-    def add_dict_to_environment(self, env_id, ci_id):
-        self.check_ci_exist(env_id, throw_on_fail=True)
-        ci = self.get_ci(env_id, 'json')
-        data = json.loads(ci)
-        data["dictionaries"].append(ci_id)
-        self.update_ci(env_id, json.dumps(data), 'json')
-
-        get_env_response = self.get_ci(env_id, 'xml')
-        items = get_env_response.partition('</dictionaries>')
+        if str(ci_type) == 'udm.Dictionary':
+            items = get_env_response.partition('</dictionaries>')
+        else:
+            items = get_env_response.partition('</members>')
         xml = items[0] + '<ci ref="' + ci_id + '"/>' + items[1] + items[2]
         print(xml)
         self.update_ci(env_id, xml, 'xml')
