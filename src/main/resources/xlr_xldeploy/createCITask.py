@@ -19,3 +19,5 @@ else:
     xld_client.create_ci(ciID, ciType)
 if addToEnvironment:
     xld_client.add_ci_to_environment(envID, ciID)
+if addDictToEnvironment:
+    xld_client.add_dict_to_environment(envID, ciID)

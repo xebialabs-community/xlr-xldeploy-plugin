@@ -386,6 +386,19 @@ class XLDeployClient(object):
         print(xml)
         self.update_ci(env_id, xml, 'xml')
 
+    def add_dict_to_environment(self, env_id, ci_id):
+        self.check_ci_exist(env_id, throw_on_fail=True)
+        ci = self.get_ci(env_id, 'json')
+        data = json.loads(ci)
+        data["dictionaries"].append(ci_id)
+        self.update_ci(env_id, json.dumps(data), 'json')
+
+        get_env_response = self.get_ci(env_id, 'xml')
+        items = get_env_response.partition('</dictionaries>')
+        xml = items[0] + '<ci ref="' + ci_id + '"/>' + items[1] + items[2]
+        print(xml)
+        self.update_ci(env_id, xml, 'xml')
+
     def remove_ci_from_environment(self, env_id, ci_id):
         get_env_response = self.get_ci(env_id, 'xml')
         print get_env_response
