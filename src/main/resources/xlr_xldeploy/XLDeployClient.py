@@ -383,22 +383,13 @@ class XLDeployClient(object):
             data["members"].append(ci_id)
         self.update_ci(env_id, json.dumps(data), 'json')
 
-        #get_env_response = self.get_ci(env_id, 'xml')
-        #if str(ci_type) == 'udm.Dictionary':
-        #   items = get_env_response.partition('</dictionaries>')
-        #else:
-        #    items = get_env_response.partition('</members>')
-        #xml = items[0] + '<ci ref="' + ci_id + '"/>' + items[1] + items[2]
-        #print(xml)
-        #self.update_ci(env_id, xml, 'xml')
-
     def remove_ci_from_environment(self, env_id, ci_id):
         get_env_response = self.get_ci(env_id, 'xml')
         print get_env_response
         env_root = ET.fromstring(get_env_response)
         member_to_remove = None
         for child in env_root:
-            if child.tag == 'members' or 'dictionaries':
+            if child.tag in ('members','dictionaries'):
                 for member in child:
                     if member.attrib['ref'] == ci_id:
                         print 'Found ' + ci_id + ' in ' + env_id
