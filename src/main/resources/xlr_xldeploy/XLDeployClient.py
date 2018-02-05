@@ -1,5 +1,5 @@
 #
-# Copyright 2017 XEBIALABS
+# Copyright 2018 XEBIALABS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 #
@@ -373,18 +373,15 @@ class XLDeployClient(object):
             data[ci_property] = property_value
         self.update_ci(ci_id, json.dumps(data), 'json')
 
-    def add_ci_to_environment(self, env_id, ci_id):
+    def add_ci_to_environment(self, env_id, ci_id, ci_type):
         self.check_ci_exist(env_id, throw_on_fail=True)
         ci = self.get_ci(env_id, 'json')
         data = json.loads(ci)
-        data["members"].append(ci_id)
+        if str(ci_type) == 'udm.Dictionary':
+            data["dictionaries"].append(ci_id)
+        else:
+            data["members"].append(ci_id)
         self.update_ci(env_id, json.dumps(data), 'json')
-
-        get_env_response = self.get_ci(env_id, 'xml')
-        items = get_env_response.partition('</members>')
-        xml = items[0] + '<ci ref="' + ci_id + '"/>' + items[1] + items[2]
-        print(xml)
-        self.update_ci(env_id, xml, 'xml')
 
     def remove_ci_from_environment(self, env_id, ci_id):
         get_env_response = self.get_ci(env_id, 'xml')
@@ -392,7 +389,7 @@ class XLDeployClient(object):
         env_root = ET.fromstring(get_env_response)
         member_to_remove = None
         for child in env_root:
-            if child.tag == 'members':
+            if child.tag in ('members','dictionaries'):
                 for member in child:
                     if member.attrib['ref'] == ci_id:
                         print 'Found ' + ci_id + ' in ' + env_id
