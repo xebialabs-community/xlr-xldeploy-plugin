@@ -30,14 +30,16 @@ def get_parameter_type_name(root):
             return child.tag
 
 
-def add_parameter(root, parameter_type_id, parameter_name, parameters):
+def add_parameter(root, parameter_type_id, parameter, parameters):
     params = root.find("parameters")
     if params and parameters:
         property_dict = dict(ast.literal_eval(parameters))
         for child in params:
             if child.tag == parameter_type_id:
-                param = ET.SubElement(child, parameter_name)
-                param.text = str(property_dict[parameter_name])
+                name = parameter['name']
+                default = parameter['default']
+                param = ET.SubElement(child, name)
+                param.text = str(property_dict.get(name, default))
 
 
 def set_deployed_application_properties(deployment_xml, deployed_application_properties):
@@ -113,16 +115,16 @@ class XLDeployClient(object):
     def create_client(http_connection, username=None, password=None):
         return XLDeployClient(http_connection, username, password)
 
-    def get_parameter_names(self, parameter_type_id):
+    def get_parameters(self, parameter_type_id):
         metadata_url = "/deployit/metadata/type/%s" % (parameter_type_id)
         metadata_response = self.http_request.get(metadata_url, contentType='application/xml')
         root = ET.fromstring(metadata_response.getResponse())
         params = root.find("property-descriptors")
-        parameter_names = []
+        parameters = []
         if params:
             for child in params:
-                parameter_names.append(child.get("name"))
-        return parameter_names
+                parameters.append({'name': child.get("name"), 'default': child.get('default')})
+        return parameters
 
     def prepare_control_task(self, control_task_name, target_ci_id, parameters=None):
         prepare_control_task_url = "/deployit/control/prepare/%s/%s" % (control_task_name, target_ci_id)
@@ -135,9 +137,9 @@ class XLDeployClient(object):
         if parameters:
             parameter_type_id = get_parameter_type_name(root)
             if parameter_type_id:
-                parameter_names = self.get_parameter_names(parameter_type_id)
-                for parameterName in parameter_names:
-                    add_parameter(root, parameter_type_id, parameterName, parameters)
+                parameters_definition = self.get_parameters(parameter_type_id)
+                for parameter in parameters_definition:
+                    add_parameter(root, parameter_type_id, parameter, parameters)
         invoke_response = self.http_request.post('/deployit/control', ET.tostring(root), contentType='application/xml')
         check_response(invoke_response, "Failed to create control task [%s]. Server return [%s], with content [%s]" % (
             target_ci_id, invoke_response.status, invoke_response.response))
