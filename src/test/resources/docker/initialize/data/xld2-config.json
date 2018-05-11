@@ -7,21 +7,11 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-[
-    {
-        "id": "Configuration/Custom/xld1",
-        "type": "xldeploy.XLDeployServer",
-        "title": "xld1",
-        "url": "http://xld1:4516",
-        "username": "admin",
-        "password": "admin"
-    },
-    {
-        "id": "Configuration/Custom/xld2",
-        "type": "xldeploy.XLDeployServer",
-        "title": "xld2",
-        "url": "http://xld2:4516",
-        "username": "admin",
-        "password": "admin"
-    }
-]
+{
+    "id": "Configuration/Custom/xld2",
+    "type": "xldeploy.XLDeployServer",
+    "title": "xld2",
+    "url": "http://xld2:4516",
+    "username": "admin",
+    "password": "admin"
+}

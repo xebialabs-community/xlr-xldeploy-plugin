@@ -15,13 +15,17 @@ SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
 ####################### XLD server data
+echo "Loading server-configs.json"
 
-
-wget --http-user=admin --http-password=admin --auth-no-challenge \
+for file in $(ls -1 $SCRIPTPATH/data/*config.json)
+do
+  echo "Loading configuration [${file}]"
+  wget --http-user=admin --http-password=admin --auth-no-challenge \
      --header="Accept: application/json" \
      --header="Content-type: application/json" \
-     --post-file=$SCRIPTPATH/data/server-configs.json \
-    http://localhost:5516/repository/cis -O /dev/null
+     --post-file=${file} \
+     http://localhost:5516/api/v1/config -O /dev/null
+done
 
 wget --http-user=admin --http-password=admin --auth-no-challenge \
      --header="Accept: application/json" \
