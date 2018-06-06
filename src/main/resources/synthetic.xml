@@ -133,7 +133,7 @@
           description="Finds all Deployment Package versions for an Application in XL Deploy">
         <property name="scriptLocation" default="xlr_xldeploy/getAllVersionsTask.py" hidden="true"/>
         <property name="applicationId" category="input" label="Application ID" required="true"/>
-        <!-- <property name="stripApplications" category="input" kind="boolean" /> -->
+        <property name="stripApplications" category="input" kind="boolean" />
         <property name="throwOnFail" category="input" kind="boolean" label="Throw on Fail"
                   description="If True, the Task will fail if the CI doesn't exist" default="false"/>
 

@@ -22,5 +22,12 @@ if throwOnFail and not response:
 
 packageIds = xld_client.get_all_package_version(applicationId)
 
+if stripApplications:
+    packageIdsTmp = list()
+    for version in packageIds:
+        version = version.partition('/')[2]
+        packageIdsTmp.append(version)
+    packageIds = packageIdsTmp
+
 if throwOnFail and len(packageIds) == 0:
 	raise Exception(applicationId + " exists but has no versions")
