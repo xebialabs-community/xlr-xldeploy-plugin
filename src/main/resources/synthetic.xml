@@ -139,7 +139,7 @@
 
         <property name="packageIds" category="output" kind="list_of_string" label="Package IDs"/>
     </type>
-    
+
     <type type="xldeploy.GetCITask" extends="xldeploy.Task" label="XL Deploy: Get CI" description="Gets a CI XML from XL Deploy">
         <property name="scriptLocation" default="xlr_xldeploy/getCITask.py" hidden="true" />
         <property name="ciID" category="input" label="CI ID" required="true"/>
@@ -153,7 +153,7 @@
 
         <property name="response" category="output" label="CI" />
     </type>
-    
+
     <type type="xldeploy.GetLastVersionDeployedTask" label="XL Deploy: Get last deployed version"
           extends="xldeploy.Task"
           description="Finds the latest version of the Package deployed in XL Deploy">
@@ -291,6 +291,14 @@
         <property name="xldCI"            category="input" description="The CI to the the tags from" />
         <property name="xldNewTags"       category="input" description="A New tag to add to the CI" kind="list_of_string" />
         <property name="xldTags"          category="output" kind="list_of_string" />
+    </type>
+
+    <type type="xldeploy.CreateEnvironment" extends="xldeploy.Task" label="XL Deploy: Create Environment"
+          description="Creates an environment CI">
+        <property name="scriptLocation" default="xlr_xldeploy/createEnvironment.py" hidden="true"/>
+        <property name="ciID" category="input" label="CI ID" required="true"/>
+        <property name="members" kind="set_of_string" category="input" />
+        <property name="dictionaries" kind="set_of_string" category="input" />
     </type>
 
     <type type="xldeploy.XLDVersionsTile" label="XLD Version Tile" extends="xlrelease.Tile">
