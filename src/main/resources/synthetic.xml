@@ -139,7 +139,7 @@
 
         <property name="packageIds" category="output" kind="list_of_string" label="Package IDs"/>
     </type>
-    
+
     <type type="xldeploy.GetCITask" extends="xldeploy.Task" label="XL Deploy: Get CI" description="Gets a CI XML from XL Deploy">
         <property name="scriptLocation" default="xlr_xldeploy/getCITask.py" hidden="true" />
         <property name="ciID" category="input" label="CI ID" required="true"/>
@@ -153,7 +153,7 @@
 
         <property name="response" category="output" label="CI" />
     </type>
-    
+
     <type type="xldeploy.GetLastVersionDeployedTask" label="XL Deploy: Get last deployed version"
           extends="xldeploy.Task"
           description="Finds the latest version of the Package deployed in XL Deploy">
@@ -291,6 +291,33 @@
         <property name="xldCI"            category="input" description="The CI to the the tags from" />
         <property name="xldNewTags"       category="input" description="A New tag to add to the CI" kind="list_of_string" />
         <property name="xldTags"          category="output" kind="list_of_string" />
+    </type>
+
+    <type type="xldeploy.CreateEnvironment" extends="xldeploy.Task" label="XL Deploy: Create Environment"
+          description="Creates an environment CI">
+        <property name="scriptLocation" default="xlr_xldeploy/createEnvironment.py" hidden="true"/>
+        <property name="ciID" category="input" label="CI ID" required="true"/>
+        <property name="members" kind="set_of_string" category="input" />
+        <property name="dictionaries" kind="set_of_string" category="input" />
+    </type>
+
+    <type type="xldeploy.CreateDictionary" extends="xldeploy.Task" label="XL Deploy: Create Dictionary"
+          description="Creates an dictionary CI">
+        <property name="scriptLocation" default="xlr_xldeploy/createDictionary.py" hidden="true"/>
+        <property name="ciID" category="input" label="CI ID" required="true"/>
+        <property name="entries" kind="map_string_string" category="input" />
+    </type>
+
+    <type type="xldeploy.CreateSimpleCI" extends="xldeploy.Task" label="XL Deploy: Create Simple CI"
+          description="Creates a CI with string properties only and optionally adds it to an environment">
+        <property name="scriptLocation" default="xlr_xldeploy/createSimpleCI.py" hidden="true"/>
+        <property name="ciID" category="input" label="CI ID" required="true"/>
+        <property name="ciType" category="input" required="true"/>
+        <property name="properties" category="input" kind="map_string_string" required="false" />
+        <property name="addToEnvironment" category="input" kind="boolean" required="false"
+                  description="Switch to decide if to add the CI to an environment"/>
+        <property name="envID" category="input" label="Env ID" required="false"
+                  description="Environment to add the CI to."/>
     </type>
 
     <type type="xldeploy.XLDVersionsTile" label="XLD Version Tile" extends="xlrelease.Tile">
