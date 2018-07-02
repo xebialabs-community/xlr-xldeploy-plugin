@@ -234,7 +234,36 @@ returned package ID
  
  ![SetCITags](images/SetCITags.png)
  
++ Create Environment
+  * `Server`: XL Deploy Server CI
+  * `Username`
+  * `Password`
+  * `CI ID`: The XL Deploy Environment CI to be created
+  * `Members`: List of Infrastructure CIs to be included
+  * `Dictionaries`: List of Dictionaries to be included
 
+ ![CreateEnvironment](images/CreateEnvironment.png)
+ 
++ Create Dictionary
+  * `Server`: XL Deploy Server CI
+  * `Username`
+  * `Password`
+  * `CI ID`: The XL Deploy Dictionary CI to be created
+  * `Entries`: Key-Value pairs for the dictionary items
+
+ ![CreateDictionary](images/CreateDictionary.png)
+ 
++ Create Simple CI
+  * `Server`: XL Deploy Server CI
+  * `Username`
+  * `Password`
+  * `CI ID`: The XL Deploy CI to be created
+  * `Properties`: Key-Value pairs for the CI properties
+
+ This task supports only simple string properties.
+
+ ![CreateSimpleCI](images/CreateSimpleCI.png)
+ 
 ## Tiles ##
 
 + Deployed applications on an environment at a specific moment in time
