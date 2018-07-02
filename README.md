@@ -1,10 +1,4 @@
-# Preface #
-
-This document describes the functionality provided by the xlr-xldeploy-plugin.
-
-See the **[XL Release Documentation](https://docs.xebialabs.com/xl-release/index.html)** for background information on XL Release and release concepts.
-
-# CI status #
+# XL Release - XL Deploy interface
 
 [![Build Status][xlr-xldeploy-plugin-travis-image] ][xlr-xldeploy-plugin-travis-url]
 [![Codacy][xlr-xldeploy-plugin-codacy-image] ][xlr-xldeploy-plugin-codacy-url]
@@ -23,14 +17,19 @@ See the **[XL Release Documentation](https://docs.xebialabs.com/xl-release/index
 [xlr-xldeploy-plugin-license-url]: https://opensource.org/licenses/MIT
 [xlr-xldeploy-plugin-downloads-image]: https://img.shields.io/github/downloads/xebialabs-community/xlr-xldeploy-plugin/total.svg
 
+## Preface
 
-# Overview #
+This document describes the functionality provided by the xlr-xldeploy-plugin.
+
+See the **[XL Release Documentation](https://docs.xebialabs.com/xl-release/index.html)** for background information on XL Release and release concepts.
+
+## Overview
 
 The xlr-xldeploy-plugin is a XL Release plugin that allows to start a control task, start a deployment, migrate a deployment package to another server or get the latest version of an application on XL Deploy.
 
 ## Installation ##
 
-Place the latest released version under the `plugins` dir. If needed append the following to the `script.policy` under `conf`:
+Place the latest released version under the `plugins` dir for XL Release 7.x or under the `plugins/__local__` for XL Release 8+. If needed append the following to the `script.policy` under `conf`:
 
 ```
 permission java.io.FilePermission "plugins/*", "read";
