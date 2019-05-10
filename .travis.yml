@@ -1,9 +1,8 @@
 language: java
 sudo: false
 notifications:
-  hipchat:
-    rooms:
-      secure: OlIO4DA0xfqdHqS2ytSfDucjIoncHBgLDFjDi1u+qsLOPBeYpYuNJOZkW531yKPFS/na8BjS5WzjrdZW1Wa2I41X2KdNEqOBPxCNsDlvRzEsMUXGCekTEkIaVKgyD8LsAqku+I0CFRsYCQCxRz6yufEenDf7VwdhbM/345mopkI=
+  slack:
+    secure: IewB2JuslmbngTGDBoxDOa+myPGCOYwmMTFXFCpE7i2xRiPNqkoAGUa6bbcoFVR5PF0Ukz6SVye3ITqLVGo3Sv9yWtbyauajyd+ZO9X+cp+h1Vv3X4SMzr8nx6mfC4/Uym2QQJOEroF5djP1RduNEjOBDjxx6reV/BowwgKNYkU=
 deploy:
   provider: releases
   api_key:
