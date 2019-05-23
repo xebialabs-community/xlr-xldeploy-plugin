@@ -320,6 +320,13 @@
                   description="Environment to add the CI to."/>
     </type>
 
+    <type type="xldeploy.AddEntryToDictionary" extends="xldeploy.Task" label="XL Deploy: Add entry to dictionary">
+        <property name="scriptLocation" default="xlr_xldeploy/addEntryToDictionary.py" hidden="true" /> 
+        <property name="dictionaryId" category="input" />
+        <property name="key" category="input" />
+        <property name="value" category="input" />
+    </type>
+
     <type type="xldeploy.XLDVersionsTile" label="XLD Version Tile" extends="xlrelease.Tile">
         <property name="scriptLocation" default="xlr_xldeploy/XLDVersionsTile.py" kind="string" hidden="true"/>
         <property name="uri" hidden="true" default="include/XLDVersionsTile/xld-versions-tile-view.html"/>
