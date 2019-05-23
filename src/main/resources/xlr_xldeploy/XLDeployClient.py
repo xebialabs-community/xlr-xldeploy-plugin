@@ -478,12 +478,18 @@ class XLDeployClient(object):
                         del deployed_apps[task['metadata']['application']]
         return deployed_apps
 
+    def add_or_update_entry(self, entries, key, value):
+        for entry in entries:
+            if entry.tag == "entry" and entry.attrib["key"] == key:
+                entry.text = value
+                return
+        newentry = ET.Element('entry', key=key)
+        newentry.text =value
+        entries.insert(0, newentry)
+
     def add_entry_to_dictionary(self, dictionary_id, key, value):
         dictionary_xml = self.get_ci(dictionary_id, "xml")
         root = ET.fromstring(dictionary_xml)
         entries = root.find('entries')
-        newentry = ET.Element('entry', key=key)
-        newentry.text = value
-        entries.insert(0, newentry)
+        self.add_or_update_entry(entries, key, value)        
         self.update_ci(dictionary_id, ET.tostring(root), "xml")
-
