@@ -491,5 +491,13 @@ class XLDeployClient(object):
         dictionary_xml = self.get_ci(dictionary_id, "xml")
         root = ET.fromstring(dictionary_xml)
         entries = root.find('entries')
-        self.add_or_update_entry(entries, key, value)        
+        self.add_or_update_entry(entries, key, value)
+        self.update_ci(dictionary_id, ET.tostring(root), "xml")
+
+    def add_entries_to_dictionary(self, dictionary_id, new_entries):
+        dictionary_xml = self.get_ci(dictionary_id, "xml")
+        root = ET.fromstring(dictionary_xml)
+        entries = root.find('entries')
+        for key in new_entries.keys():
+            self.add_or_update_entry(entries, key, new_entries[key])
         self.update_ci(dictionary_id, ET.tostring(root), "xml")

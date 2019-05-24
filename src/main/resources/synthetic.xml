@@ -327,6 +327,12 @@
         <property name="value" category="input" />
     </type>
 
+    <type type="xldeploy.AddEntriesToDictionary" extends="xldeploy.Task" label="XL Deploy: Add entries to dictionary">
+        <property name="scriptLocation" default="xlr_xldeploy/addEntriesToDictionary.py" hidden="true" /> 
+        <property name="dictionaryId" category="input" />
+        <property name="newEntries" kind="map_string_string" category="input" />
+    </type>
+
     <type type="xldeploy.XLDVersionsTile" label="XLD Version Tile" extends="xlrelease.Tile">
         <property name="scriptLocation" default="xlr_xldeploy/XLDVersionsTile.py" kind="string" hidden="true"/>
         <property name="uri" hidden="true" default="include/XLDVersionsTile/xld-versions-tile-view.html"/>
