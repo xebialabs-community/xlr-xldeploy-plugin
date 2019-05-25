@@ -248,10 +248,34 @@ returned package ID
   * `Username`
   * `Password`
   * `CI ID`: The XL Deploy Dictionary CI to be created
-  * `Entries`: Key-Value pairs for the dictionary items
+  * `Entries`: Key-Value pairs for the dictionary items (map\_string\_string)
+
 
  ![CreateDictionary](images/CreateDictionary.png)
+
++ Add Entry to Dictionary
+  * `Server`: XL Deploy Server CI
+  * `Username`
+  * `Password`
+  * `Dictionary ID`: The XL Deploy Dictionary CI to be created
+  * `Key`: Key for the dictionary item
+  * `Value`: Value for the dictionary item
+
+If the key is already present, its value will be updated.
+
+ ![AddEntryToDictionary](images/AddEntryToDictionary.png)
  
++ Add Entries to Dictionary
+  * `Server`: XL Deploy Server CI
+  * `Username`
+  * `Password`
+  * `CI ID`: The XL Deploy Dictionary CI to be created
+  * `New Entries`: Key-Value pairs for the dictionary items (map\_string\_string)
+ 
+ If a key is already present, its value will be updated.
+ 
+ ![AddEntriesToDictionary](images/AddEntriesToDictionary.png)
+
 + Create Simple CI
   * `Server`: XL Deploy Server CI
   * `Username`
